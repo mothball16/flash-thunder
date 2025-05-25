@@ -10,16 +10,15 @@ namespace FlashThunder.Core.Systems
 {
     internal class EntityCountingSystem : ISystem<float>
     {
-        private readonly GameContext _context;
+        private readonly World _world;
         private readonly EntitySet _entitySet;
         public bool IsEnabled { get; set; }
 
-        public EntityCountingSystem(GameContext context)
+        public EntityCountingSystem(World world)
         {
-            _context = context;
-            _entitySet = context.Entities.GetEntities()
-                .With<PositionComponent>()
-                .With<VelocityComponent>()
+            _world = world;
+            _entitySet = world.GetEntities()
+                .With<MapPosComponent>()
                 .AsSet();
         }
 
@@ -28,8 +27,7 @@ namespace FlashThunder.Core.Systems
         {
             foreach(ref readonly Entity e in _entitySet.GetEntities())
             {
-                Console.WriteLine(e.Get<PositionComponent>());
-                Console.WriteLine(e.Get<VelocityComponent>());
+                Console.WriteLine(e.Get<MapPosComponent>());
             }
         }
         public void Dispose() { }

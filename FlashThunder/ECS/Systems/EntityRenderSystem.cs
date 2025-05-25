@@ -6,26 +6,26 @@ using System.Threading.Tasks;
 using DefaultEcs;
 using DefaultEcs.System;
 using FlashThunder.Core.Components;
+using FlashThunder.ECS.Resources;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using nkast.Aether.Physics2D.Collision.Shapes;
-using nkast.Aether.Physics2D.Dynamics;
 namespace FlashThunder.Core.Systems
 {
     internal class EntityRenderSystem : ISystem<SpriteBatch>
     {
         // - - - [ Private Fields ] - - -
-        private readonly GameContext _context;
+        private readonly World _world;
         private readonly EntitySet _entitySet;
-        private int _pxPerTile;
+        private int _tileSize;
         // - - - [ Properties ] - - -
         public bool IsEnabled { get; set; }
 
-        public EntityRenderSystem(GameContext context, int pxPerTile)
+        public EntityRenderSystem(World world)
         {
-            _context = context;
-            _pxPerTile = pxPerTile;
-            _entitySet = context.World.GetEntities()
+            _world = world;
+            _tileSize = _world.Get<EnvironmentResource>().TileSize;
+
+            _entitySet = world.GetEntities()
                 .With<MapPosComponent>()
                 .With<SpriteDataComponent>()
                 .AsSet();
@@ -34,19 +34,18 @@ namespace FlashThunder.Core.Systems
 
         public void Update(SpriteBatch sb)
         {
-
             foreach (ref readonly Entity e in _entitySet.GetEntities())
             {
-                SpriteDataComponent spData = e.Get<SpriteDataComponent>();
-                MapPosComponent pos = e.Get<MapPosComponent>();
+                var spData = e.Get<SpriteDataComponent>();
+                var pos = e.Get<MapPosComponent>();
                 
                 sb.Draw(
                     texture: spData.Texture,
                     destinationRectangle: new(
-                        (int) (pos.X * _pxPerTile), 
-                        (int) (pos.Y * _pxPerTile),
-                        _pxPerTile,
-                        _pxPerTile
+                        pos.X * _tileSize, 
+                        pos.Y * _tileSize,
+                        _tileSize,
+                        _tileSize
                         ),
                     color: Color.White);
             }

@@ -11,6 +11,8 @@ using FlashThunder.Core.Systems;
 using FlashThunder.Core.Components;
 using System.Runtime.CompilerServices;
 using FlashThunder.Managers;
+using FlashThunder.ECS.Systems;
+using FlashThunder.ECS.Resources;
 
 namespace FlashThunder
 {
@@ -25,6 +27,7 @@ namespace FlashThunder
         private InputManager<PlayerAction> _inputManager;
 
         //TODO: Same for this. We should still ahve an assetmanager for the menu tho.
+        //Actually think about this abit because we don't want to reload textures all the time
         private AssetManager _assetManager;
 
         public CoreGame()
@@ -37,14 +40,15 @@ namespace FlashThunder
         protected override void Initialize()
         {
             // - - - [ Initialize higher systems ] - - -
-            _context = InitGameContext();
             
             _inputManager = new InputManager<PlayerAction>()
                 .BindAction(Keys.W, PlayerAction.Jump)
                 .BindAction(Keys.S, PlayerAction.Crouch)
                 .BindAction(Keys.D, PlayerAction.MoveRight)
                 .BindAction(Keys.A, PlayerAction.MoveLeft);
+            _assetManager = new AssetManager();
 
+            _context = InitGameContext();
 
             base.Initialize();
         }
@@ -52,6 +56,12 @@ namespace FlashThunder
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            //set default (for now)
+
+            _assetManager
+                .RegTex(Content.Load<Texture2D>("whiteSquare"))
+                .RegTex('#', Content.Load<Texture2D>("tile_asteroid"))
+                .RegTex('.', Content.Load<Texture2D>("clearTile"));
         }
 
         protected override void Update(GameTime gameTime)
@@ -89,35 +99,63 @@ namespace FlashThunder
         /// <returns>The initialized GameContext.</returns>
         private GameContext InitGameContext()
         {
-            //sets up the containers for DefaultEcs
+
+            //FOR NOW: manually initialize the map
+            var map = new TileMapComponent()
+            {
+                Map = [
+                    ['#','.','#','#','#'],
+                    ['.','#','.','#','#']
+                ],
+            };
+            var mapSettings = new EnvironmentResource()
+            {
+                TileSize = 64
+            };
+
+            //set up the ecs world
             var world = new World();
+            world.Set<TileMapComponent>(map);
+            world.Set<EnvironmentResource>(mapSettings);
+
+            //set up the connections between higher systems and the ecs architecture
+            //input is for all input event transmission
+            //mouse is for frame-by-frame updates of specifically the mouse
             var inputBridge = new InputBridge(_inputManager, world);
+            var mousePollingSystem = new MousePollingSystem(world, _inputManager);
 
-            //initializes the systems
-            var entityCountingSystem = new EntityCountingSystem(_context);
-            var commandSystem = new CommandSystem(_context);
+            //initialize the systems (update)
+            var entityCountingSystem = new EntityCountingSystem(world);
+            var commandSystem = new CommandSystem(world);
 
-            //FOR NOW: use magic number (32), this should be moved somewhere later
-            var entityRenderSystem = new EntityRenderSystem(_context, 32);
-            
             var _updateSystems = new SequentialSystem<float>([
+                mousePollingSystem,
                 entityCountingSystem,
                 commandSystem,
                 ]);
 
-            var _drawSystems = new SequentialSystem<SpriteBatch>([
-                entityRenderSystem
-                ]);
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+            //initialize the systems (draw)
+            var entityRenderSystem = new EntityRenderSystem(world);
+            var tileMapRenderSystem = new TileMapRenderSystem(world, _assetManager);
+
+            var _drawSystems = new SequentialSystem<SpriteBatch>([
+                entityRenderSystem,
+                tileMapRenderSystem
+                ]);
 
             //send back the initialized GameContext
             return new GameContext(
+                assetManager: _assetManager,
                 world: world,
                 inputBridge: inputBridge,
                 onUpd: _updateSystems,
                 onDraw: _drawSystems
                 );
-        }
         
+        }
+
+        #endregion
     }
 }

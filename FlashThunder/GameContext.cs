@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using DefaultEcs;
 using DefaultEcs.System;
 using Microsoft.Xna.Framework.Graphics;
+using FlashThunder.Managers;
 
 
 namespace FlashThunder
@@ -15,24 +16,29 @@ namespace FlashThunder
     {
         // - - - [ Private Fields ] - - -
 
-        //inputbridge only needs to be disposed of with GameContext. nothing should rly be
-        //interacting with it
-        private InputBridge _inputBridge;
 
+        //inputbridge only needs to be disposed of with GameContext. nothing should rly be
+        //interacting with it outside of Dispose
+        private InputBridge _inputBridge;
         private SequentialSystem<float> _updateSystems;
         private SequentialSystem<SpriteBatch> _drawSystems;
         
         // - - - [ Properties ] - - -
         public World World { get; init; }
 
+        //hold a ref. to assetmanager, but this shouldn't really be changed by GameContext
+        public AssetManager AssetManager { get; }
+
         public GameContext(
             World world, 
+            AssetManager assetManager,
             InputBridge inputBridge, 
             SequentialSystem<float> onUpd, SequentialSystem<SpriteBatch> onDraw)
         {
 
             //set properties
             World = world;
+            AssetManager = assetManager;
 
             //set priv fields
             _inputBridge = inputBridge;
@@ -50,10 +56,17 @@ namespace FlashThunder
             _drawSystems.Update(sb);
         }
 
+        /// <summary>
+        /// Nukes the GameContext. Should properly cleanup any game-runtime specific systems/objects.
+        /// </summary>
         public void Dispose()
         {
             GC.SuppressFinalize(this);
+            World.Dispose();
+
             _inputBridge?.Dispose();
+            _updateSystems?.Dispose();
+            _drawSystems?.Dispose();
         }
     }
 }

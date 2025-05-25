@@ -12,20 +12,18 @@ namespace FlashThunder.Managers
     /// </summary>
     public class AssetManager
     {
-        private Dictionary<string, Texture2D> _texCache;
+        private char DefaultRep = '&';
+        private Dictionary<char, Texture2D> _texCache;
 
         public AssetManager()
         {
-
+            _texCache = [];
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="texture"></param>
-        /// <returns></returns>
-        public AssetManager RegTex(string name, Texture2D texture)
+
+        public AssetManager RegTex(Texture2D texture)
+            => RegTex(DefaultRep, texture);
+        public AssetManager RegTex(char name, Texture2D texture)
         {
             if (_texCache.ContainsKey(name))
             {
@@ -48,7 +46,7 @@ namespace FlashThunder.Managers
         /// <exception cref="KeyNotFoundException">
         /// Throws if neither tex or default could be found.
         /// </exception>
-        public Texture2D GetTex(string name)
+        public Texture2D GetTex(char name)
         {
             if(!_texCache.TryGetValue(name, out Texture2D tex))
             {
@@ -57,7 +55,7 @@ namespace FlashThunder.Managers
                     $"Attempting to retrieve default instead.");
 
                 //if we don't even have a default, throw an exception
-                if (!_texCache.TryGetValue("default", out Texture2D defaultTile))
+                if (!_texCache.TryGetValue(DefaultRep, out Texture2D defaultTile))
                 {
                     throw new KeyNotFoundException(
                         $"No default texture was found to replacing missing texture {name}.");   
@@ -75,7 +73,7 @@ namespace FlashThunder.Managers
         public void Clear(bool clearDefault = false)
         {
             Texture2D temp = null;
-            if (!clearDefault && _texCache.TryGetValue("default", out Texture2D val))
+            if (!clearDefault && _texCache.TryGetValue(DefaultRep, out Texture2D val))
             {
                 temp = val;
             }
@@ -83,7 +81,7 @@ namespace FlashThunder.Managers
 
             if (temp != null)
             {
-                _texCache["default"] = temp;
+                _texCache[DefaultRep] = temp;
             }
         }
     }
