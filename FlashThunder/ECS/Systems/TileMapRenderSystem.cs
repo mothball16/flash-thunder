@@ -20,10 +20,10 @@ namespace FlashThunder.ECS.Systems
     {
         private readonly TileMapComponent _map;
         private readonly World _world;
-        private readonly AssetManager _assets;
+        private readonly TexManager _assets;
         private int _tileSize;
         public bool IsEnabled { get; set; }
-        public TileMapRenderSystem(World world, AssetManager assets) 
+        public TileMapRenderSystem(World world, TexManager assets) 
         {
             _world = world;
             _assets = assets;

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,35 +9,50 @@ using System.Threading.Tasks;
 namespace FlashThunder.Managers
 {
     /// <summary>
-    /// Handles the loading and retrieving of assets.
+    /// Handles the loading and retrieving of textures.
     /// </summary>
-    public class AssetManager
+    public class TexManager
     {
-        private char DefaultRep = '&';
-        private Dictionary<char, Texture2D> _texCache;
+        private const string DefaultName = "!default";
+        private Dictionary<string, Texture2D> _cache;
+        private ContentManager _contentManager;
 
-        public AssetManager()
+        public TexManager(ContentManager cm, string defaultTex = null)
         {
-            _texCache = [];
+            _cache = [];
+            _contentManager = cm;
+            if(defaultTex != null)
+                Register(DefaultName, defaultTex);
         }
 
-
-        public AssetManager RegTex(Texture2D texture)
-            => RegTex(DefaultRep, texture);
-        public AssetManager RegTex(char name, Texture2D texture)
+        //Indexer to make things easier
+        public Texture2D this[string name]
         {
-            if (_texCache.ContainsKey(name))
+            get
             {
-                Console.WriteLine(
-                    $"[WARNING] Texture {name} has already been bound." +
-                    $"Try not to do this because it is bad. Bad");
+                return Get(name);
             }
-            else
+        }
+
+        public TexManager Register(string name)
+            => Register(name, name);
+
+        public TexManager Register(string alias, string name)
+        {
+            try
             {
-                _texCache.Add(name, texture);
+                Texture2D tex = _contentManager.Load<Texture2D>(name);
+                _cache[alias] = tex;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[WARNING] Failed to load texture {name}. " +
+                    $"No texture has been loaded for alias {alias}.\nDetails: {ex.Message}");
+                throw;
             }
             return this;
         }
+
 
         /// <summary>
         /// Attempts to retrieve the texture by name.
@@ -46,16 +62,16 @@ namespace FlashThunder.Managers
         /// <exception cref="KeyNotFoundException">
         /// Throws if neither tex or default could be found.
         /// </exception>
-        public Texture2D GetTex(char name)
+        public Texture2D Get(string name)
         {
-            if(!_texCache.TryGetValue(name, out Texture2D tex))
+            if(!_cache.TryGetValue(name, out Texture2D tex))
             {
                 Console.WriteLine(
                     $"[WARNING] Texture {name} wasn't found in the texture cache." +
                     $"Attempting to retrieve default instead.");
 
                 //if we don't even have a default, throw an exception
-                if (!_texCache.TryGetValue(DefaultRep, out Texture2D defaultTile))
+                if (!_cache.TryGetValue(DefaultName, out Texture2D defaultTile))
                 {
                     throw new KeyNotFoundException(
                         $"No default texture was found to replacing missing texture {name}.");   
@@ -73,15 +89,15 @@ namespace FlashThunder.Managers
         public void Clear(bool clearDefault = false)
         {
             Texture2D temp = null;
-            if (!clearDefault && _texCache.TryGetValue(DefaultRep, out Texture2D val))
+            if (!clearDefault && _cache.TryGetValue(DefaultName, out Texture2D val))
             {
                 temp = val;
             }
-            _texCache.Clear();
+            _cache.Clear();
 
             if (temp != null)
             {
-                _texCache[DefaultRep] = temp;
+                _cache[DefaultName] = temp;
             }
         }
     }

@@ -28,7 +28,7 @@ namespace FlashThunder
 
         //TODO: Same for this. We should still ahve an assetmanager for the menu tho.
         //Actually think about this abit because we don't want to reload textures all the time
-        private AssetManager _assetManager;
+        private TexManager _assetManager;
 
         public CoreGame()
         {
@@ -46,7 +46,7 @@ namespace FlashThunder
                 .BindAction(Keys.S, PlayerAction.Crouch)
                 .BindAction(Keys.D, PlayerAction.MoveRight)
                 .BindAction(Keys.A, PlayerAction.MoveLeft);
-            _assetManager = new AssetManager();
+            _assetManager = new TexManager();
 
             _context = InitGameContext();
 
@@ -59,9 +59,9 @@ namespace FlashThunder
             //set default (for now)
 
             _assetManager
-                .RegTex(Content.Load<Texture2D>("whiteSquare"))
-                .RegTex('#', Content.Load<Texture2D>("tile_asteroid"))
-                .RegTex('.', Content.Load<Texture2D>("clearTile"));
+                .Register(Content.Load<Texture2D>("whiteSquare"))
+                .Register('#', Content.Load<Texture2D>("tile_asteroid"))
+                .Register('.', Content.Load<Texture2D>("clearTile"));
         }
 
         protected override void Update(GameTime gameTime)

@@ -217,8 +217,6 @@ namespace FlashThunder.Managers
 
         #endregion - - - [ Helpers ] - - -
 
-
-
         #region - - - [ Polling Methods ] - - - -
 
         //Checks whether a single action is currently being held

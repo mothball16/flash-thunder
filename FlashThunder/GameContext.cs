@@ -27,11 +27,11 @@ namespace FlashThunder
         public World World { get; init; }
 
         //hold a ref. to assetmanager, but this shouldn't really be changed by GameContext
-        public AssetManager AssetManager { get; }
+        public TexManager AssetManager { get; }
 
         public GameContext(
             World world, 
-            AssetManager assetManager,
+            TexManager assetManager,
             InputBridge inputBridge, 
             SequentialSystem<float> onUpd, SequentialSystem<SpriteBatch> onDraw)
         {

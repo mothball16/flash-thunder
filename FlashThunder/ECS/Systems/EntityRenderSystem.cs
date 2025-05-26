@@ -9,7 +9,7 @@ using FlashThunder.Core.Components;
 using FlashThunder.ECS.Resources;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-namespace FlashThunder.Core.Systems
+namespace FlashThunder.ECS.Systems
 {
     internal class EntityRenderSystem : ISystem<SpriteBatch>
     {

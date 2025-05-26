@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace FlashThunder.ECS.Resources
 {
     /// <summary>
-    /// Global component for game environment.
+    /// Global component for game environment configurations.
     /// </summary>
     public class EnvironmentResource
     {
