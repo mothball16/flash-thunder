@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlashThunder.ECS.Events
+namespace FlashThunder.Gameplay.Events
 {
     public struct ActionReleasedEvent
     {

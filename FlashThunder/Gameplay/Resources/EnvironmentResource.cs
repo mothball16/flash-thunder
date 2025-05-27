@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlashThunder.ECS.Resources
+namespace FlashThunder.Gameplay.Resources
 {
     /// <summary>
     /// Global component for game environment configurations.

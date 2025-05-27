@@ -1,6 +1,5 @@
 ﻿using DefaultEcs;
 using DefaultEcs.System;
-using FlashThunder.Core.Components;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -9,9 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using FlashThunder.Managers;
-using FlashThunder.ECS.Resources;
+using FlashThunder.Gameplay.Components;
+using FlashThunder.Gameplay.Resources;
 
-namespace FlashThunder.ECS.Systems
+namespace FlashThunder.Gameplay.Systems
 {
     /// <summary>
     /// Renders the tilemap. Done separately because it's handled differently than entity rendering.

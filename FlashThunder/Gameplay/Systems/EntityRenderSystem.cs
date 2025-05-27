@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using DefaultEcs;
 using DefaultEcs.System;
-using FlashThunder.Core.Components;
-using FlashThunder.ECS.Resources;
+using FlashThunder.Gameplay.Components;
+using FlashThunder.Gameplay.Resources;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-namespace FlashThunder.ECS.Systems
+namespace FlashThunder.Gameplay.Systems
 {
     internal class EntityRenderSystem : ISystem<SpriteBatch>
     {
@@ -26,7 +26,7 @@ namespace FlashThunder.ECS.Systems
             _tileSize = _world.Get<EnvironmentResource>().TileSize;
 
             _entitySet = world.GetEntities()
-                .With<MapPosComponent>()
+                .With<GridPosComponent>()
                 .With<SpriteDataComponent>()
                 .AsSet();
         }
@@ -37,7 +37,7 @@ namespace FlashThunder.ECS.Systems
             foreach (ref readonly Entity e in _entitySet.GetEntities())
             {
                 var spData = e.Get<SpriteDataComponent>();
-                var pos = e.Get<MapPosComponent>();
+                var pos = e.Get<GridPosComponent>();
                 
                 sb.Draw(
                     texture: spData.Texture,

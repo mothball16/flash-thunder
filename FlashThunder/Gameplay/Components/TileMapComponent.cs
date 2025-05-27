@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlashThunder.Core.Components
+namespace FlashThunder.Gameplay.Components
 {
     /// <summary>
     /// Global component for rendering tiles.

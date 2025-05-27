@@ -7,12 +7,11 @@ using Dcrew.MonoGame._2D_Camera;
 using FlashThunder.Enums;
 using DefaultEcs;
 using DefaultEcs.System;
-using FlashThunder.Core.Systems;
-using FlashThunder.Core.Components;
 using System.Runtime.CompilerServices;
 using FlashThunder.Managers;
-using FlashThunder.ECS.Systems;
-using FlashThunder.ECS.Resources;
+using FlashThunder.Gameplay.Systems;
+using FlashThunder.Gameplay.Components;
+using FlashThunder.Gameplay.Resources;
 
 namespace FlashThunder
 {
@@ -46,7 +45,7 @@ namespace FlashThunder
                 .BindAction(Keys.S, PlayerAction.Crouch)
                 .BindAction(Keys.D, PlayerAction.MoveRight)
                 .BindAction(Keys.A, PlayerAction.MoveLeft);
-            _assetManager = new TexManager();
+            _assetManager = new TexManager(Content, "clearTile");
 
             _context = InitGameContext();
 
@@ -59,9 +58,8 @@ namespace FlashThunder
             //set default (for now)
 
             _assetManager
-                .Register(Content.Load<Texture2D>("whiteSquare"))
-                .Register('#', Content.Load<Texture2D>("tile_asteroid"))
-                .Register('.', Content.Load<Texture2D>("clearTile"));
+                .Register("tile_white", "whiteSquare")
+                .Register("tile_asteroid", "tile_asteroid");
         }
 
         protected override void Update(GameTime gameTime)
@@ -121,11 +119,11 @@ namespace FlashThunder
             //set up the connections between higher systems and the ecs architecture
             //input is for all input event transmission
             //mouse is for frame-by-frame updates of specifically the mouse
-            var inputBridge = new InputBridge(_inputManager, world);
+            var inputBridge = new InputBridge(world, _inputManager);
             var mousePollingSystem = new MousePollingSystem(world, _inputManager);
 
             //initialize the systems (update)
-            var entityCountingSystem = new EntityCountingSystem(world);
+            var entityCountingSystem = new DebugSystem(world);
             var commandSystem = new CommandSystem(world);
 
             var _updateSystems = new SequentialSystem<float>([

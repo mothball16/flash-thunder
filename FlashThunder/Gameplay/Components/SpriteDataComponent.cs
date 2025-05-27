@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using nkast.Aether.Physics2D.Dynamics;
 using Microsoft.Xna.Framework.Graphics;
-namespace FlashThunder.Core.Components
+namespace FlashThunder.Gameplay.Components
 {
     public class SpriteDataComponent(Texture2D texture, Vector2 scale, Vector2? anchor = null)
     {

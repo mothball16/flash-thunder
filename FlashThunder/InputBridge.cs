@@ -5,9 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using DefaultEcs;
 using DefaultEcs.System;
-using FlashThunder.Core.Components;
-using FlashThunder.ECS.Events;
 using FlashThunder.Enums;
+using FlashThunder.Gameplay.Events;
 using FlashThunder.Managers;
 using Microsoft.Xna.Framework;
 
@@ -22,8 +21,7 @@ namespace FlashThunder
         private readonly World _world;
         private readonly InputManager<PlayerAction> _manager;
 
-        public event Func<Point> GetMouse;
-        public InputBridge(InputManager<PlayerAction> manager, World world)
+        public InputBridge(World world, InputManager<PlayerAction> manager)
         {
             _world = world;
             _manager = manager;

@@ -1,6 +1,5 @@
 ﻿using DefaultEcs;
 using DefaultEcs.System;
-using FlashThunder.Core.Components;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -9,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using FlashThunder.Managers;
-using FlashThunder.ECS.Resources;
 using FlashThunder.Enums;
-using FlashThunder.ECS.Events;
+using FlashThunder.Gameplay.Events;
 using Microsoft.Xna.Framework.Input;
-namespace FlashThunder.ECS.Systems
+using FlashThunder.Gameplay.Resources;
+namespace FlashThunder.Gameplay.Systems
 {
     /// <summary>
     /// Mostly just updates the mouse position since it's less beneficial to use event-based to

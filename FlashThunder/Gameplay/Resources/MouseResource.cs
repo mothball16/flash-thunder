@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 
-namespace FlashThunder.ECS.Resources
+namespace FlashThunder.Gameplay.Resources
 {
     /// <summary>
     /// Global component for retrieving the mouse information during a frame.

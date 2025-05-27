@@ -5,29 +5,37 @@ using System.Text;
 using System.Threading.Tasks;
 using DefaultEcs;
 using DefaultEcs.System;
-using FlashThunder.Core.Components;
-namespace FlashThunder.Core.Systems
+using FlashThunder.Enums;
+using FlashThunder.Gameplay.Components;
+using Microsoft.Xna.Framework;
+namespace FlashThunder.Gameplay.Systems
 {
-    internal class EntityCountingSystem : ISystem<float>
+    /// <summary>
+    /// Modifies the intents of all controlled units.
+    /// </summary>
+    internal class CommandSystem : ISystem<float>
     {
         private readonly World _world;
         private readonly EntitySet _entitySet;
+
         public bool IsEnabled { get; set; }
 
-        public EntityCountingSystem(World world)
+        public CommandSystem(World world)
         {
             _world = world;
             _entitySet = world.GetEntities()
-                .With<MapPosComponent>()
+                .With<ControlledComponent>()
+                .With<GridPosComponent>()
                 .AsSet();
         }
 
 
         public void Update(float dt)
         {
-            foreach(ref readonly Entity e in _entitySet.GetEntities())
+
+            foreach (ref readonly Entity e in _entitySet.GetEntities())
             {
-                Console.WriteLine(e.Get<MapPosComponent>());
+
             }
         }
         public void Dispose() { }
