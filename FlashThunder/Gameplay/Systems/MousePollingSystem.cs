@@ -17,12 +17,11 @@ namespace FlashThunder.Gameplay.Systems
     /// <summary>
     /// Mostly just updates the mouse position since it's less beneficial to use event-based to
     /// constantly update where it is
-    /// 
     /// </summary>
     internal class MousePollingSystem :ISystem<float>
     {
-        private World _world;
-        private InputManager<PlayerAction> _manager;
+        private readonly World _world;
+        private readonly InputManager<PlayerAction> _manager;
         public bool IsEnabled { get; set; }
         public MousePollingSystem(World world, InputManager<PlayerAction> manager)
         {
@@ -34,20 +33,21 @@ namespace FlashThunder.Gameplay.Systems
                 world.Set(new MouseResource());
         }
 
-
+        /// <summary>
+        /// Updates the mouse resource.
+        /// </summary>
+        /// <param name="_"></param>
         public void Update(float _)
         {
             ref var mouse = ref _world.Get<MouseResource>();
-            mouse.Position = _manager.GetMousePosition();
-
             var mouseState = _manager.GetMouseState();
             mouse.LPressed = mouseState.LeftButton == ButtonState.Pressed;
             mouse.MPressed = mouseState.MiddleButton == ButtonState.Pressed;
             mouse.RPressed = mouseState.RightButton == ButtonState.Pressed;
+            mouse.Position = _manager.GetMousePosition();
         }
 
-        public void Dispose() 
-        { 
-        }
+        public void Dispose() { }
+
     }
 }

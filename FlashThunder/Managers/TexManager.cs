@@ -1,10 +1,10 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using FlashThunder.Defs;
+using FlashThunder.Utilities;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FlashThunder.Managers
 {
@@ -21,38 +21,74 @@ namespace FlashThunder.Managers
         {
             _cache = [];
             _contentManager = cm;
-            if(defaultTex != null)
-                Register(DefaultName, defaultTex);
+            if (defaultTex != null)
+                RegisterDefault(defaultTex);
         }
 
-        //Indexer to make things easier
         public Texture2D this[string name]
         {
-            get
-            {
-                return Get(name);
-            }
+            get { return Get(name); }
+            set { Set(name, value); }
         }
 
-        public TexManager Register(string name)
-            => Register(name, name);
-
-        public TexManager Register(string alias, string name)
+        private bool TryLoad(string name, out Texture2D tex)
         {
             try
             {
-                Texture2D tex = _contentManager.Load<Texture2D>(name);
-                _cache[alias] = tex;
+                tex = _contentManager.Load<Texture2D>(name);
+                return true;
             }
             catch (Exception ex)
             {
+                tex = null;
                 Console.WriteLine($"[WARNING] Failed to load texture {name}. " +
-                    $"No texture has been loaded for alias {alias}.\nDetails: {ex.Message}");
-                throw;
+                    $"\nDetails: {ex.Message}");
+                return false;
             }
+        }
+
+        /// <summary>
+        /// Initialize a texture with the provided alias for future lookup.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public TexManager Register(string alias, string name)
+        {
+            if (TryLoad(name, out Texture2D tex))
+                _cache[alias] = tex;
+            else
+                Console.WriteLine($"[WARNING] Texture {name} failed to register!");
+
             return this;
         }
 
+        /// <summary>
+        /// Initialize a texture as the default texture in the cache.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public TexManager RegisterDefault(string name)
+            => Register(DefaultName, name);
+
+        /// <summary>
+        /// Directly pass a texture to be stored, foregoing the Register logic.
+        /// </summary>
+        /// <param name="alias"></param>
+        /// <param name="tex"></param>
+        /// <returns></returns>
+        public TexManager Set(string alias, Texture2D tex)
+        {
+            _cache[alias] = tex;
+            return this;
+        }
+
+        /// <summary>
+        /// Directly set the default to a texture, foregoing the Register logic.
+        /// </summary>
+        /// <param name="tex"></param>
+        /// <returns></returns>
+        public TexManager SetDefault(Texture2D tex)
+            => Set(DefaultName, tex);
 
         /// <summary>
         /// Attempts to retrieve the texture by name.
@@ -64,7 +100,7 @@ namespace FlashThunder.Managers
         /// </exception>
         public Texture2D Get(string name)
         {
-            if(!_cache.TryGetValue(name, out Texture2D tex))
+            if (!_cache.TryGetValue(name, out Texture2D tex))
             {
                 Console.WriteLine(
                     $"[WARNING] Texture {name} wasn't found in the texture cache." +
@@ -74,7 +110,7 @@ namespace FlashThunder.Managers
                 if (!_cache.TryGetValue(DefaultName, out Texture2D defaultTile))
                 {
                     throw new KeyNotFoundException(
-                        $"No default texture was found to replacing missing texture {name}.");   
+                        $"No default texture was found to replacing missing texture {name}.");
                 }
 
                 //set the tex to default (we know that it does exist now)
@@ -84,9 +120,9 @@ namespace FlashThunder.Managers
         }
 
         /// <summary>
-        /// Clears all caches.
+        /// Clears out everything.
         /// </summary>
-        public void Clear(bool clearDefault = false)
+        public TexManager Clear(bool clearDefault = false)
         {
             Texture2D temp = null;
             if (!clearDefault && _cache.TryGetValue(DefaultName, out Texture2D val))
@@ -99,6 +135,20 @@ namespace FlashThunder.Managers
             {
                 _cache[DefaultName] = temp;
             }
+            return this;
+        }
+
+        public TexManager LoadDefinitions(string path)
+        {
+            List<TextureDef> defs = DataLoader.LoadObject<List<TextureDef>>(path);
+            foreach (var def in defs)
+            {
+                Register(
+                    def.TextureAlias ?? def.TextureName, 
+                    def.TextureName
+                    );
+            }
+            return this;
         }
     }
 }

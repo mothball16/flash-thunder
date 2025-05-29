@@ -28,6 +28,7 @@ namespace FlashThunder
         //TODO: Same for this. We should still ahve an assetmanager for the menu tho.
         //Actually think about this abit because we don't want to reload textures all the time
         private TexManager _assetManager;
+        private TileManager _tileManager;
 
         public CoreGame()
         {
@@ -46,6 +47,7 @@ namespace FlashThunder
                 .BindAction(Keys.D, PlayerAction.MoveRight)
                 .BindAction(Keys.A, PlayerAction.MoveLeft);
             _assetManager = new TexManager(Content, "clearTile");
+            _tileManager = new TileManager();
 
             _context = InitGameContext();
 
@@ -58,8 +60,11 @@ namespace FlashThunder
             //set default (for now)
 
             _assetManager
-                .Register("tile_white", "whiteSquare")
-                .Register("tile_asteroid", "tile_asteroid");
+                .LoadDefinitions("texture_manifest.json");
+
+
+            _tileManager
+                .LoadDefinitions(_assetManager, "tile_defs.json");
         }
 
         protected override void Update(GameTime gameTime)
@@ -136,7 +141,7 @@ namespace FlashThunder
 
             //initialize the systems (draw)
             var entityRenderSystem = new EntityRenderSystem(world);
-            var tileMapRenderSystem = new TileMapRenderSystem(world, _assetManager);
+            var tileMapRenderSystem = new TileMapRenderSystem(world, _tileManager);
 
             var _drawSystems = new SequentialSystem<SpriteBatch>([
                 entityRenderSystem,

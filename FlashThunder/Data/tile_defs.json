@@ -1,0 +1,22 @@
+
+
+{
+  ",": {
+    "textureName": "tile_white",
+    "byLand": true,
+    "byAir": true,
+    "bySea": false
+  },
+  "#": {
+    "textureName": "tile_asteroid",
+    "byLand": true,
+    "byAir": true,
+    "bySea": false
+  },
+  ".": {
+    "textureName": "tile_fumo",
+    "byLand": true,
+    "byAir": true,
+    "bySea": false
+  }
+}

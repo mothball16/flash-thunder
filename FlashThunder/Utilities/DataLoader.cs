@@ -42,7 +42,7 @@ namespace FlashThunder.Utilities
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"something went wrong while loading definitions!! {ex.Message}");
+                Console.WriteLine($"something went wrong while loading definitions!!\n - - - - - -\n {ex}\n - - - - - -\n");
                 return default;
             }
         }

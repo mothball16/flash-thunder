@@ -1,0 +1,18 @@
+[
+  {
+    "textureAlias": "tile_asteroid",
+    "textureName": "tile_asteroid"
+  },
+  {
+    "textureAlias": "tile_white",
+    "textureName": "whiteSquare"
+  },
+  {
+    "textureAlias": "tile_empty",
+    "textureName": "clearTile"
+  },
+  {
+    "textureAlias": "tile_fumo",
+    "textureName": "fumo"
+  }
+]
