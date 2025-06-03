@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using FlashThunder.Managers;
 
 
-namespace FlashThunder
+namespace FlashThunder.Core
 {
     public class GameContext : IDisposable
     {

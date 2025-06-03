@@ -13,7 +13,7 @@ using FlashThunder.Gameplay.Systems;
 using FlashThunder.Gameplay.Components;
 using FlashThunder.Gameplay.Resources;
 
-namespace FlashThunder
+namespace FlashThunder.Core
 {
     public class CoreGame : Game
     {
@@ -62,7 +62,6 @@ namespace FlashThunder
             _assetManager
                 .LoadDefinitions("texture_manifest.json");
 
-
             _tileManager
                 .LoadDefinitions(_assetManager, "tile_defs.json");
         }
@@ -104,7 +103,7 @@ namespace FlashThunder
         {
 
             //FOR NOW: manually initialize the map
-            var map = new TileMapComponent()
+            var tileMap = new TileMapComponent()
             {
                 Map = [
                     ['#','.','#','#','#'],
@@ -118,8 +117,8 @@ namespace FlashThunder
 
             //set up the ecs world
             var world = new World();
-            world.Set<TileMapComponent>(map);
-            world.Set<EnvironmentResource>(mapSettings);
+            world.Set(tileMap);
+            world.Set(mapSettings);
 
             //set up the connections between higher systems and the ecs architecture
             //input is for all input event transmission

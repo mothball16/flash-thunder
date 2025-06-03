@@ -42,7 +42,9 @@ namespace FlashThunder.Utilities
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"something went wrong while loading definitions!!\n - - - - - -\n {ex}\n - - - - - -\n");
+                Console.WriteLine(
+                    $"something went wrong while loading definitions!!" +
+                    $"\n - - - - - -\n {ex}\n - - - - - -\n");
                 return default;
             }
         }
@@ -50,6 +52,11 @@ namespace FlashThunder.Utilities
         public static string SerObject<T>(T obj)
         {
             return JsonSerializer.Serialize(obj, Options);
+        }
+
+        public static T DeserObject<T>(string data)
+        {
+            return JsonSerializer.Deserialize<T>(data, Options);
         }
 
     }

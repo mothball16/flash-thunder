@@ -10,7 +10,7 @@ using FlashThunder.Gameplay.Events;
 using FlashThunder.Managers;
 using Microsoft.Xna.Framework;
 
-namespace FlashThunder
+namespace FlashThunder.Core
 {
     /// <summary>
     /// Bridges the input manager and the ECS world.

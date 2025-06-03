@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 
 
-namespace FlashThunder
+namespace FlashThunder.Core
 {
     public static class GameConstants
     {

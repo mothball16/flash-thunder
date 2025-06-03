@@ -11,11 +11,11 @@ namespace FlashThunder.Gameplay.Components
     {
         public int X { get; set; }
         public int Y { get; set; }
-        public static GridPosComponent operator + (GridPosComponent cmp, Point add)
+
+        public GridPosComponent(int x, int y)
         {
-            cmp.X += add.X;
-            cmp.Y += add.Y;
-            return cmp;
-        } 
+            X = x;
+            Y = y;
+        }
     }
 }

@@ -1,0 +1,117 @@
+﻿using DefaultEcs;
+using FlashThunder.Defs;
+using FlashThunder.Gameplay.Components;
+using FlashThunder.Utilities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using FlashThunder.Managers;
+using Microsoft.Xna.Framework.Graphics;
+
+namespace FlashThunder.Core
+{
+    /// <summary>
+    /// Spawns entities by entity ID.
+    /// </summary>
+    public class EntityFactory
+    {
+        private readonly World _world;
+        private readonly TexManager _texManager;
+
+        public Dictionary<string, EntityTemplateDef> _templates;
+        
+        public EntityFactory(World world, TexManager textureManager)
+        {
+            _world = world;
+            _texManager = textureManager;
+        }
+
+        public EntityFactory LoadTemplates(string filePath)
+        {
+            var templates = DataLoader.LoadObject<Dictionary<string,EntityTemplateDef>>(filePath);
+            foreach (var template in templates)
+            {
+                if (_templates.ContainsKey(template.Key))
+                {
+                    Console.WriteLine($"[WARNING] Duplicated binding on {template.Key}");
+                }
+                _templates[template.Key] = template.Value;
+            }
+            return this;
+        }
+
+        public EntityFactory Clear()
+        {
+            _templates.Clear();
+            return this;
+        } 
+
+        public Entity CreateEntity(string id)
+        {
+            var entity = _world.CreateEntity();
+            if (!_templates.TryGetValue(id,out EntityTemplateDef template))
+                throw new KeyNotFoundException($"[ERROR] {id} was not found in the entity templates.");
+
+            //Local helper for when we don't need any additional logic.
+            void LoadDefault<T>(string data)
+            {
+                var component = DataLoader.DeserObject<T>(data);
+                entity.Set<T>(component);
+            }
+
+            foreach (var componentRep in template.Components)
+            {
+                var rawData = componentRep.Value.GetRawText();
+                var jsonData = componentRep.Value;
+                switch (componentRep.Key)
+                {
+                    // - - - [ components that get handled by default ] - - -
+                    case nameof(ControlledComponent):
+                        LoadDefault<ControlledComponent>(rawData);
+                        break;
+                    case nameof(GridPosComponent):
+                        LoadDefault<GridPosComponent>(rawData);
+                        break;
+                    case nameof(HealthComponent):
+                        LoadDefault<HealthComponent>(rawData);
+                        break;
+                    case nameof(TileMapComponent):
+                        LoadDefault<TileMapComponent>(rawData);
+                        break;
+
+                    // - - - [ components w/ special handling ] - - -
+                    case nameof(SpriteDataComponent):
+                        Texture2D tex = _texManager
+                            [jsonData.GetProperty("textureAlias").GetString()];
+
+                        var scaleX = jsonData.GetProperty("sizeX").GetInt32();
+                        var scaleY = jsonData.GetProperty("sizeY").GetInt32();
+
+                        var component = new SpriteDataComponent(tex, scaleX, scaleY);
+                        entity.Set(component);
+                        break;
+                        
+                    default: // - - - [ unhandled component (not good), throw exception ] - - -
+                        throw new KeyNotFoundException(
+                            $"[ERROR] Unhandled component {componentRep.Key} in entity template {id}");
+
+                }
+            }
+
+            return entity;
+        }
+
+        public Entity CreateEntityAt(string id, int x, int y)
+        {
+            var entity = CreateEntity(id);
+            entity.Set<GridPosComponent>(new(x,y));
+            return entity;
+        }
+        public Entity CreateEntityAt(string id, Point pos)
+            => CreateEntityAt(id, pos.X, pos.Y);
+    }
+}
