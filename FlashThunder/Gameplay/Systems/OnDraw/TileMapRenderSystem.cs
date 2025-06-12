@@ -12,7 +12,7 @@ using FlashThunder.Gameplay.Components;
 using FlashThunder.Gameplay.Resources;
 using FlashThunder.Defs;
 
-namespace FlashThunder.Gameplay.Systems
+namespace FlashThunder.Gameplay.Systems.OnDraw
 {
     /// <summary>
     /// Renders the tilemap. Done separately because it's handled differently than entity rendering.

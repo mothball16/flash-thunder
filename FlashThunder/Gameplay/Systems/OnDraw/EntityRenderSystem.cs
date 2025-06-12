@@ -9,7 +9,7 @@ using FlashThunder.Gameplay.Components;
 using FlashThunder.Gameplay.Resources;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-namespace FlashThunder.Gameplay.Systems
+namespace FlashThunder.Gameplay.Systems.OnDraw
 {
     internal class EntityRenderSystem : ISystem<SpriteBatch>
     {

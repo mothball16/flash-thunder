@@ -12,7 +12,7 @@ using FlashThunder.Enums;
 using FlashThunder.Gameplay.Events;
 using Microsoft.Xna.Framework.Input;
 using FlashThunder.Gameplay.Resources;
-namespace FlashThunder.Gameplay.Systems
+namespace FlashThunder.Gameplay.Systems.OnUpdate.Bridges
 {
     /// <summary>
     /// Mostly just updates the mouse position since it's less beneficial to use event-based to

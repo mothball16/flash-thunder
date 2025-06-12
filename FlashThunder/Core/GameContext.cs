@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dcrew.MonoGame._2D_Camera;
 using DefaultEcs;
 using DefaultEcs.System;
 using Microsoft.Xna.Framework.Graphics;
@@ -23,17 +24,18 @@ namespace FlashThunder.Core
         private SequentialSystem<float> _updateSystems;
         private SequentialSystem<SpriteBatch> _drawSystems;
         
-        // - - - [ Properties ] - - -
+        // - - - [ Public Properties ] - - -
         public World World { get; init; }
-
+        
         //hold a ref. to assetmanager, but this shouldn't really be changed by GameContext
-        public TexManager AssetManager { get; }
+        public TexManager AssetManager { get; init; }
 
         public GameContext(
             World world, 
             TexManager assetManager,
             InputBridge inputBridge, 
-            SequentialSystem<float> onUpd, SequentialSystem<SpriteBatch> onDraw)
+            SequentialSystem<float> onUpd, 
+            SequentialSystem<SpriteBatch> onDraw)
         {
 
             //set properties
@@ -61,12 +63,12 @@ namespace FlashThunder.Core
         /// </summary>
         public void Dispose()
         {
-            GC.SuppressFinalize(this);
             World.Dispose();
 
             _inputBridge?.Dispose();
             _updateSystems?.Dispose();
             _drawSystems?.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }
