@@ -12,6 +12,7 @@ using FlashThunder.Enums;
 using FlashThunder.Gameplay.Events;
 using Microsoft.Xna.Framework.Input;
 using FlashThunder.Gameplay.Resources;
+using Dcrew.MonoGame._2D_Camera;
 namespace FlashThunder.Gameplay.Systems.OnUpdate.Bridges
 {
     /// <summary>
@@ -21,12 +22,14 @@ namespace FlashThunder.Gameplay.Systems.OnUpdate.Bridges
     internal class MousePollingSystem :ISystem<float>
     {
         private readonly World _world;
-        private readonly InputManager<PlayerAction> _manager;
+        private readonly InputManager<GameAction> _manager;
+        private readonly Camera _camera;
         public bool IsEnabled { get; set; }
-        public MousePollingSystem(World world, InputManager<PlayerAction> manager)
+        public MousePollingSystem(World world, InputManager<GameAction> manager, Camera camera)
         {
             _world = world;
             _manager = manager;
+            _camera = camera;
 
             //safety check -- has our mouse resource been made yet?
             if (!world.Has<MouseResource>())
@@ -41,10 +44,18 @@ namespace FlashThunder.Gameplay.Systems.OnUpdate.Bridges
         {
             ref var mouse = ref _world.Get<MouseResource>();
             var mouseState = _manager.GetMouseState();
+            var mousePos = _manager.GetMousePosition();
+            var mouseDiff = (mousePos - mouse.Position);
+            var mouseDelta = Math.Sqrt(mouseDiff.X * mouseDiff.X + mouseDiff.Y * mouseDiff.Y);
+
             mouse.LPressed = mouseState.LeftButton == ButtonState.Pressed;
             mouse.MPressed = mouseState.MiddleButton == ButtonState.Pressed;
             mouse.RPressed = mouseState.RightButton == ButtonState.Pressed;
-            mouse.Position = _manager.GetMousePosition();
+            mouse.Position = mousePos;
+            mouse.WorldPosition = _camera.ScreenToWorld(mousePos);
+            
+            mouse.Diff = mouseDiff;
+            mouse.Delta = (float) mouseDelta;
         }
 
         public void Dispose() { }

@@ -8,7 +8,7 @@ namespace FlashThunder.Defs
 {
     public static class EntityID
     {
-        public const string TestEntity = "TestEntity";
+        public const string TestEntity = "testEntity";
         
     }
 }

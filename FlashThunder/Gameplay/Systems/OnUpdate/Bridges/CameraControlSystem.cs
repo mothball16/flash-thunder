@@ -16,7 +16,9 @@ using Dcrew.MonoGame._2D_Camera;
 namespace FlashThunder.Gameplay.Systems.OnUpdate.Bridges
 {
     /// <summary>
-    /// Updates the current camera.
+    /// Updates the physical camera based off of the data from the camera resource.
+    /// This should run at the END of the update cycle to make sure every change has been applied
+    /// on that frame.
     /// </summary>
     internal class CameraControlSystem : ISystem<float>
     {
@@ -29,9 +31,13 @@ namespace FlashThunder.Gameplay.Systems.OnUpdate.Bridges
         {
             _world = world;
             _camera = camera;
+
+            //safety check -- has our cam resource been made yet?
+            if (!world.Has<CameraResource>())
+                world.Set(new CameraResource());
         }
 
-        private float NumLerp(float a, float b, float t)
+        private static float NumLerp(float a, float b, float t)
         {
             return a + (b - a) * t;
         }
@@ -49,10 +55,9 @@ namespace FlashThunder.Gameplay.Systems.OnUpdate.Bridges
 
             //reset offset (it is to be assigned frame-by-frame)
             camInfo.Offset = new Vector2(0,0);
-
-            Console.WriteLine(camInfo.Target);
+            
             //expose camera matrix for render system to act upon
-            camInfo.TransformMatrix = _camera.View();
+            camInfo.TransformMatrix = _camera.View(-0);
         }
         
         public void Dispose()

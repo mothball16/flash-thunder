@@ -1,9 +1,11 @@
 {
   "testEntity": {
-    "spriteDataComponent": {
-      "textureAlias": "tile_fumo",
-      "sizeX": 1,
-      "sizeY": 1
+    "components": {
+      "spriteDataComponent": {
+        "textureAlias": "tile_white",
+        "sizeX": 1,
+        "sizeY": 1
+      }
     }
   }
 }

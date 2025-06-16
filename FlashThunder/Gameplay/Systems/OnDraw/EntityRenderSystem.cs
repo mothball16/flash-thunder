@@ -38,7 +38,7 @@ namespace FlashThunder.Gameplay.Systems.OnDraw
             {
                 var spData = e.Get<SpriteDataComponent>();
                 var pos = e.Get<GridPosComponent>();
-                
+                Console.WriteLine("yuh yuh yuh");
                 sb.Draw(
                     texture: spData.Texture,
                     destinationRectangle: new(

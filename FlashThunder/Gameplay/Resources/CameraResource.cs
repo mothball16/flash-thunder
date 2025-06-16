@@ -18,6 +18,19 @@ namespace FlashThunder.Gameplay.Resources
         public Vector2 Offset { get; set; }
         public Entity? Subject { get; set; }
         public float TweenFactor { get; set; }
+        public float Scale { get; set; }
         public Matrix TransformMatrix { get; set; }
+
+
+        public CameraResource()
+        {
+            Target = new(0, 0);
+            Offset = new(0, 0);
+            Subject = null;
+            TweenFactor = 0.5f;
+            Scale = 1;
+            TransformMatrix = Matrix.Identity;
+        }
+
     }
 }

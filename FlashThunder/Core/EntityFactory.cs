@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using FlashThunder.Managers;
 using Microsoft.Xna.Framework.Graphics;
+using FlashThunder.Extensions;
 
 namespace FlashThunder.Core
 {
@@ -28,6 +29,7 @@ namespace FlashThunder.Core
         {
             _world = world;
             _texManager = textureManager;
+            _templates = [];
         }
 
         public EntityFactory LoadTemplates(string filePath)
@@ -67,7 +69,9 @@ namespace FlashThunder.Core
             {
                 var rawData = componentRep.Value.GetRawText();
                 var jsonData = componentRep.Value;
-                switch (componentRep.Key)
+                
+
+                switch (componentRep.Key.FirstCharToUpper())
                 {
                     // - - - [ components that get handled by default ] - - -
                     case nameof(ControlledComponent):
@@ -105,13 +109,14 @@ namespace FlashThunder.Core
             return entity;
         }
 
-        public Entity CreateEntityAt(string id, int x, int y)
+        public Entity CreateEntity(string id, Point pos)
+            => CreateEntity(id, pos.X, pos.Y);
+
+        public Entity CreateEntity(string id, int x, int y)
         {
             var entity = CreateEntity(id);
             entity.Set<GridPosComponent>(new(x,y));
             return entity;
         }
-        public Entity CreateEntityAt(string id, Point pos)
-            => CreateEntityAt(id, pos.X, pos.Y);
     }
 }

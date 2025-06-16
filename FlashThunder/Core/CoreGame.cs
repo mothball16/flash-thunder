@@ -27,11 +27,11 @@ namespace FlashThunder.Core
         private GameState _gameState;
         //TODO: This should just be a menuAction input manager.
         //The game input manager should only exist within the game runtime
-        private InputManager<PlayerAction> _inputManager;
+        private InputManager<GameAction> _gameInputManager;
 
         //TODO: Same for this. We should still ahve an assetmanager for the menu tho.
         //Actually think about this abit because we don't want to reload textures all the time
-        private TexManager _assetManager;
+        private TexManager _texManager;
         private TileManager _tileManager;
 
         public CoreGame()
@@ -45,12 +45,15 @@ namespace FlashThunder.Core
         {
             // - - - [ Initialize higher systems ] - - -
             
-            _inputManager = new InputManager<PlayerAction>()
-                .BindAction(Keys.W, PlayerAction.Jump)
-                .BindAction(Keys.S, PlayerAction.Crouch)
-                .BindAction(Keys.D, PlayerAction.MoveRight)
-                .BindAction(Keys.A, PlayerAction.MoveLeft);
-            _assetManager = new TexManager(Content, "clearTile");
+            _gameInputManager = new InputManager<GameAction>()
+                .BindAction(Keys.W, GameAction.MoveUp)
+                .BindAction(Keys.S, GameAction.MoveDown)
+                .BindAction(Keys.D, GameAction.MoveRight)
+                .BindAction(Keys.A, GameAction.MoveLeft)
+                .BindAction(Keys.LeftShift, GameAction.SpeedUpCamera)
+                .BindAction(Keys.O, GameAction.SpawnTest);
+
+            _texManager = new TexManager(Content, "clearTile");
             _tileManager = new TileManager();
 
             _context = InitGameContext();
@@ -65,17 +68,17 @@ namespace FlashThunder.Core
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             //set default (for now)
 
-            _assetManager
+            _texManager
                 .LoadDefinitions("texture_manifest.json");
 
             _tileManager
-                .LoadDefinitions(_assetManager, "tile_defs.json");
+                .LoadDefinitions(_texManager, "tile_defs.json");
         }
 
         protected override void Update(GameTime gameTime)
         {
             // - - - [ Higher system updates ] - - -
-            _inputManager.Update();
+            _gameInputManager.Update();
             float deltaTime = (float) gameTime.ElapsedGameTime.TotalSeconds;
 
             // - - - [ ECS updates ] - - -
@@ -106,12 +109,21 @@ namespace FlashThunder.Core
 
         #region - - - [ Helpers ] - - - 
         /// <summary>
-        /// Helper method for creating the game context.
-        /// EVentually to be moved to a GameStateManager
+        /// Giant method for now to handle game initialization while we're still developing the
+        /// architecture. Eventually to be moved to a separate manager.
         /// </summary>
         /// <returns>The initialized GameContext.</returns>
         private GameContext InitGameContext()
         {
+            //set up the camera
+            var camera = new Camera();
+
+            //set up the ecs world
+            var world = new World();
+
+            //set up the entity factory
+            var factory = new EntityFactory(world, _texManager)
+                .LoadTemplates("entity_templates.json");
 
             //FOR NOW: manually initialize the map
             var tileMap = new TileMapComponent()
@@ -126,60 +138,56 @@ namespace FlashThunder.Core
                 TileSize = 64
             };
 
-            var camResource = new CameraResource()
-            {
-                Target = new Vector2(0,0),
-                Offset = new Vector2(0,0),
-                TweenFactor = 0.5f,
-            };
-            
-            //set up the camera
-            var camera = new Camera();
-
-
-            //set up the ecs world
-            var world = new World();
             world.Set(tileMap);
             world.Set(mapSettings);
-            world.Set(camResource);
+
             //set up the connections between higher systems and the ecs architecture
             //input is for all input event transmission
             //mouse is for frame-by-frame updates of specifically the mouse
-            var inputBridge = new InputBridge(world, _inputManager);
-            var mousePollingSystem = new MousePollingSystem(world, _inputManager);
-            var cameraControlSystem = new CameraControlSystem(world, camera);
+            var inputBridge =               new InputBridge(world, _gameInputManager);
+            var mousePollingSystem =        new MousePollingSystem(world, _gameInputManager, camera);
+            var cameraControlSystem =       new CameraControlSystem(world, camera);
+            var actionUpdateSystem =        new ActionPollingSystem(world);
 
             //initialize the systems (update)
-            var entityCountingSystem = new DebugSystem(world);
-            var commandSystem = new CommandSystem(world);
-            var playerCameraInputSystem = new PlayerCameraInputSystem(world);
+            var entityCountingSystem =      new DebugSystem(world);
+            var playerCommandSystem =       new PlayerCommandSystem(world);
+            var playerCameraInputSystem =   new PlayerCameraInputSystem(world);
+            var playerDebuggingInputSystem =new PlayerDebuggingInputSystem(world);
 
-            var _updateSystems = new SequentialSystem<float>([
-                mousePollingSystem,
-                entityCountingSystem,
+            var spawnerSystem =             new SpawnProcessingSystem(world, factory);
 
-                commandSystem,
-                playerCameraInputSystem,
+            var _updateSystems =            new SequentialSystem<float>([
+                actionUpdateSystem, //Updates active actions
+                mousePollingSystem, //Updates mouse resource
+                entityCountingSystem, //(DEBUGGING) Testing entity count
 
-                cameraControlSystem
+                playerCommandSystem, //Processes any player game commands on this frame
+                playerCameraInputSystem, //Processes any camera-specific commands on this frame
+                playerDebuggingInputSystem, // (DEBUGGING) Testing input response
+
+                spawnerSystem, //Handles any RequestSpawns
+                cameraControlSystem //Updates the physical camera in preparation for render
                 ]);
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             //initialize the systems (draw)
-            var sbInitSystem = new SpriteBatchInitSystem(world);
-            var entityRenderSystem = new EntityRenderSystem(world); 
-            var tileMapRenderSystem = new TileMapRenderSystem(world, _tileManager);
+            var sbInitSystem =              new SpriteBatchInitSystem(world);
+            var tileMapRenderSystem =   new TileMapRenderSystem(world, _tileManager);
+            var entityRenderSystem =        new EntityRenderSystem(world); 
 
-            var _drawSystems = new SequentialSystem<SpriteBatch>([
-                sbInitSystem,
-                entityRenderSystem,
-                tileMapRenderSystem,
+            var _drawSystems =              new SequentialSystem<SpriteBatch>([
+                sbInitSystem, //Using our current environment, begin SB based off it
+                tileMapRenderSystem, // Tilemap to be rendered at the bottom
+                entityRenderSystem, // Entities to be rendered on top of tilemap
+
+
                 ]);
 
             //send back the initialized GameContext
             return new GameContext(
-                assetManager: _assetManager,
+                assetManager: _texManager,
                 world: world,
                 inputBridge: inputBridge,
                 onUpd: _updateSystems,

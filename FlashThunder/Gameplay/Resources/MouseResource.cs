@@ -12,7 +12,10 @@ namespace FlashThunder.Gameplay.Resources
     /// </summary>
     public struct MouseResource
     {
+        public Point Diff { get; set; }
+        public float Delta { get; set; }
         public Point Position { get; set; }
+        public Point WorldPosition { get; set; }
         public bool LPressed { get; set; }
         public bool MPressed { get; set; }
         public bool RPressed { get; set; }
@@ -20,6 +23,9 @@ namespace FlashThunder.Gameplay.Resources
             => Position.X;
         public readonly int Y 
             => Position.Y;
-
+        public readonly int WorldX
+            => WorldPosition.X;
+        public readonly int WorldY
+            =>  WorldPosition.Y;
     }
 }

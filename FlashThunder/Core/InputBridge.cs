@@ -19,9 +19,9 @@ namespace FlashThunder.Core
     public class InputBridge : IDisposable
     {
         private readonly World _world;
-        private readonly InputManager<PlayerAction> _manager;
+        private readonly InputManager<GameAction> _manager;
 
-        public InputBridge(World world, InputManager<PlayerAction> manager)
+        public InputBridge(World world, InputManager<GameAction> manager)
         {
             _world = world;
             _manager = manager;
@@ -30,12 +30,12 @@ namespace FlashThunder.Core
             manager.OnActivated += OnActionActivated;
         }
 
-        public void OnActionActivated(PlayerAction action)
+        public void OnActionActivated(GameAction action)
         {
             _world.Publish<ActionActivatedEvent>(new(action));
         }
 
-        public void OnActionReleased(PlayerAction action)
+        public void OnActionReleased(GameAction action)
         {
             _world.Publish<ActionReleasedEvent>(new(action));
         }

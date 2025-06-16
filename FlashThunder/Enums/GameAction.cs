@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace FlashThunder.Enums
 {
-    public enum PlayerAction
+    public enum GameAction
     {
         MoveLeft,
         MoveRight,
-        Jump,
-        Crouch,
-        Interact,
-        Attack
+        MoveUp,
+        MoveDown,
+        SpeedUpCamera,
+        SpawnTest,
+        
     }
 }

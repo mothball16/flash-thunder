@@ -9,8 +9,8 @@ namespace FlashThunder.Gameplay.Events
 {
     public struct ActionReleasedEvent
     {
-        public PlayerAction action;
+        public GameAction action;
 
-        public ActionReleasedEvent(PlayerAction action) { this.action = action; }
+        public ActionReleasedEvent(GameAction action) { this.action = action; }
     }
 }

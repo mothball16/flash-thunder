@@ -13,14 +13,14 @@ namespace FlashThunder.Gameplay.Systems.OnUpdate.Input
     /// <summary>
     /// Modifies the intents of all controlled units.
     /// </summary>
-    internal class CommandSystem : ISystem<float>
+    internal class PlayerCommandSystem : ISystem<float>
     {
         private readonly World _world;
         private readonly EntitySet _entitySet;
 
         public bool IsEnabled { get; set; }
 
-        public CommandSystem(World world)
+        public PlayerCommandSystem(World world)
         {
             _world = world;
             _entitySet = world.GetEntities()

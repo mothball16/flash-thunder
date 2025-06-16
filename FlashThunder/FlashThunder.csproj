@@ -38,6 +38,9 @@
   <ItemGroup>
     <Folder Include="Gameplay\Systems\Misc\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Gameplay\Systems\OnUpdate\Reactive\SpawnProcessingSystem.cs" />
+  </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
     <Message Text="Restoring dotnet tools" Importance="High" />
     <Exec Command="dotnet tool restore" />
