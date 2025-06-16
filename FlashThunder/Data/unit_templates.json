@@ -1,0 +1,35 @@
+{
+  "infantry_scout": {
+    "components": {
+      "spriteData": {
+        "textureAlias": "unit_infantry_scout",
+        "sizeX": 1,
+        "sizeY": 1
+      },
+      "health": {
+        "maxHealth": 100
+      },
+      "armor": {
+        "hard": 0,
+        "soft": 0
+      },
+      "range": {
+        "value": 1
+      },
+      "vision": {
+        "value": 2
+      },
+      "move": {
+        "range": 2,
+        "traverse": ["land","water","air"]
+      },
+      "attacks": [
+        {
+          "type": "unit_pistol_shoot",
+          "cooldown": 1
+        }
+      ]
+      
+    }
+  }
+}

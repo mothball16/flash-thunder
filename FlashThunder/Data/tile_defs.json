@@ -3,20 +3,14 @@
 {
   ",": {
     "textureName": "tile_white",
-    "byLand": true,
-    "byAir": true,
-    "bySea": false
+    "traverse": ["land", "air"]
   },
   "#": {
     "textureName": "tile_asteroid",
-    "byLand": true,
-    "byAir": true,
-    "bySea": false
+    "traverse": [ "land", "air" ]
   },
   ".": {
     "textureName": "tile_fumo",
-    "byLand": true,
-    "byAir": true,
-    "bySea": false
+    "traverse": [ "land", "air" ]
   }
 }

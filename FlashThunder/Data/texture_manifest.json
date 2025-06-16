@@ -14,5 +14,9 @@
   {
     "textureAlias": "tile_fumo",
     "textureName": "fumo"
+  },
+  {
+    "textureAlias": "unit_infantry_scout",
+    "textureName": "infantryScout"
   }
 ]

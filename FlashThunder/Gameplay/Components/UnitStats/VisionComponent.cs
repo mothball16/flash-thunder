@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace FlashThunder.Gameplay.Components
 {
-    public struct HealthComponent 
+    public struct VisionComponent 
     {
-        public int Health { get; set; }
-        public int MaxHealth { get; set; }
+        public int Value { get; set; }
         
     }
 }

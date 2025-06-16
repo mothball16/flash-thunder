@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework;
 using FlashThunder.Managers;
 using Microsoft.Xna.Framework.Graphics;
 using FlashThunder.Extensions;
+using FlashThunder.Gameplay.Components.UnitStats;
 
 namespace FlashThunder.Core
 {
@@ -32,6 +33,8 @@ namespace FlashThunder.Core
             _templates = [];
         }
 
+        private string ToComponentKey(string raw)
+            => string.Concat(raw.FirstCharToUpper(), "Component");
         public EntityFactory LoadTemplates(string filePath)
         {
             var templates = DataLoader.LoadObject<Dictionary<string,EntityTemplateDef>>(filePath);
@@ -69,25 +72,28 @@ namespace FlashThunder.Core
             {
                 var rawData = componentRep.Value.GetRawText();
                 var jsonData = componentRep.Value;
-                
+                var componentName = ToComponentKey(componentRep.Key);
 
-                switch (componentRep.Key.FirstCharToUpper())
+                switch(componentName)
                 {
                     // - - - [ components that get handled by default ] - - -
-                    case nameof(ControlledComponent):
-                        LoadDefault<ControlledComponent>(rawData);
-                        break;
-                    case nameof(GridPosComponent):
-                        LoadDefault<GridPosComponent>(rawData);
-                        break;
-                    case nameof(HealthComponent):
-                        LoadDefault<HealthComponent>(rawData);
-                        break;
-                    case nameof(TileMapComponent):
-                        LoadDefault<TileMapComponent>(rawData);
-                        break;
+                    case nameof(VisionComponent): LoadDefault<VisionComponent>(rawData); break;
+                    case nameof(ControlledComponent): LoadDefault<ControlledComponent>(rawData); break;
+                    case nameof(GridPosComponent): LoadDefault<GridPosComponent>(rawData); break;
+                    case nameof(ArmorComponent): LoadDefault<ArmorComponent>(rawData); break;
+                    case nameof(TileMapComponent): LoadDefault<TileMapComponent>(rawData); break;
+                    case nameof(MoveComponent): LoadDefault<MoveComponent>(rawData); break;
 
                     // - - - [ components w/ special handling ] - - -
+                    case nameof(HealthComponent):
+                        var max = jsonData.GetProperty("maxHealth").GetInt32();
+                        var healthExists = jsonData.TryGetProperty("health", out var health);
+                        var healthComponent = new HealthComponent()
+                        {
+                            MaxHealth = max,
+                            Health = healthExists ? health.GetInt32() : max
+                        };
+                        break;
                     case nameof(SpriteDataComponent):
                         Texture2D tex = _texManager
                             [jsonData.GetProperty("textureAlias").GetString()];
@@ -100,8 +106,9 @@ namespace FlashThunder.Core
                         break;
                         
                     default: // - - - [ unhandled component (not good), throw exception ] - - -
-                        throw new KeyNotFoundException(
-                            $"[ERROR] Unhandled component {componentRep.Key} in entity template {id}");
+                        Console.WriteLine(
+                            $"[ERROR] Unhandled component {componentName} in entity template {id}");
+                        break;
 
                 }
             }

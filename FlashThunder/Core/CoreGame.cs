@@ -123,7 +123,8 @@ namespace FlashThunder.Core
 
             //set up the entity factory
             var factory = new EntityFactory(world, _texManager)
-                .LoadTemplates("entity_templates.json");
+                .LoadTemplates("entity_templates.json")
+                .LoadTemplates("unit_templates.json");
 
             //FOR NOW: manually initialize the map
             var tileMap = new TileMapComponent()
@@ -174,7 +175,7 @@ namespace FlashThunder.Core
 
             //initialize the systems (draw)
             var sbInitSystem =              new SpriteBatchInitSystem(world);
-            var tileMapRenderSystem =   new TileMapRenderSystem(world, _tileManager);
+            var tileMapRenderSystem =       new TileMapRenderSystem(world, _tileManager);
             var entityRenderSystem =        new EntityRenderSystem(world); 
 
             var _drawSystems =              new SequentialSystem<SpriteBatch>([

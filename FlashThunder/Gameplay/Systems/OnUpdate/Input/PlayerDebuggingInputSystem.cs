@@ -35,7 +35,7 @@ namespace FlashThunder.Gameplay.Systems.OnUpdate.Input
             if (msg.action == GameAction.SpawnTest)
             {
                 var mouseTile = _world.TileOfMouse();
-                _world.RequestSpawn(EntityID.TestEntity, mouseTile.X, mouseTile.Y);
+                _world.RequestSpawn(EntityID.InfantryScout, mouseTile.X, mouseTile.Y);
             }
         }
 

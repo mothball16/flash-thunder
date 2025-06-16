@@ -1,7 +1,7 @@
 {
   "testEntity": {
     "components": {
-      "spriteDataComponent": {
+      "spriteData": {
         "textureAlias": "tile_white",
         "sizeX": 1,
         "sizeY": 1
