@@ -11,6 +11,5 @@ namespace FlashThunder.Gameplay.Components.UnitStats
     {
         public int Health { get; set; }
         public int MaxHealth { get; set; }
-
     }
 }

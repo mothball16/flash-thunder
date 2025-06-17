@@ -9,6 +9,7 @@ using FlashThunder.Gameplay.Components;
 using FlashThunder.Gameplay.Resources;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
 namespace FlashThunder.Gameplay.Systems.OnDraw
 {
     /// <summary>
@@ -17,16 +18,12 @@ namespace FlashThunder.Gameplay.Systems.OnDraw
     internal sealed class SpriteBatchInitSystem : ISystem<SpriteBatch>
     {
         // - - - [ Private Fields ] - - -
-        private readonly World _world;
+        readonly World _world;
 
         // - - - [ Properties ] - - -
         public bool IsEnabled { get; set; }
 
-        public SpriteBatchInitSystem(World world)
-        {
-            _world = world;
-        }
-
+        public SpriteBatchInitSystem(World world) => _world = world;
 
         public void Update(SpriteBatch sb)
         {
@@ -36,6 +33,7 @@ namespace FlashThunder.Gameplay.Systems.OnDraw
                  null, null, null,
                  transformMatrix: _world.Get<CameraResource>().TransformMatrix);
         }
+
         public void Dispose() { }
     }
 }

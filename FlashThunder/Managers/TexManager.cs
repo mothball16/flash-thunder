@@ -13,14 +13,15 @@ namespace FlashThunder.Managers
     /// </summary>
     public class TexManager
     {
-        private const string DefaultName = "!default";
-        private readonly Dictionary<string, Texture2D> _cache;
-        private readonly ContentManager _contentManager;
+        const string DefaultName = "!default";
+        readonly Dictionary<string, Texture2D> _cache;
+        readonly ContentManager _contentManager;
 
         public TexManager(ContentManager cm, string defaultTex = null)
         {
             _cache = [];
             _contentManager = cm;
+
             if (defaultTex != null)
                 RegisterDefault(defaultTex);
         }
@@ -31,7 +32,7 @@ namespace FlashThunder.Managers
             set { Set(name, value); }
         }
 
-        private bool TryLoad(string name, out Texture2D tex)
+        bool TryLoad(string name, out Texture2D tex)
         {
             try
             {
@@ -41,8 +42,10 @@ namespace FlashThunder.Managers
             catch (Exception ex)
             {
                 tex = null;
+
                 Console.WriteLine($"[WARNING] Failed to load texture {name}. " +
                     $"\nDetails: {ex.Message}");
+
                 return false;
             }
         }
@@ -116,6 +119,7 @@ namespace FlashThunder.Managers
                 // set the tex to default (we know that it does exist now)
                 tex = defaultTile;
             }
+
             return tex;
         }
 
@@ -125,22 +129,26 @@ namespace FlashThunder.Managers
         public TexManager Clear(bool clearDefault = false)
         {
             Texture2D temp = null;
+
             if (!clearDefault && _cache.TryGetValue(DefaultName, out Texture2D val))
             {
                 temp = val;
             }
+
             _cache.Clear();
 
             if (temp != null)
             {
                 _cache[DefaultName] = temp;
             }
+
             return this;
         }
 
         public TexManager LoadDefinitions(string path)
         {
-            List<TextureDef> defs = DataLoader.LoadObject<List<TextureDef>>(path);
+            var defs = DataLoader.LoadObject<List<TextureDef>>(path);
+
             foreach (var def in defs)
             {
                 Register(
@@ -148,6 +156,7 @@ namespace FlashThunder.Managers
                     def.TextureName
                     );
             }
+
             return this;
         }
     }

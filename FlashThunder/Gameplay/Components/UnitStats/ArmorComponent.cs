@@ -25,6 +25,5 @@ namespace FlashThunder.Gameplay.Components.UnitStats
         /// (20 * (1 - soft/100))
         /// </summary>
         public int Soft { get; set; }
-
     }
 }

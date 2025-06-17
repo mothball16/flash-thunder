@@ -10,6 +10,5 @@ namespace FlashThunder.Defs
     {
         public const string TestEntity = "testEntity";
         public const string InfantryScout = "infantry_scout";
-
     }
 }

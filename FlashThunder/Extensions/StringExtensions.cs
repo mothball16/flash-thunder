@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using DefaultEcs;
 using FlashThunder.Gameplay.Components;
 using FlashThunder.Gameplay.Resources;
+
 namespace FlashThunder.Extensions
 {
     /// <summary>

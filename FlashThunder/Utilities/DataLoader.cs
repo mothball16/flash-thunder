@@ -36,8 +36,8 @@ namespace FlashThunder.Utilities
         {
             try
             {
-                using StreamReader reader = new(Prefix + filePath);
-                string jsonFile = reader.ReadToEnd();
+                using var reader = new StreamReader(Prefix + filePath);
+                var jsonFile = reader.ReadToEnd();
                 return JsonSerializer.Deserialize<T>(jsonFile, Options);
             }
             catch (Exception ex)
@@ -45,19 +45,13 @@ namespace FlashThunder.Utilities
                 Console.WriteLine(
                     $"something went wrong while loading definitions!!" +
                     $"\n - - - - - -\n {ex}\n - - - - - -\n");
+
                 return default;
             }
         }
 
-        public static string SerObject<T>(T obj)
-        {
-            return JsonSerializer.Serialize(obj, Options);
-        }
+        public static string SerObject<T>(T obj) => JsonSerializer.Serialize(obj, Options);
 
-        public static T DeserObject<T>(string data)
-        {
-            return JsonSerializer.Deserialize<T>(data, Options);
-        }
-
+        public static T DeserObject<T>(string data) => JsonSerializer.Deserialize<T>(data, Options);
     }
 }

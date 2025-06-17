@@ -1,5 +1,4 @@
 ﻿namespace FlashThunder.Gameplay.Systems.OnUpdate.Reactive;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,16 +14,15 @@ using FlashThunder.Gameplay.Resources;
 
 internal sealed class SpawnProcessingSystem : ISystem<float>
 {
-    private readonly EntitySet _entitySet;
-    private readonly EntityFactory _entityFactory;
+    readonly EntitySet _entitySet;
+    readonly EntityFactory _entityFactory;
 
     public bool IsEnabled { get; set; }
-
-
 
     public SpawnProcessingSystem(World world, EntityFactory factory)
     {
         _entityFactory = factory;
+
         _entitySet = world.GetEntities()
             .With<SpawnRequestComponent>()
             .AsSet();
@@ -41,15 +39,11 @@ internal sealed class SpawnProcessingSystem : ISystem<float>
             {
                 Console.WriteLine(
                     $"{requestInfo.EntityID} was requested @ {requestInfo.X}, {requestInfo.Y}");
-
             }
 
             request.Dispose();
         }
+    }
 
-    }
-    public void Dispose()
-    {
-        GC.SuppressFinalize(this);
-    }
+    public void Dispose() => GC.SuppressFinalize(this);
 }

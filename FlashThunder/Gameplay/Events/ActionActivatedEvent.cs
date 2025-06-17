@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace FlashThunder.Gameplay.Events
 {
-    public struct ActionActivatedEvent
+    public readonly struct ActionActivatedEvent
     {
-        public GameAction Action { get; set; }
-        public ActionActivatedEvent(GameAction action) { Action = action; }
+        public readonly GameAction Action;
+        public ActionActivatedEvent(GameAction action) => Action = action;
     }
 }

@@ -10,19 +10,17 @@ using DefaultEcs.System;
 using Microsoft.Xna.Framework.Graphics;
 using FlashThunder.Managers;
 
-
 namespace FlashThunder.Core
 {
     public sealed class GameContext : IDisposable
     {
         // - - - [ Private Fields ] - - -
 
-
         // inputbridge only needs to be disposed of with GameContext. nothing should rly be
         // interacting with it outside of Dispose
-        private readonly InputBridge _inputBridge;
-        private readonly SequentialSystem<float> _updateSystems;
-        private readonly SequentialSystem<SpriteBatch> _drawSystems;
+        readonly InputBridge _inputBridge;
+        readonly SequentialSystem<float> _updateSystems;
+        readonly SequentialSystem<SpriteBatch> _drawSystems;
 
         // - - - [ Public Properties ] - - -
         public World World { get; init; }
@@ -37,7 +35,6 @@ namespace FlashThunder.Core
             SequentialSystem<float> onUpd,
             SequentialSystem<SpriteBatch> onDraw)
         {
-
             // set properties
             World = world;
             AssetManager = assetManager;
@@ -48,15 +45,9 @@ namespace FlashThunder.Core
             _drawSystems = onDraw;
         }
 
-        public void Update(float dt)
-        {
-            _updateSystems.Update(dt);
-        }
+        public void Update(float dt) => _updateSystems.Update(dt);
 
-        public void Draw(SpriteBatch sb)
-        {
-            _drawSystems.Update(sb);
-        }
+        public void Draw(SpriteBatch sb) => _drawSystems.Update(sb);
 
         /// <summary>
         /// Nukes the GameContext. Should properly cleanup any game-runtime specific systems/objects.
@@ -70,7 +61,5 @@ namespace FlashThunder.Core
             _drawSystems?.Dispose();
             GC.SuppressFinalize(this);
         }
-
-
     }
 }

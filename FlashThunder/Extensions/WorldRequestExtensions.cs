@@ -8,14 +8,15 @@ using Microsoft.Xna.Framework;
 using DefaultEcs;
 using FlashThunder.Gameplay.Components;
 using FlashThunder.Gameplay.Resources;
+
 namespace FlashThunder.Extensions
 {
     public static class WorldRequestExtensions
     {
-
         public static void RequestSpawn(this World world, string enemyID, int x, int y)
         {
             var request = world.CreateEntity();
+
             request.Set(new SpawnRequestComponent
             {
                 EntityID = enemyID,

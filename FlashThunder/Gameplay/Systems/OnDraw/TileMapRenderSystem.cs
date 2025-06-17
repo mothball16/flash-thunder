@@ -19,9 +19,9 @@ namespace FlashThunder.Gameplay.Systems.OnDraw
     /// </summary>
     internal sealed class TileMapRenderSystem : ISystem<SpriteBatch>
     {
-        private readonly TileMapComponent _map;
-        private readonly TileManager _tiles;
-        private readonly int _tileSize;
+        readonly TileMapComponent _map;
+        readonly TileManager _tiles;
+        readonly int _tileSize;
         public bool IsEnabled { get; set; }
 
         public TileMapRenderSystem(World world, TileManager tiles)
@@ -33,13 +33,15 @@ namespace FlashThunder.Gameplay.Systems.OnDraw
 
         public void Update(SpriteBatch sb)
         {
-            char[][] tileMap = _map.Map;
+            var tileMap = _map.Map;
+
             for (int row = 0; row < tileMap.Length; row++)
             {
                 for (int col = 0; col < tileMap[row].Length; col++)
                 {
-                    char rep = tileMap[row][col];
-                    TileDef tile = _tiles[rep];
+                    var rep = tileMap[row][col];
+                    var tile = _tiles[rep];
+
                     var tileBounds = new Rectangle
                         (col * _tileSize, row * _tileSize, _tileSize, _tileSize);
 

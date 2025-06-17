@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FlashThunder.Enums;
+
 namespace FlashThunder.Gameplay.Components
 {
-
     public struct MoveIntentComponent
     {
         public Direction Dir { get; set; }

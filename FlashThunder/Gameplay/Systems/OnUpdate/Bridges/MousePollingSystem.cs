@@ -13,6 +13,7 @@ using FlashThunder.Gameplay.Events;
 using Microsoft.Xna.Framework.Input;
 using FlashThunder.Gameplay.Resources;
 using Dcrew.MonoGame._2D_Camera;
+
 namespace FlashThunder.Gameplay.Systems.OnUpdate.Bridges
 {
     /// <summary>
@@ -21,9 +22,9 @@ namespace FlashThunder.Gameplay.Systems.OnUpdate.Bridges
     /// </summary>
     internal sealed class MousePollingSystem : ISystem<float>
     {
-        private readonly World _world;
-        private readonly InputManager<GameAction> _manager;
-        private readonly Camera _camera;
+        readonly World _world;
+        readonly InputManager<GameAction> _manager;
+        readonly Camera _camera;
         public bool IsEnabled { get; set; }
         public MousePollingSystem(World world, InputManager<GameAction> manager, Camera camera)
         {
@@ -59,6 +60,5 @@ namespace FlashThunder.Gameplay.Systems.OnUpdate.Bridges
         }
 
         public void Dispose() { }
-
     }
 }

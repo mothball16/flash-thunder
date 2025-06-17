@@ -17,25 +17,25 @@ using FlashThunder.Gameplay.Systems.OnUpdate.Debugging;
 using FlashThunder.Gameplay.Systems.OnUpdate.Input;
 using FlashThunder.Gameplay.Systems.OnDraw;
 using FlashThunder.Gameplay.Systems.OnUpdate.Reactive;
+using System;
 
 namespace FlashThunder.Core
 {
     public class CoreGame : Game
     {
-
-        private readonly GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
-        private GameContext _context;
-        private GameState _gameState;
+        readonly GraphicsDeviceManager _graphics;
+        SpriteBatch _spriteBatch;
+        GameContext _context;
+        GameState _gameState;
 
         // TODO: This should just be a menuAction input manager.
         // The game input manager should only exist within the game runtime
-        private InputManager<GameAction> _gameInputManager;
+        InputManager<GameAction> _gameInputManager;
 
         // TODO: Same for this. We should still ahve an assetmanager for the menu tho.
         // Actually think about this abit because we don't want to reload textures all the time
-        private TexManager _texManager;
-        private TileManager _tileManager;
+        TexManager _texManager;
+        TileManager _tileManager;
 
         public CoreGame()
         {
@@ -82,7 +82,7 @@ namespace FlashThunder.Core
         {
             // - - - [ Higher system updates ] - - -
             _gameInputManager.Update();
-            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            var deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // - - - [ ECS updates ] - - -
             _context.Update(deltaTime);
@@ -93,6 +93,7 @@ namespace FlashThunder.Core
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
 
             switch (_gameState)
             {
@@ -116,7 +117,7 @@ namespace FlashThunder.Core
         /// architecture. Eventually to be moved to a separate manager.
         /// </summary>
         /// <returns>The initialized GameContext.</returns>
-        private GameContext InitGameContext()
+        GameContext InitGameContext()
         {
             // set up the camera
             var camera = new Camera();
@@ -137,6 +138,7 @@ namespace FlashThunder.Core
                     ['.', '#', '.', '#', '#']
                 ],
             };
+
             var mapSettings = new EnvironmentResource()
             {
                 TileSize = 64,
@@ -195,7 +197,6 @@ namespace FlashThunder.Core
                 onUpd: _updateSystems,
                 onDraw: _drawSystems
                 );
-
         }
 
         #endregion

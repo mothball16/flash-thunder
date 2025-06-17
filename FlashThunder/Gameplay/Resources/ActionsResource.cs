@@ -15,10 +15,6 @@ namespace FlashThunder.Gameplay.Resources
     {
         public HashSet<GameAction> Active { get; set; }
 
-        public ActionsResource()
-        {
-            Active = [];
-        }
-
+        public ActionsResource() => Active = [];
     }
 }

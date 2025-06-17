@@ -13,13 +13,10 @@ namespace FlashThunder.Managers
     /// </summary>
     public class TileManager
     {
-        private const char DefaultName = ',';
-        private Dictionary<char, TileDef> _cache;
+        const char DefaultName = ',';
+        Dictionary<char, TileDef> _cache;
 
-        public TileManager()
-        {
-            _cache = [];
-        }
+        public TileManager() => _cache = [];
 
         /// <summary>
         /// Indexer to get tile definition with shorter syntax.
@@ -57,6 +54,7 @@ namespace FlashThunder.Managers
                 // set the tex to default (we know that it does exist now)
                 tile = defaultTile;
             }
+
             return tile;
         }
 

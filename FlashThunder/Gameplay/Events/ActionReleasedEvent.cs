@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace FlashThunder.Gameplay.Events
 {
-    public struct ActionReleasedEvent
+    public readonly struct ActionReleasedEvent
     {
-        public GameAction action;
+        public readonly GameAction Action;
 
-        public ActionReleasedEvent(GameAction action) { this.action = action; }
+        public ActionReleasedEvent(GameAction action) => Action = action;
     }
 }

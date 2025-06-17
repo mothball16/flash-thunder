@@ -23,12 +23,12 @@ namespace FlashThunder.Managers
     /// <typeparam name="TActionEnum">The action enum to map keys to.</typeparam>
     public class InputManager<TActionEnum> where TActionEnum : Enum
     {
-        private KeyboardState _kb, _prevKb;
-        private MouseState _m, _prevM;
+        KeyboardState _kb, _prevKb;
+        MouseState _m, _prevM;
 
-        private readonly Dictionary<Keys, TActionEnum> _actions;
-        private readonly Dictionary<MouseButtonType, TActionEnum> _mActions;
-        private readonly HashSet<TActionEnum> _active, _released, _activated;
+        readonly Dictionary<Keys, TActionEnum> _actions;
+        readonly Dictionary<MouseButtonType, TActionEnum> _mActions;
+        readonly HashSet<TActionEnum> _active, _released, _activated;
 
         // communication
         public event Action<TActionEnum> OnActivated, OnReleased;
@@ -139,7 +139,7 @@ namespace FlashThunder.Managers
 
         #region - - - [ Helpers ] - - -
 
-        private void HandleKeys()
+        void HandleKeys()
         {
             // clear prev. input data
             _active.Clear();
@@ -149,12 +149,14 @@ namespace FlashThunder.Managers
             // re-populate the input data
             foreach (var data in _actions)
             {
-                bool isDown = _kb.IsKeyDown(data.Key);
-                bool wasDown = _prevKb.IsKeyDown(data.Key);
+                var isDown = _kb.IsKeyDown(data.Key);
+                var wasDown = _prevKb.IsKeyDown(data.Key);
+
                 if (isDown)
                 {
                     // is pressed on this frame, add to active
                     _active.Add(data.Value);
+
                     if (!wasDown)
                     {
                         // was previously inactive, add to (just) activated
@@ -174,12 +176,13 @@ namespace FlashThunder.Managers
             }
         }
 
-        private void HandleMouse()
+        void HandleMouse()
         {
             foreach (var data in _mActions)
             {
-                bool pressed = false;
-                bool lastPressed = false;
+                var pressed = false;
+                var lastPressed = false;
+
                 switch (data.Key)
                 {
                     case MouseButtonType.Left:
@@ -205,8 +208,6 @@ namespace FlashThunder.Managers
                     OnActivated?.Invoke(data.Value);
                 else if (!pressed && lastPressed)
                     OnReleased?.Invoke(data.Value);
-
-
             }
 
             // check MouseMoved
@@ -248,6 +249,5 @@ namespace FlashThunder.Managers
         public MouseState GetMouseState()
             => _m;
         #endregion - - - [ Polling Methods ] - - - -
-
     }
 }

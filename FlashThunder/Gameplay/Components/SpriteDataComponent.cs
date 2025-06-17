@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using nkast.Aether.Physics2D.Dynamics;
 using Microsoft.Xna.Framework.Graphics;
+
 namespace FlashThunder.Gameplay.Components
 {
     public class SpriteDataComponent(Texture2D texture, int x, int y)
@@ -15,7 +16,5 @@ namespace FlashThunder.Gameplay.Components
         // scale as 1, 1 means that the sprite will be contained within a 1 x 1 tile
         public int SizeX { get; set; } = x;
         public int SizeY { get; set; } = y;
-
-
     }
 }

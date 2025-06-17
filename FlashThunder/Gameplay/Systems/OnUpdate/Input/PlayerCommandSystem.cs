@@ -8,6 +8,7 @@ using DefaultEcs.System;
 using FlashThunder.Enums;
 using FlashThunder.Gameplay.Components;
 using Microsoft.Xna.Framework;
+
 namespace FlashThunder.Gameplay.Systems.OnUpdate.Input
 {
     /// <summary>
@@ -15,29 +16,28 @@ namespace FlashThunder.Gameplay.Systems.OnUpdate.Input
     /// </summary>
     internal sealed class PlayerCommandSystem : ISystem<float>
     {
-        private readonly World _world;
-        private readonly EntitySet _entitySet;
+        readonly World _world;
+        readonly EntitySet _entitySet;
 
         public bool IsEnabled { get; set; }
 
         public PlayerCommandSystem(World world)
         {
             _world = world;
+
             _entitySet = world.GetEntities()
                 .With<ControlledComponent>()
                 .With<GridPosComponent>()
                 .AsSet();
         }
 
-
         public void Update(float dt)
         {
-
             foreach (ref readonly Entity e in _entitySet.GetEntities())
             {
-
             }
         }
+
         public void Dispose() { }
     }
 }

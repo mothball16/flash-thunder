@@ -7,6 +7,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using DefaultEcs;
 using System.Text.Json;
+
 namespace FlashThunder.Defs
 {
     /// <summary>

@@ -21,7 +21,6 @@ namespace FlashThunder.Gameplay.Resources
         public float Scale { get; set; }
         public Matrix TransformMatrix { get; set; }
 
-
         public CameraResource()
         {
             Target = new(0, 0);
@@ -31,6 +30,5 @@ namespace FlashThunder.Gameplay.Resources
             Scale = 1;
             TransformMatrix = Matrix.Identity;
         }
-
     }
 }

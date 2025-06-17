@@ -11,6 +11,5 @@ namespace FlashThunder.Gameplay.Components.UnitStats
     {
         public int Range { get; set; }
         public string[] Traverse { get; set; }
-
     }
 }

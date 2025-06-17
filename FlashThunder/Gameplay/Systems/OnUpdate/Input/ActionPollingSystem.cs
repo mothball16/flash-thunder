@@ -10,6 +10,7 @@ using FlashThunder.Gameplay.Components;
 using FlashThunder.Gameplay.Events;
 using FlashThunder.Gameplay.Resources;
 using Microsoft.Xna.Framework;
+
 namespace FlashThunder.Gameplay.Systems.OnUpdate.Input
 {
     /// <summary>
@@ -17,13 +18,14 @@ namespace FlashThunder.Gameplay.Systems.OnUpdate.Input
     /// </summary>
     internal sealed class ActionPollingSystem : ISystem<float>
     {
-        private readonly World _world;
+        readonly World _world;
         public bool IsEnabled { get; set; }
-        private readonly List<IDisposable> _subscriptions;
+        readonly List<IDisposable> _subscriptions;
 
         public ActionPollingSystem(World world)
         {
             _world = world;
+
             _subscriptions = [
                 world.Subscribe<ActionActivatedEvent>(AddAction),
                 world.Subscribe<ActionReleasedEvent>(RemoveAction)
@@ -33,22 +35,20 @@ namespace FlashThunder.Gameplay.Systems.OnUpdate.Input
             if (!world.Has<ActionsResource>())
                 world.Set(new ActionsResource());
         }
-        private void AddAction(in ActionActivatedEvent msg)
+        void AddAction(in ActionActivatedEvent msg)
         {
             ref var actions = ref _world.Get<ActionsResource>();
             actions.Active.Add(msg.Action);
         }
 
-        private void RemoveAction(in ActionReleasedEvent msg)
+        void RemoveAction(in ActionReleasedEvent msg)
         {
             ref var actions = ref _world.Get<ActionsResource>();
-            actions.Active.Remove(msg.action);
+            actions.Active.Remove(msg.Action);
         }
 
         public void Update(float dt) { }
-        public void Dispose()
-        {
-            _subscriptions?.ForEach(s => s.Dispose());
-        }
+
+        public void Dispose() => _subscriptions?.ForEach(s => s.Dispose());
     }
 }

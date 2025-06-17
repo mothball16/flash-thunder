@@ -9,13 +9,14 @@ using FlashThunder.Gameplay.Components;
 using FlashThunder.Gameplay.Resources;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
 namespace FlashThunder.Gameplay.Systems.OnDraw
 {
     internal sealed class EntityRenderSystem : ISystem<SpriteBatch>
     {
         // - - - [ Private Fields ] - - -
-        private readonly EntitySet _entitySet;
-        private readonly int _tileSize;
+        readonly EntitySet _entitySet;
+        readonly int _tileSize;
 
         // - - - [ Properties ] - - -
         public bool IsEnabled { get; set; }
@@ -30,7 +31,6 @@ namespace FlashThunder.Gameplay.Systems.OnDraw
                 .AsSet();
         }
 
-
         public void Update(SpriteBatch sb)
         {
             foreach (ref readonly Entity e in _entitySet.GetEntities())
@@ -38,6 +38,7 @@ namespace FlashThunder.Gameplay.Systems.OnDraw
                 var spData = e.Get<SpriteDataComponent>();
                 var pos = e.Get<GridPosComponent>();
                 Console.WriteLine("yuh yuh yuh");
+
                 sb.Draw(
                     texture: spData.Texture,
                     destinationRectangle: new(
@@ -49,6 +50,7 @@ namespace FlashThunder.Gameplay.Systems.OnDraw
                     color: Color.White);
             }
         }
+
         public void Dispose() { }
     }
 }

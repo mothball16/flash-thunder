@@ -13,17 +13,19 @@ using FlashThunder.Gameplay.Resources;
 using Microsoft.Xna.Framework;
 using FlashThunder.Defs;
 using FlashThunder.Extensions;
+
 namespace FlashThunder.Gameplay.Systems.OnUpdate.Input
 {
     internal sealed class PlayerDebuggingInputSystem : ISystem<float>
     {
-        private readonly World _world;
-        private readonly List<IDisposable> _subscriptions;
+        readonly World _world;
+        readonly List<IDisposable> _subscriptions;
         public bool IsEnabled { get; set; }
 
         public PlayerDebuggingInputSystem(World world)
         {
             _world = world;
+
             _subscriptions = [
                 world.Subscribe<ActionActivatedEvent>(OnActionActivated)
 
@@ -41,8 +43,8 @@ namespace FlashThunder.Gameplay.Systems.OnUpdate.Input
 
         public void Update(float dt)
         {
-
         }
+
         public void Dispose()
         {
             _subscriptions.ForEach(s => s.Dispose());

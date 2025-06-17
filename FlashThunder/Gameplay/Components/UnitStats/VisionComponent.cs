@@ -10,6 +10,5 @@ namespace FlashThunder.Gameplay.Components.UnitStats
     public struct VisionComponent
     {
         public int Value { get; set; }
-
     }
 }

@@ -21,9 +21,9 @@ namespace FlashThunder.Core
     /// </summary>
     public class EntityFactory
     {
-        private readonly World _world;
-        private readonly TexManager _texManager;
-        private readonly Dictionary<string, EntityTemplateDef> _templates;
+        readonly World _world;
+        readonly TexManager _texManager;
+        readonly Dictionary<string, EntityTemplateDef> _templates;
 
         public EntityFactory(World world, TexManager textureManager)
         {
@@ -32,19 +32,23 @@ namespace FlashThunder.Core
             _templates = [];
         }
 
-        private static string ToComponentKey(string raw)
+        static string ToComponentKey(string raw)
             => string.Concat(raw.FirstCharToUpper(), "Component");
+
         public EntityFactory LoadTemplates(string filePath)
         {
             var templates = DataLoader.LoadObject<Dictionary<string, EntityTemplateDef>>(filePath);
+
             foreach (var template in templates)
             {
                 if (_templates.ContainsKey(template.Key))
                 {
                     Console.WriteLine($"[WARNING] Duplicated binding on {template.Key}");
                 }
+
                 _templates[template.Key] = template.Value;
             }
+
             return this;
         }
 
@@ -57,6 +61,7 @@ namespace FlashThunder.Core
         public Entity CreateEntity(string id)
         {
             var entity = _world.CreateEntity();
+
             if (!_templates.TryGetValue(id, out EntityTemplateDef template))
                 throw new KeyNotFoundException($"[ERROR] {id} was not found in the entity templates.");
 
@@ -95,7 +100,7 @@ namespace FlashThunder.Core
                         entity.Set(healthComponent);
                         break;
                     case nameof(SpriteDataComponent):
-                        Texture2D tex = _texManager
+                        var tex = _texManager
                             [jsonData.GetProperty("textureAlias").GetString()];
 
                         var scaleX = jsonData.GetProperty("sizeX").GetInt32();
