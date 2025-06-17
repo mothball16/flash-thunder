@@ -18,9 +18,9 @@ namespace FlashThunder.Core
 
         // inputbridge only needs to be disposed of with GameContext. nothing should rly be
         // interacting with it outside of Dispose
-        readonly InputBridge _inputBridge;
-        readonly SequentialSystem<float> _updateSystems;
-        readonly SequentialSystem<SpriteBatch> _drawSystems;
+        private readonly InputBridge _inputBridge;
+        private readonly SequentialSystem<float> _updateSystems;
+        private readonly SequentialSystem<SpriteBatch> _drawSystems;
 
         // - - - [ Public Properties ] - - -
         public World World { get; init; }

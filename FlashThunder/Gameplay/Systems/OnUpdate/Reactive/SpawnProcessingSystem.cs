@@ -14,8 +14,8 @@ using FlashThunder.Gameplay.Resources;
 
 internal sealed class SpawnProcessingSystem : ISystem<float>
 {
-    readonly EntitySet _entitySet;
-    readonly EntityFactory _entityFactory;
+    private readonly EntitySet _entitySet;
+    private readonly EntityFactory _entityFactory;
 
     public bool IsEnabled { get; set; }
 

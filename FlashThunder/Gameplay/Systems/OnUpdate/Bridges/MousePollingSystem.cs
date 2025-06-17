@@ -22,9 +22,9 @@ namespace FlashThunder.Gameplay.Systems.OnUpdate.Bridges
     /// </summary>
     internal sealed class MousePollingSystem : ISystem<float>
     {
-        readonly World _world;
-        readonly InputManager<GameAction> _manager;
-        readonly Camera _camera;
+        private readonly World _world;
+        private readonly InputManager<GameAction> _manager;
+        private readonly Camera _camera;
         public bool IsEnabled { get; set; }
         public MousePollingSystem(World world, InputManager<GameAction> manager, Camera camera)
         {

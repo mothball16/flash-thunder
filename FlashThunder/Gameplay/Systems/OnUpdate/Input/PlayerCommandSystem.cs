@@ -16,8 +16,8 @@ namespace FlashThunder.Gameplay.Systems.OnUpdate.Input
     /// </summary>
     internal sealed class PlayerCommandSystem : ISystem<float>
     {
-        readonly World _world;
-        readonly EntitySet _entitySet;
+        private readonly World _world;
+        private readonly EntitySet _entitySet;
 
         public bool IsEnabled { get; set; }
 

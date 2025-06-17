@@ -18,7 +18,7 @@ namespace FlashThunder.Gameplay.Systems.OnDraw
     internal sealed class SpriteBatchInitSystem : ISystem<SpriteBatch>
     {
         // - - - [ Private Fields ] - - -
-        readonly World _world;
+        private readonly World _world;
 
         // - - - [ Properties ] - - -
         public bool IsEnabled { get; set; }

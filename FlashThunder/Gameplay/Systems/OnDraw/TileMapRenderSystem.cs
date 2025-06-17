@@ -19,9 +19,9 @@ namespace FlashThunder.Gameplay.Systems.OnDraw
     /// </summary>
     internal sealed class TileMapRenderSystem : ISystem<SpriteBatch>
     {
-        readonly TileMapComponent _map;
-        readonly TileManager _tiles;
-        readonly int _tileSize;
+        private readonly TileMapComponent _map;
+        private readonly TileManager _tiles;
+        private readonly int _tileSize;
         public bool IsEnabled { get; set; }
 
         public TileMapRenderSystem(World world, TileManager tiles)

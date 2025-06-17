@@ -23,19 +23,19 @@ namespace FlashThunder.Core
 {
     public class CoreGame : Game
     {
-        readonly GraphicsDeviceManager _graphics;
-        SpriteBatch _spriteBatch;
-        GameContext _context;
-        GameState _gameState;
+        private readonly GraphicsDeviceManager _graphics;
+        private SpriteBatch _spriteBatch;
+        private GameContext _context;
+        private GameState _gameState;
 
         // TODO: This should just be a menuAction input manager.
         // The game input manager should only exist within the game runtime
-        InputManager<GameAction> _gameInputManager;
+        private InputManager<GameAction> _gameInputManager;
 
         // TODO: Same for this. We should still ahve an assetmanager for the menu tho.
         // Actually think about this abit because we don't want to reload textures all the time
-        TexManager _texManager;
-        TileManager _tileManager;
+        private TexManager _texManager;
+        private TileManager _tileManager;
 
         public CoreGame()
         {
@@ -117,7 +117,7 @@ namespace FlashThunder.Core
         /// architecture. Eventually to be moved to a separate manager.
         /// </summary>
         /// <returns>The initialized GameContext.</returns>
-        GameContext InitGameContext()
+        private GameContext InitGameContext()
         {
             // set up the camera
             var camera = new Camera();

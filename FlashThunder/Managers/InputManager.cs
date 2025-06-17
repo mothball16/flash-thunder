@@ -23,12 +23,12 @@ namespace FlashThunder.Managers
     /// <typeparam name="TActionEnum">The action enum to map keys to.</typeparam>
     public class InputManager<TActionEnum> where TActionEnum : Enum
     {
-        KeyboardState _kb, _prevKb;
-        MouseState _m, _prevM;
+        private KeyboardState _kb, _prevKb;
+        private MouseState _m, _prevM;
 
-        readonly Dictionary<Keys, TActionEnum> _actions;
-        readonly Dictionary<MouseButtonType, TActionEnum> _mActions;
-        readonly HashSet<TActionEnum> _active, _released, _activated;
+        private readonly Dictionary<Keys, TActionEnum> _actions;
+        private readonly Dictionary<MouseButtonType, TActionEnum> _mActions;
+        private readonly HashSet<TActionEnum> _active, _released, _activated;
 
         // communication
         public event Action<TActionEnum> OnActivated, OnReleased;
@@ -139,7 +139,7 @@ namespace FlashThunder.Managers
 
         #region - - - [ Helpers ] - - -
 
-        void HandleKeys()
+        private void HandleKeys()
         {
             // clear prev. input data
             _active.Clear();
@@ -176,7 +176,7 @@ namespace FlashThunder.Managers
             }
         }
 
-        void HandleMouse()
+        private void HandleMouse()
         {
             foreach (var data in _mActions)
             {

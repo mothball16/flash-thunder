@@ -18,9 +18,9 @@ namespace FlashThunder.Gameplay.Systems.OnUpdate.Input
     /// </summary>
     internal sealed class ActionPollingSystem : ISystem<float>
     {
-        readonly World _world;
+        private readonly World _world;
         public bool IsEnabled { get; set; }
-        readonly List<IDisposable> _subscriptions;
+        private readonly List<IDisposable> _subscriptions;
 
         public ActionPollingSystem(World world)
         {
@@ -35,13 +35,13 @@ namespace FlashThunder.Gameplay.Systems.OnUpdate.Input
             if (!world.Has<ActionsResource>())
                 world.Set(new ActionsResource());
         }
-        void AddAction(in ActionActivatedEvent msg)
+        private void AddAction(in ActionActivatedEvent msg)
         {
             ref var actions = ref _world.Get<ActionsResource>();
             actions.Active.Add(msg.Action);
         }
 
-        void RemoveAction(in ActionReleasedEvent msg)
+        private void RemoveAction(in ActionReleasedEvent msg)
         {
             ref var actions = ref _world.Get<ActionsResource>();
             actions.Active.Remove(msg.Action);

@@ -13,8 +13,8 @@ namespace FlashThunder.Managers
     /// </summary>
     public class TileManager
     {
-        const char DefaultName = ',';
-        Dictionary<char, TileDef> _cache;
+        private const char DefaultName = ',';
+        private Dictionary<char, TileDef> _cache;
 
         public TileManager() => _cache = [];
 

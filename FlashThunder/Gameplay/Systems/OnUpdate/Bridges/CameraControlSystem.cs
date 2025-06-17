@@ -22,8 +22,8 @@ namespace FlashThunder.Gameplay.Systems.OnUpdate.Bridges
     /// </summary>
     internal sealed class CameraControlSystem : ISystem<float>
     {
-        readonly World _world;
-        readonly Camera _camera;
+        private readonly World _world;
+        private readonly Camera _camera;
         public bool IsEnabled { get; set; }
 
         public CameraControlSystem(World world, Camera camera)
@@ -36,7 +36,7 @@ namespace FlashThunder.Gameplay.Systems.OnUpdate.Bridges
                 world.Set(new CameraResource());
         }
 
-        static float NumLerp(float a, float b, float t) => a + (b - a) * t;
+        private static float NumLerp(float a, float b, float t) => a + ((b - a) * t);
 
         public void Update(float dt)
         {

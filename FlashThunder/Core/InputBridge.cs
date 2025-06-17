@@ -18,8 +18,8 @@ namespace FlashThunder.Core
     /// </summary>
     public sealed class InputBridge : IDisposable
     {
-        readonly World _world;
-        readonly InputManager<GameAction> _manager;
+        private readonly World _world;
+        private readonly InputManager<GameAction> _manager;
 
         public InputBridge(World world, InputManager<GameAction> manager)
         {

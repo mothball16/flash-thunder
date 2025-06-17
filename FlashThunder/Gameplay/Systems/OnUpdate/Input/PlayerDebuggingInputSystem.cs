@@ -18,8 +18,8 @@ namespace FlashThunder.Gameplay.Systems.OnUpdate.Input
 {
     internal sealed class PlayerDebuggingInputSystem : ISystem<float>
     {
-        readonly World _world;
-        readonly List<IDisposable> _subscriptions;
+        private readonly World _world;
+        private readonly List<IDisposable> _subscriptions;
         public bool IsEnabled { get; set; }
 
         public PlayerDebuggingInputSystem(World world)

@@ -13,9 +13,9 @@ namespace FlashThunder.Managers
     /// </summary>
     public class TexManager
     {
-        const string DefaultName = "!default";
-        readonly Dictionary<string, Texture2D> _cache;
-        readonly ContentManager _contentManager;
+        private const string DefaultName = "!default";
+        private readonly Dictionary<string, Texture2D> _cache;
+        private readonly ContentManager _contentManager;
 
         public TexManager(ContentManager cm, string defaultTex = null)
         {
@@ -32,7 +32,7 @@ namespace FlashThunder.Managers
             set { Set(name, value); }
         }
 
-        bool TryLoad(string name, out Texture2D tex)
+        private bool TryLoad(string name, out Texture2D tex)
         {
             try
             {

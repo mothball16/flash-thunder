@@ -21,9 +21,9 @@ namespace FlashThunder.Core
     /// </summary>
     public class EntityFactory
     {
-        readonly World _world;
-        readonly TexManager _texManager;
-        readonly Dictionary<string, EntityTemplateDef> _templates;
+        private readonly World _world;
+        private readonly TexManager _texManager;
+        private readonly Dictionary<string, EntityTemplateDef> _templates;
 
         public EntityFactory(World world, TexManager textureManager)
         {
@@ -32,7 +32,7 @@ namespace FlashThunder.Core
             _templates = [];
         }
 
-        static string ToComponentKey(string raw)
+        private static string ToComponentKey(string raw)
             => string.Concat(raw.FirstCharToUpper(), "Component");
 
         public EntityFactory LoadTemplates(string filePath)

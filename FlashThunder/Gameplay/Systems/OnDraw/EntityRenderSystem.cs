@@ -15,8 +15,8 @@ namespace FlashThunder.Gameplay.Systems.OnDraw
     internal sealed class EntityRenderSystem : ISystem<SpriteBatch>
     {
         // - - - [ Private Fields ] - - -
-        readonly EntitySet _entitySet;
-        readonly int _tileSize;
+        private readonly EntitySet _entitySet;
+        private readonly int _tileSize;
 
         // - - - [ Properties ] - - -
         public bool IsEnabled { get; set; }

@@ -16,7 +16,7 @@ namespace FlashThunder.Gameplay.Systems.OnUpdate.Input
 {
     internal sealed class PlayerCameraInputSystem : ISystem<float>
     {
-        readonly World _world;
+        private readonly World _world;
         public bool IsEnabled { get; set; }
 
         public PlayerCameraInputSystem(World world) => _world = world;
