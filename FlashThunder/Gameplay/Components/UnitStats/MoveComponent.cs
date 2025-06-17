@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlashThunder.Gameplay.Components
+namespace FlashThunder.Gameplay.Components.UnitStats
 {
-    public struct MoveComponent 
+    public struct MoveComponent
     {
         public int Range { get; set; }
         public string[] Traverse { get; set; }
-        
+
     }
 }

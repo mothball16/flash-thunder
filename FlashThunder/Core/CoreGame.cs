@@ -16,21 +16,24 @@ using FlashThunder.Gameplay.Systems.OnUpdate.Bridges;
 using FlashThunder.Gameplay.Systems.OnUpdate.Debugging;
 using FlashThunder.Gameplay.Systems.OnUpdate.Input;
 using FlashThunder.Gameplay.Systems.OnDraw;
+using FlashThunder.Gameplay.Systems.OnUpdate.Reactive;
 
 namespace FlashThunder.Core
 {
     public class CoreGame : Game
     {
-        private GraphicsDeviceManager _graphics;
+
+        private readonly GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private GameContext _context;
         private GameState _gameState;
-        //TODO: This should just be a menuAction input manager.
-        //The game input manager should only exist within the game runtime
+
+        // TODO: This should just be a menuAction input manager.
+        // The game input manager should only exist within the game runtime
         private InputManager<GameAction> _gameInputManager;
 
-        //TODO: Same for this. We should still ahve an assetmanager for the menu tho.
-        //Actually think about this abit because we don't want to reload textures all the time
+        // TODO: Same for this. We should still ahve an assetmanager for the menu tho.
+        // Actually think about this abit because we don't want to reload textures all the time
         private TexManager _texManager;
         private TileManager _tileManager;
 
@@ -44,7 +47,7 @@ namespace FlashThunder.Core
         protected override void Initialize()
         {
             // - - - [ Initialize higher systems ] - - -
-            
+
             _gameInputManager = new InputManager<GameAction>()
                 .BindAction(Keys.W, GameAction.MoveUp)
                 .BindAction(Keys.S, GameAction.MoveDown)
@@ -66,8 +69,8 @@ namespace FlashThunder.Core
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            //set default (for now)
 
+            // set default (for now)
             _texManager
                 .LoadDefinitions("texture_manifest.json");
 
@@ -79,7 +82,7 @@ namespace FlashThunder.Core
         {
             // - - - [ Higher system updates ] - - -
             _gameInputManager.Update();
-            float deltaTime = (float) gameTime.ElapsedGameTime.TotalSeconds;
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // - - - [ ECS updates ] - - -
             _context.Update(deltaTime);
@@ -98,7 +101,7 @@ namespace FlashThunder.Core
                         SamplerState.PointClamp, null, null, null);
                     break;
                 case GameState.Running:
-                    //The spritebatch is begun within the ECS architecture.
+                    // The spritebatch is begun within the ECS architecture.
                     _context.Draw(_spriteBatch);
                     break;
             }
@@ -115,78 +118,76 @@ namespace FlashThunder.Core
         /// <returns>The initialized GameContext.</returns>
         private GameContext InitGameContext()
         {
-            //set up the camera
+            // set up the camera
             var camera = new Camera();
 
-            //set up the ecs world
+            // set up the ecs world
             var world = new World();
 
-            //set up the entity factory
+            // set up the entity factory
             var factory = new EntityFactory(world, _texManager)
                 .LoadTemplates("entity_templates.json")
                 .LoadTemplates("unit_templates.json");
 
-            //FOR NOW: manually initialize the map
+            // FOR NOW: manually initialize the map
             var tileMap = new TileMapComponent()
             {
                 Map = [
-                    ['#','.','#','#','#'],
-                    ['.','#','.','#','#']
+                    ['#', '.', '#', '#', '#'],
+                    ['.', '#', '.', '#', '#']
                 ],
             };
             var mapSettings = new EnvironmentResource()
             {
-                TileSize = 64
+                TileSize = 64,
             };
 
             world.Set(tileMap);
             world.Set(mapSettings);
 
-            //set up the connections between higher systems and the ecs architecture
-            //input is for all input event transmission
-            //mouse is for frame-by-frame updates of specifically the mouse
-            var inputBridge =               new InputBridge(world, _gameInputManager);
-            var mousePollingSystem =        new MousePollingSystem(world, _gameInputManager, camera);
-            var cameraControlSystem =       new CameraControlSystem(world, camera);
-            var actionUpdateSystem =        new ActionPollingSystem(world);
+            // set up the connections between higher systems and the ecs architecture
+            // input is for all input event transmission
+            // mouse is for frame-by-frame updates of specifically the mouse
+            var inputBridge = new InputBridge(world, _gameInputManager);
+            var mousePollingSystem = new MousePollingSystem(world, _gameInputManager, camera);
+            var cameraControlSystem = new CameraControlSystem(world, camera);
+            var actionUpdateSystem = new ActionPollingSystem(world);
 
-            //initialize the systems (update)
-            var entityCountingSystem =      new DebugSystem(world);
-            var playerCommandSystem =       new PlayerCommandSystem(world);
-            var playerCameraInputSystem =   new PlayerCameraInputSystem(world);
-            var playerDebuggingInputSystem =new PlayerDebuggingInputSystem(world);
+            // initialize the systems (update)
+            var entityCountingSystem = new DebugSystem(world);
+            var playerCommandSystem = new PlayerCommandSystem(world);
+            var playerCameraInputSystem = new PlayerCameraInputSystem(world);
+            var playerDebuggingInputSystem = new PlayerDebuggingInputSystem(world);
 
-            var spawnerSystem =             new SpawnProcessingSystem(world, factory);
+            var spawnerSystem = new SpawnProcessingSystem(world, factory);
 
-            var _updateSystems =            new SequentialSystem<float>([
-                actionUpdateSystem, //Updates active actions
-                mousePollingSystem, //Updates mouse resource
-                entityCountingSystem, //(DEBUGGING) Testing entity count
+            var _updateSystems = new SequentialSystem<float>(
+                actionUpdateSystem, // Updates active actions
+                mousePollingSystem, // Updates mouse resource
+                entityCountingSystem, // (DEBUGGING) Testing entity count
 
-                playerCommandSystem, //Processes any player game commands on this frame
-                playerCameraInputSystem, //Processes any camera-specific commands on this frame
+                playerCommandSystem, // Processes any player game commands on this frame
+                playerCameraInputSystem, // Processes any camera-specific commands on this frame
                 playerDebuggingInputSystem, // (DEBUGGING) Testing input response
 
-                spawnerSystem, //Handles any RequestSpawns
-                cameraControlSystem //Updates the physical camera in preparation for render
-                ]);
+                spawnerSystem, // Handles any RequestSpawns
+                cameraControlSystem // Updates the physical camera in preparation for render
+                );
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            //initialize the systems (draw)
-            var sbInitSystem =              new SpriteBatchInitSystem(world);
-            var tileMapRenderSystem =       new TileMapRenderSystem(world, _tileManager);
-            var entityRenderSystem =        new EntityRenderSystem(world); 
+            // initialize the systems (draw)
+            var sbInitSystem = new SpriteBatchInitSystem(world);
+            var tileMapRenderSystem = new TileMapRenderSystem(world, _tileManager);
+            var entityRenderSystem = new EntityRenderSystem(world);
 
-            var _drawSystems =              new SequentialSystem<SpriteBatch>([
-                sbInitSystem, //Using our current environment, begin SB based off it
+            var _drawSystems = new SequentialSystem<SpriteBatch>(
+                sbInitSystem, // Using our current environment, begin SB based off it
                 tileMapRenderSystem, // Tilemap to be rendered at the bottom
-                entityRenderSystem, // Entities to be rendered on top of tilemap
+                entityRenderSystem // Entities to be rendered on top of tilemap
+                );
 
-
-                ]);
-
-            //send back the initialized GameContext
+            // send back the initialized GameContext
             return new GameContext(
                 assetManager: _texManager,
                 world: world,
@@ -194,7 +195,7 @@ namespace FlashThunder.Core
                 onUpd: _updateSystems,
                 onDraw: _drawSystems
                 );
-        
+
         }
 
         #endregion

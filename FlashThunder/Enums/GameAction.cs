@@ -14,6 +14,6 @@ namespace FlashThunder.Enums
         MoveDown,
         SpeedUpCamera,
         SpawnTest,
-        
+
     }
 }

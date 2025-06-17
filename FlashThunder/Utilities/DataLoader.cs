@@ -14,8 +14,8 @@ namespace FlashThunder.Utilities
     {
         public static readonly string Prefix = "../../../Data/";
 
-        //ensure proper naming conventions and keep the json files like readable brah
-        public static readonly JsonSerializerOptions Options  = new()
+        // ensure proper naming conventions and keep the json files like readable brah
+        public static readonly JsonSerializerOptions Options = new()
         {
             PropertyNameCaseInsensitive = true,
             WriteIndented = true,

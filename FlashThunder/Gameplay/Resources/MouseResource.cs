@@ -19,13 +19,13 @@ namespace FlashThunder.Gameplay.Resources
         public bool LPressed { get; set; }
         public bool MPressed { get; set; }
         public bool RPressed { get; set; }
-        public readonly int X 
+        public readonly int X
             => Position.X;
-        public readonly int Y 
+        public readonly int Y
             => Position.Y;
         public readonly int WorldX
             => WorldPosition.X;
         public readonly int WorldY
-            =>  WorldPosition.Y;
+            => WorldPosition.Y;
     }
 }

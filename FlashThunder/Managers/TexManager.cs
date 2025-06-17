@@ -14,8 +14,8 @@ namespace FlashThunder.Managers
     public class TexManager
     {
         private const string DefaultName = "!default";
-        private Dictionary<string, Texture2D> _cache;
-        private ContentManager _contentManager;
+        private readonly Dictionary<string, Texture2D> _cache;
+        private readonly ContentManager _contentManager;
 
         public TexManager(ContentManager cm, string defaultTex = null)
         {
@@ -106,14 +106,14 @@ namespace FlashThunder.Managers
                     $"[WARNING] Texture {name} wasn't found in the texture cache." +
                     $"Attempting to retrieve default instead.");
 
-                //if we don't even have a default, throw an exception
+                // if we don't even have a default, throw an exception
                 if (!_cache.TryGetValue(DefaultName, out Texture2D defaultTile))
                 {
                     throw new KeyNotFoundException(
                         $"No default texture was found to replacing missing texture {name}.");
                 }
 
-                //set the tex to default (we know that it does exist now)
+                // set the tex to default (we know that it does exist now)
                 tex = defaultTile;
             }
             return tex;
@@ -144,7 +144,7 @@ namespace FlashThunder.Managers
             foreach (var def in defs)
             {
                 Register(
-                    def.TextureAlias ?? def.TextureName, 
+                    def.TextureAlias ?? def.TextureName,
                     def.TextureName
                     );
             }

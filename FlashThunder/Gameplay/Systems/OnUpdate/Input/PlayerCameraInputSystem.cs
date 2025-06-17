@@ -13,7 +13,7 @@ using FlashThunder.Gameplay.Resources;
 using Microsoft.Xna.Framework;
 namespace FlashThunder.Gameplay.Systems.OnUpdate.Input
 {
-    internal class PlayerCameraInputSystem : ISystem<float>
+    internal sealed class PlayerCameraInputSystem : ISystem<float>
     {
         private readonly World _world;
         public bool IsEnabled { get; set; }
@@ -51,14 +51,14 @@ namespace FlashThunder.Gameplay.Systems.OnUpdate.Input
 
 
 
-            //Panning movement
+            // Panning movement
             if (mouse.MPressed)
             {
                 camResource.Target -= mouse.Diff.ToVector2();
             }
         }
-        public void Dispose() 
-        { 
+        public void Dispose()
+        {
         }
     }
 }

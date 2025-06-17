@@ -13,6 +13,6 @@ namespace FlashThunder.Enums
     /// </summary>
     public enum MenuAction
     {
-        
+
     }
 }

@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlashThunder.Gameplay.Components
+namespace FlashThunder.Gameplay.Components.UnitStats
 {
-    public struct VisionComponent 
+    public struct VisionComponent
     {
         public int Value { get; set; }
-        
+
     }
 }

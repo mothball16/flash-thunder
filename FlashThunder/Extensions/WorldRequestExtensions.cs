@@ -12,7 +12,7 @@ namespace FlashThunder.Extensions
 {
     public static class WorldRequestExtensions
     {
-        
+
         public static void RequestSpawn(this World world, string enemyID, int x, int y)
         {
             var request = world.CreateEntity();

@@ -35,7 +35,7 @@ namespace FlashThunder.Defs
         /// How many moves does it take to traverse this tile?
         /// </summary>
         public float Cost { get; set; } = 1;
-        
+
         /// <summary>
         /// Loaded during/after initialization, used to retrieve tile tex
         /// </summary>

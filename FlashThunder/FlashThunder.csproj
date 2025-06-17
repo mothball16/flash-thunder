@@ -31,8 +31,11 @@
     <PackageReference Include="ImGui.NET" Version="1.91.6.1" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.3" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.3" />
-    <PackageReference Include="Monogame.ImGui" Version="1.0.0" />
-    <PackageReference Include="Neel.MonoGame.Utilities" Version="1.0.6" />
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="10.11.0.117924">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+
     <PackageReference Include="TextCopy" Version="6.2.1" />
   </ItemGroup>
   <ItemGroup>

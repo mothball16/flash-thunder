@@ -14,7 +14,7 @@ namespace FlashThunder.Gameplay.Resources
     /// </summary>
     public struct CameraResource
     {
-        public Vector2 Target {  get; set; }
+        public Vector2 Target { get; set; }
         public Vector2 Offset { get; set; }
         public Entity? Subject { get; set; }
         public float TweenFactor { get; set; }

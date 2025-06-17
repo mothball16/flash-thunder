@@ -19,7 +19,7 @@ namespace FlashThunder.Gameplay.Systems.OnUpdate.Bridges
     /// Mostly just updates the mouse position since it's less beneficial to use event-based to
     /// constantly update where it is
     /// </summary>
-    internal class MousePollingSystem :ISystem<float>
+    internal sealed class MousePollingSystem : ISystem<float>
     {
         private readonly World _world;
         private readonly InputManager<GameAction> _manager;
@@ -31,7 +31,7 @@ namespace FlashThunder.Gameplay.Systems.OnUpdate.Bridges
             _manager = manager;
             _camera = camera;
 
-            //safety check -- has our mouse resource been made yet?
+            // safety check -- has our mouse resource been made yet?
             if (!world.Has<MouseResource>())
                 world.Set(new MouseResource());
         }
@@ -53,9 +53,9 @@ namespace FlashThunder.Gameplay.Systems.OnUpdate.Bridges
             mouse.RPressed = mouseState.RightButton == ButtonState.Pressed;
             mouse.Position = mousePos;
             mouse.WorldPosition = _camera.ScreenToWorld(mousePos);
-            
+
             mouse.Diff = mouseDiff;
-            mouse.Delta = (float) mouseDelta;
+            mouse.Delta = (float)mouseDelta;
         }
 
         public void Dispose() { }

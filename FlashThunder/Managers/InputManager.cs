@@ -26,10 +26,9 @@ namespace FlashThunder.Managers
         private KeyboardState _kb, _prevKb;
         private MouseState _m, _prevM;
 
-        private Dictionary<Keys, TActionEnum> _actions;
-        private Dictionary<MouseButtonType, TActionEnum> _mActions;
-
-        private HashSet<TActionEnum> _active, _released, _activated;
+        private readonly Dictionary<Keys, TActionEnum> _actions;
+        private readonly Dictionary<MouseButtonType, TActionEnum> _mActions;
+        private readonly HashSet<TActionEnum> _active, _released, _activated;
 
         // communication
         public event Action<TActionEnum> OnActivated, OnReleased;
@@ -142,23 +141,23 @@ namespace FlashThunder.Managers
 
         private void HandleKeys()
         {
-            //clear prev. input data
+            // clear prev. input data
             _active.Clear();
             _activated.Clear();
             _released.Clear();
 
-            //re-populate the input data
+            // re-populate the input data
             foreach (var data in _actions)
             {
                 bool isDown = _kb.IsKeyDown(data.Key);
                 bool wasDown = _prevKb.IsKeyDown(data.Key);
                 if (isDown)
                 {
-                    //is pressed on this frame, add to active
+                    // is pressed on this frame, add to active
                     _active.Add(data.Value);
                     if (!wasDown)
                     {
-                        //was previously inactive, add to (just) activated
+                        // was previously inactive, add to (just) activated
                         _activated.Add(data.Value);
                         OnActivated?.Invoke(data.Value);
                     }
@@ -167,7 +166,7 @@ namespace FlashThunder.Managers
                 {
                     if (wasDown)
                     {
-                        //was previously active, add to (just) released
+                        // was previously active, add to (just) released
                         _released.Add(data.Value);
                         OnReleased?.Invoke(data.Value);
                     }
@@ -209,9 +208,9 @@ namespace FlashThunder.Managers
 
 
             }
-            
-            //check MouseMoved
-            if(_m.Position != _prevM.Position)
+
+            // check MouseMoved
+            if (_m.Position != _prevM.Position)
                 OnMouseMoved?.Invoke(_m.Position);
         }
 
@@ -219,27 +218,27 @@ namespace FlashThunder.Managers
 
         #region - - - [ Polling Methods ] - - - -
 
-        //Checks whether a single action is currently being held
+        // Checks whether a single action is currently being held
         public bool IsActive(TActionEnum action)
             => _active.Contains(action);
 
-        //Checks whether a group of actions is currently being held
+        // Checks whether a group of actions is currently being held
         public bool AreActive(IEnumerable<TActionEnum> actionsToCheck)
             => actionsToCheck.All(IsActive);
 
-        //Checks whether a single action si currently not beind held
+        // Checks whether a single action si currently not beind held
         public bool IsInactive(TActionEnum action)
             => !_active.Contains(action);
 
-        //Checks whether a group of actions is currently not held
+        // Checks whether a group of actions is currently not held
         public bool AreInactive(IEnumerable<TActionEnum> actionsToCheck)
             => actionsToCheck.All(IsInactive);
 
-        //Checks whether a single action was just activated this frame
+        // Checks whether a single action was just activated this frame
         public bool JustActivated(TActionEnum action)
             => _activated.Contains(action);
 
-        //Checks whether a single action was just de-activated this frame
+        // Checks whether a single action was just de-activated this frame
         public bool JustDeactivated(TActionEnum action)
             => _released.Contains(action);
 

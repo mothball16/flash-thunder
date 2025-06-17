@@ -13,7 +13,7 @@ namespace FlashThunder.Gameplay.Systems.OnUpdate.Input
     /// <summary>
     /// Modifies the intents of all controlled units.
     /// </summary>
-    internal class PlayerCommandSystem : ISystem<float>
+    internal sealed class PlayerCommandSystem : ISystem<float>
     {
         private readonly World _world;
         private readonly EntitySet _entitySet;

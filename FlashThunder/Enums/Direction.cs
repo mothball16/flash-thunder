@@ -8,7 +8,7 @@ namespace FlashThunder.Enums
 {
     public enum Direction
     {
-        North, 
+        North,
         East,
         South,
         West

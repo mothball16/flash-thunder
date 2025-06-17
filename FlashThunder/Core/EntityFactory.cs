@@ -23,9 +23,8 @@ namespace FlashThunder.Core
     {
         private readonly World _world;
         private readonly TexManager _texManager;
+        private readonly Dictionary<string, EntityTemplateDef> _templates;
 
-        public Dictionary<string, EntityTemplateDef> _templates;
-        
         public EntityFactory(World world, TexManager textureManager)
         {
             _world = world;
@@ -33,11 +32,11 @@ namespace FlashThunder.Core
             _templates = [];
         }
 
-        private string ToComponentKey(string raw)
+        private static string ToComponentKey(string raw)
             => string.Concat(raw.FirstCharToUpper(), "Component");
         public EntityFactory LoadTemplates(string filePath)
         {
-            var templates = DataLoader.LoadObject<Dictionary<string,EntityTemplateDef>>(filePath);
+            var templates = DataLoader.LoadObject<Dictionary<string, EntityTemplateDef>>(filePath);
             foreach (var template in templates)
             {
                 if (_templates.ContainsKey(template.Key))
@@ -53,15 +52,15 @@ namespace FlashThunder.Core
         {
             _templates.Clear();
             return this;
-        } 
+        }
 
         public Entity CreateEntity(string id)
         {
             var entity = _world.CreateEntity();
-            if (!_templates.TryGetValue(id,out EntityTemplateDef template))
+            if (!_templates.TryGetValue(id, out EntityTemplateDef template))
                 throw new KeyNotFoundException($"[ERROR] {id} was not found in the entity templates.");
 
-            //Local helper for when we don't need any additional logic.
+            // Local helper for when we don't need any additional logic.
             void LoadDefault<T>(string data)
             {
                 var component = DataLoader.DeserObject<T>(data);
@@ -74,7 +73,7 @@ namespace FlashThunder.Core
                 var jsonData = componentRep.Value;
                 var componentName = ToComponentKey(componentRep.Key);
 
-                switch(componentName)
+                switch (componentName)
                 {
                     // - - - [ components that get handled by default ] - - -
                     case nameof(VisionComponent): LoadDefault<VisionComponent>(rawData); break;
@@ -93,6 +92,7 @@ namespace FlashThunder.Core
                             MaxHealth = max,
                             Health = healthExists ? health.GetInt32() : max
                         };
+                        entity.Set(healthComponent);
                         break;
                     case nameof(SpriteDataComponent):
                         Texture2D tex = _texManager
@@ -104,7 +104,7 @@ namespace FlashThunder.Core
                         var component = new SpriteDataComponent(tex, scaleX, scaleY);
                         entity.Set(component);
                         break;
-                        
+
                     default: // - - - [ unhandled component (not good), throw exception ] - - -
                         Console.WriteLine(
                             $"[ERROR] Unhandled component {componentName} in entity template {id}");
@@ -122,7 +122,7 @@ namespace FlashThunder.Core
         public Entity CreateEntity(string id, int x, int y)
         {
             var entity = CreateEntity(id);
-            entity.Set<GridPosComponent>(new(x,y));
+            entity.Set<GridPosComponent>(new(x, y));
             return entity;
         }
     }

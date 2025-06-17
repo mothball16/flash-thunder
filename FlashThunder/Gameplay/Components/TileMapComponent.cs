@@ -13,6 +13,6 @@ namespace FlashThunder.Gameplay.Components
     /// </summary>
     public class TileMapComponent
     {
-        public char[][] Map {  get; set; }
-        }
+        public char[][] Map { get; set; }
+    }
 }

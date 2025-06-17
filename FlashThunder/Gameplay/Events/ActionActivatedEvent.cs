@@ -9,7 +9,7 @@ namespace FlashThunder.Gameplay.Events
 {
     public struct ActionActivatedEvent
     {
-        public GameAction action;
-        public ActionActivatedEvent(GameAction action) { this.action = action; }
+        public GameAction Action { get; set; }
+        public ActionActivatedEvent(GameAction action) { Action = action; }
     }
 }

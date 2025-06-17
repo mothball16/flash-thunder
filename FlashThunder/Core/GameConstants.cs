@@ -10,14 +10,7 @@ namespace FlashThunder.Core
 {
     public static class GameConstants
     {
-        /// <summary>
-        /// Pixels per meter.
-        /// </summary>
-        public const int PixelsPerMeter = 64;
 
-        /// <summary>
-        /// Meters per pixel.
-        /// </summary>
-        public const float MetersPerPixel = 1 / PixelsPerMeter;
+        //Temporary
     }
 }

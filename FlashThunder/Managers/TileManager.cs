@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FlashThunder.Managers
 {
@@ -46,14 +47,14 @@ namespace FlashThunder.Managers
                     $"[WARNING] Tile {tileName} wasn't found in the texture cache." +
                     $"Attempting to retrieve default instead.");
 
-                //if we don't even have a default, throw an exception
+                // if we don't even have a default, throw an exception
                 if (!_cache.TryGetValue(DefaultName, out TileDef defaultTile))
                 {
                     throw new KeyNotFoundException(
                         $"No default tile was found to replacing missing tile {tileName}.");
                 }
 
-                //set the tex to default (we know that it does exist now)
+                // set the tex to default (we know that it does exist now)
                 tile = defaultTile;
             }
             return tile;
@@ -76,10 +77,10 @@ namespace FlashThunder.Managers
         {
             _cache = DataLoader.LoadObject<Dictionary<char, TileDef>>(filePath);
 
-            foreach (var def in _cache)
-            {
-                def.Value.Texture = textures[def.Value.TextureName];
-            }
+            _cache.Values
+                .ToList()
+                .ForEach(tileDef => tileDef.Texture = textures[tileDef.TextureName]);
+
             return this;
         }
     }

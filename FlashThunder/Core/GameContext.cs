@@ -13,36 +13,36 @@ using FlashThunder.Managers;
 
 namespace FlashThunder.Core
 {
-    public class GameContext : IDisposable
+    public sealed class GameContext : IDisposable
     {
         // - - - [ Private Fields ] - - -
 
 
-        //inputbridge only needs to be disposed of with GameContext. nothing should rly be
-        //interacting with it outside of Dispose
-        private InputBridge _inputBridge;
-        private SequentialSystem<float> _updateSystems;
-        private SequentialSystem<SpriteBatch> _drawSystems;
-        
+        // inputbridge only needs to be disposed of with GameContext. nothing should rly be
+        // interacting with it outside of Dispose
+        private readonly InputBridge _inputBridge;
+        private readonly SequentialSystem<float> _updateSystems;
+        private readonly SequentialSystem<SpriteBatch> _drawSystems;
+
         // - - - [ Public Properties ] - - -
         public World World { get; init; }
-        
-        //hold a ref. to assetmanager, but this shouldn't really be changed by GameContext
+
+        // hold a ref. to assetmanager, but this shouldn't really be changed by GameContext
         public TexManager AssetManager { get; init; }
 
         public GameContext(
-            World world, 
+            World world,
             TexManager assetManager,
-            InputBridge inputBridge, 
-            SequentialSystem<float> onUpd, 
+            InputBridge inputBridge,
+            SequentialSystem<float> onUpd,
             SequentialSystem<SpriteBatch> onDraw)
         {
 
-            //set properties
+            // set properties
             World = world;
             AssetManager = assetManager;
 
-            //set priv fields
+            // set priv fields
             _inputBridge = inputBridge;
             _updateSystems = onUpd;
             _drawSystems = onDraw;
@@ -70,5 +70,7 @@ namespace FlashThunder.Core
             _drawSystems?.Dispose();
             GC.SuppressFinalize(this);
         }
+
+
     }
 }

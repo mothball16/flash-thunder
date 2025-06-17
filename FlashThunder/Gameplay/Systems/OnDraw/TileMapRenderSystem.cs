@@ -17,17 +17,15 @@ namespace FlashThunder.Gameplay.Systems.OnDraw
     /// <summary>
     /// Renders the tilemap. Done separately because it's handled differently than entity rendering.
     /// </summary>
-    internal class TileMapRenderSystem : ISystem<SpriteBatch>
+    internal sealed class TileMapRenderSystem : ISystem<SpriteBatch>
     {
         private readonly TileMapComponent _map;
-        private readonly World _world;
         private readonly TileManager _tiles;
-        private int _tileSize;
+        private readonly int _tileSize;
         public bool IsEnabled { get; set; }
 
         public TileMapRenderSystem(World world, TileManager tiles)
         {
-            _world = world;
             _tiles = tiles;
             _map = world.Get<TileMapComponent>();
             _tileSize = world.Get<EnvironmentResource>().TileSize;

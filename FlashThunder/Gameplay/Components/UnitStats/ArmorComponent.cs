@@ -13,7 +13,7 @@ namespace FlashThunder.Gameplay.Components.UnitStats
     /// softFinal = Math.Max(soft / (softPen / 100), 0);
     /// afterArmorDmg = (Math.Max(dmg - hardFinal,0) * (1 - softFinal/100))
     /// </summary>
-    public struct ArmorComponent 
+    public struct ArmorComponent
     {
         /// <summary>
         /// The "hard" decrease in damage. 20 damage thru 10 hard armor -> 10.
@@ -25,6 +25,6 @@ namespace FlashThunder.Gameplay.Components.UnitStats
         /// (20 * (1 - soft/100))
         /// </summary>
         public int Soft { get; set; }
-        
+
     }
 }

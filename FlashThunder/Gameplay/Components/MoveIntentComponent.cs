@@ -8,8 +8,8 @@ using FlashThunder.Enums;
 namespace FlashThunder.Gameplay.Components
 {
 
-    public struct MoveIntentComponent 
-    { 
+    public struct MoveIntentComponent
+    {
         public Direction Dir { get; set; }
         /// <summary>
         /// How many frames till the moveintent can be processed?

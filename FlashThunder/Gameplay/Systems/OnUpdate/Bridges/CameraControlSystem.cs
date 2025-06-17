@@ -20,10 +20,10 @@ namespace FlashThunder.Gameplay.Systems.OnUpdate.Bridges
     /// This should run at the END of the update cycle to make sure every change has been applied
     /// on that frame.
     /// </summary>
-    internal class CameraControlSystem : ISystem<float>
+    internal sealed class CameraControlSystem : ISystem<float>
     {
-        private World _world;
-        private Camera _camera;
+        private readonly World _world;
+        private readonly Camera _camera;
         public bool IsEnabled { get; set; }
 
 
@@ -32,7 +32,7 @@ namespace FlashThunder.Gameplay.Systems.OnUpdate.Bridges
             _world = world;
             _camera = camera;
 
-            //safety check -- has our cam resource been made yet?
+            // safety check -- has our cam resource been made yet?
             if (!world.Has<CameraResource>())
                 world.Set(new CameraResource());
         }
@@ -46,20 +46,20 @@ namespace FlashThunder.Gameplay.Systems.OnUpdate.Bridges
         {
             ref var camInfo = ref _world.Get<CameraResource>();
 
-            //apply cam. translation from the current camera position
+            // apply cam. translation from the current camera position
             var origCamPos = _camera.XY;
             origCamPos.X = NumLerp(origCamPos.X, camInfo.Target.X, camInfo.TweenFactor);
             origCamPos.Y = NumLerp(origCamPos.Y, camInfo.Target.Y, camInfo.TweenFactor);
             origCamPos += camInfo.Offset;
             _camera.XY = origCamPos;
 
-            //reset offset (it is to be assigned frame-by-frame)
-            camInfo.Offset = new Vector2(0,0);
-            
-            //expose camera matrix for render system to act upon
+            // reset offset (it is to be assigned frame-by-frame)
+            camInfo.Offset = new Vector2(0, 0);
+
+            // expose camera matrix for render system to act upon
             camInfo.TransformMatrix = _camera.View(-0);
         }
-        
+
         public void Dispose()
         {
         }

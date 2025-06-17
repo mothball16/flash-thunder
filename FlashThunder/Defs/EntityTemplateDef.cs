@@ -16,6 +16,6 @@ namespace FlashThunder.Defs
     /// </summary>
     public class EntityTemplateDef
     {
-        public Dictionary<string, JsonElement> Components {get; set;}
+        public Dictionary<string, JsonElement> Components { get; set; }
     }
 }

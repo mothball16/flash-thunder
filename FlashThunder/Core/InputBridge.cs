@@ -16,7 +16,7 @@ namespace FlashThunder.Core
     /// Bridges the input manager and the ECS world.
     /// This is initialized with GameContext and disposed with GameContext.
     /// </summary>
-    public class InputBridge : IDisposable
+    public sealed class InputBridge : IDisposable
     {
         private readonly World _world;
         private readonly InputManager<GameAction> _manager;
@@ -51,5 +51,7 @@ namespace FlashThunder.Core
 
             GC.SuppressFinalize(this);
         }
+
+
     }
 }

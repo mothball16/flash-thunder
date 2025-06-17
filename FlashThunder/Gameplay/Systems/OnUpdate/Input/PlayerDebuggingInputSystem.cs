@@ -15,10 +15,10 @@ using FlashThunder.Defs;
 using FlashThunder.Extensions;
 namespace FlashThunder.Gameplay.Systems.OnUpdate.Input
 {
-    internal class PlayerDebuggingInputSystem : ISystem<float>
+    internal sealed class PlayerDebuggingInputSystem : ISystem<float>
     {
         private readonly World _world;
-        private List<IDisposable> _subscriptions;
+        private readonly List<IDisposable> _subscriptions;
         public bool IsEnabled { get; set; }
 
         public PlayerDebuggingInputSystem(World world)
@@ -32,7 +32,7 @@ namespace FlashThunder.Gameplay.Systems.OnUpdate.Input
 
         public void OnActionActivated(in ActionActivatedEvent msg)
         {
-            if (msg.action == GameAction.SpawnTest)
+            if (msg.Action == GameAction.SpawnTest)
             {
                 var mouseTile = _world.TileOfMouse();
                 _world.RequestSpawn(EntityID.InfantryScout, mouseTile.X, mouseTile.Y);
@@ -43,9 +43,10 @@ namespace FlashThunder.Gameplay.Systems.OnUpdate.Input
         {
 
         }
-        public void Dispose() 
-        { 
+        public void Dispose()
+        {
             _subscriptions.ForEach(s => s.Dispose());
+            GC.SuppressFinalize(this);
         }
     }
 }
