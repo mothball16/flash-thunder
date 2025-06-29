@@ -10,8 +10,10 @@ using FlashThunder.ECSGameLogic.Systems.OnUpdate.Debugging;
 using FlashThunder.ECSGameLogic.Systems.OnUpdate.Input;
 using FlashThunder.ECSGameLogic.Systems.OnUpdate.Reactive;
 using FlashThunder.Enums;
+using FlashThunder.Events;
 using FlashThunder.Interfaces;
 using FlashThunder.Managers;
+using FlashThunder.Screens;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace FlashThunder.States
@@ -116,7 +118,12 @@ namespace FlashThunder.States
 
         public void Enter()
         {
-           _context = InitContext();
+            _context = InitContext();
+            EventBus.Publish<LoadScreenEvent>(new()
+            {
+                ScreenFactory = () => new GameScreen().Visual,
+                Layer = ScreenLayer.Primary
+            });
         }
         public void Exit()
         {

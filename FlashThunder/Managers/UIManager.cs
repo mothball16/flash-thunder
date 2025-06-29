@@ -63,7 +63,7 @@ namespace FlashThunder.Managers
             // the caller is responsible for dependencies here
             var newScreen = screenFac();
             newScreen.AddToRoot();
-            newScreen.Z = (int)layer;
+            newScreen.Z = (int) layer;
 
 
             // create new element and add to stuff

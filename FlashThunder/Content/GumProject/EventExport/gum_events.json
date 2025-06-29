@@ -595,6 +595,20 @@
         "ElementType": "Screens",
         "EventType": 6,
         "TimestampUtc": "2025-06-29T06:26:57.7145428Z"
+      },
+      {
+        "NewName": "GameScreen",
+        "OldName": "GameMenu",
+        "ElementType": "Screens",
+        "EventType": 2,
+        "TimestampUtc": "2025-06-29T06:55:25.600934Z"
+      },
+      {
+        "NewName": "GameScreen.TextInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-06-29T06:55:33.9978956Z"
       }
     ]
   }
