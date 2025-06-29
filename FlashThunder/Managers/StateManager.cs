@@ -1,4 +1,5 @@
-﻿using FlashThunder.Interfaces;
+﻿using FlashThunder.Events;
+using FlashThunder.Interfaces;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -14,12 +15,18 @@ namespace FlashThunder.Managers
         public StateManager()
         {
             _states = [];
+            EventBus.Subscribe<ChangeStateEvent>(OnStateChanged);
         }
 
         public StateManager Register(IGameState state)
         {
             _states.Add(state.GetType(), state);
             return this;
+        }
+
+        public void OnStateChanged(ChangeStateEvent msg)
+        {
+            SwitchTo(msg.To);
         }
 
         public StateManager SwitchTo(Type stateType)

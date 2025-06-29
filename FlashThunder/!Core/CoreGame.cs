@@ -30,6 +30,7 @@ namespace FlashThunder.Core
         public CoreGame()
         {
             _graphics = new GraphicsDeviceManager(this);
+            
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -49,8 +50,14 @@ namespace FlashThunder.Core
 
             _texManager = new TexManager(Content, "clearTile");
             _tileManager = new TileManager();
-            _uiManager = new UIManager();
             _stateManager = new StateManager();
+
+            _uiManager = new UIManager()
+                .SetupListeners(Window);
+
+            _graphics.IsFullScreen = true;
+            _graphics.HardwareModeSwitch = false;
+            _graphics.ApplyChanges();
 
             base.Initialize();
         }
@@ -82,15 +89,14 @@ namespace FlashThunder.Core
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
             // - - - [ Spritebatch begins here ] - - -
             _stateManager.Draw(_spriteBatch);
-
             _spriteBatch.End();
-            // -- [ Spritebatch ends here ] - - -
 
+            // -- [ Spritebatch ends here ] - - -
             _uiManager.Draw();
             base.Draw(gameTime);
         }
-
     }
 }

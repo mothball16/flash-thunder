@@ -2,17 +2,27 @@
 using FlashThunder.Events;
 using FlashThunder.Interfaces;
 using FlashThunder.Managers;
+using FlashThunder.Screens;
+using Gum.Wireframe;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameGum.Forms.Controls;
+using System;
 
 namespace FlashThunder.States
 {
     internal class MenuState : IGameState
     {
+        private readonly UIElementFactory _uiFactory;
+
+        public MenuState()
+        {
+            _uiFactory = () => new TitleScreen().Visual;
+        }
         public void Enter()
         {
             EventBus.Publish<LoadScreenEvent>(new()
             {
-                To = typeof(Screens.TitleScreen),
+                ScreenFactory = _uiFactory,
                 Layer = ScreenLayer.Primary
             });
         }
@@ -26,8 +36,7 @@ namespace FlashThunder.States
         }
         public void Draw(SpriteBatch sb)
         {
-            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, 
-                null, null, null);
+            sb.Begin();
         }
     }
 }

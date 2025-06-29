@@ -1,4 +1,6 @@
 ﻿using FlashThunder.Enums;
+using FlashThunder.Managers;
+using Gum.Wireframe;
 using System;
 
 namespace FlashThunder.Events
@@ -9,15 +11,15 @@ namespace FlashThunder.Events
     public struct LoadScreenEvent
     {
         /// <summary>
-        /// The type of the screen to transition to. Use typeof(), or null to unload the screen.
+        /// The ScreenFactory should return the initialized screen with its dependencies loaded 
+        /// (via this lambda)
         /// </summary>
-        public Type To { get; set; }
+        public UIElementFactory ScreenFactory { get; set; }
 
         /// <summary>
         /// The layer in the UIManager to overwrite. Screens that shouldn't be simultaneously loaded
         /// (like MenuScreen, TitleScreen) should register as the same layer.
         /// </summary>
         public ScreenLayer Layer { get; set; }
-
     }
 }

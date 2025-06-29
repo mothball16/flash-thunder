@@ -36,10 +36,13 @@ partial class TitleScreen : MonoGameGum.Forms.Controls.FrameworkElement
             return gue;
         });
     }
-    public TextRuntime TextInstance { get; protected set; }
-    public ContainerRuntime LeftPanel { get; protected set; }
+    public TextRuntime TitleText { get; protected set; }
+    public StackPanel LeftPanel { get; protected set; }
     public ButtonStandard PlayButton { get; protected set; }
     public ButtonStandard ShopButton { get; protected set; }
+    public SpriteRuntime CautionLineTop { get; protected set; }
+    public SpriteRuntime CautionLineBottom { get; protected set; }
+    public ContainerRuntime Border { get; protected set; }
 
     public TitleScreen(InteractiveGue visual) : base(visual) { }
     public TitleScreen()
@@ -51,10 +54,13 @@ partial class TitleScreen : MonoGameGum.Forms.Controls.FrameworkElement
     protected override void ReactToVisualChanged()
     {
         base.ReactToVisualChanged();
-        TextInstance = this.Visual?.GetGraphicalUiElementByName("TextInstance") as TextRuntime;
-        LeftPanel = this.Visual?.GetGraphicalUiElementByName("LeftPanel") as ContainerRuntime;
+        TitleText = this.Visual?.GetGraphicalUiElementByName("TitleText") as TextRuntime;
+        LeftPanel = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.GetFrameworkElementByName<StackPanel>(this.Visual,"LeftPanel");
         PlayButton = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.GetFrameworkElementByName<ButtonStandard>(this.Visual,"PlayButton");
         ShopButton = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.GetFrameworkElementByName<ButtonStandard>(this.Visual,"ShopButton");
+        CautionLineTop = this.Visual?.GetGraphicalUiElementByName("CautionLineTop") as SpriteRuntime;
+        CautionLineBottom = this.Visual?.GetGraphicalUiElementByName("CautionLineBottom") as SpriteRuntime;
+        Border = this.Visual?.GetGraphicalUiElementByName("Border") as ContainerRuntime;
         CustomInitialize();
     }
     //Not assigning variables because Object Instantiation Type is set to By Name rather than Fully In Code
