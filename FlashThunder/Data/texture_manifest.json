@@ -1,22 +1,22 @@
 [
   {
     "textureAlias": "tile_asteroid",
-    "textureName": "tile_asteroid"
+    "textureName": "Textures/Tiles/tile_asteroid"
   },
   {
     "textureAlias": "tile_white",
-    "textureName": "whiteSquare"
+    "textureName": "Textures/Tiles/whiteSquare"
   },
   {
     "textureAlias": "tile_empty",
-    "textureName": "clearTile"
+    "textureName": "Textures/Tiles/clearTile"
   },
   {
     "textureAlias": "tile_fumo",
-    "textureName": "fumo"
+    "textureName": "Textures/Tiles/fumo"
   },
   {
     "textureAlias": "unit_infantry_scout",
-    "textureName": "infantryScout"
+    "textureName": "Textures/Units/infantryScout"
   }
 ]

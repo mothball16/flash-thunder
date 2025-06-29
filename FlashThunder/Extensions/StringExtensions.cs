@@ -1,13 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using DefaultEcs;
-using FlashThunder.Gameplay.Components;
-using FlashThunder.Gameplay.Resources;
 
 namespace FlashThunder.Extensions
 {
