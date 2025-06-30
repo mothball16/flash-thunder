@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FlashThunder.Defs;
+using System;
 using System.IO;
 using System.Text.Json;
 
@@ -10,7 +11,7 @@ namespace FlashThunder.Utilities
     /// </summary>
     public static class DataLoader
     {
-        public static readonly string Prefix = "../../../Data/";
+        public static readonly string Prefix = AssetPaths.Data;
 
         // ensure proper naming conventions and keep the json files like readable brah
         public static readonly JsonSerializerOptions Options = new()

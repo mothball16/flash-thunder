@@ -3,17 +3,19 @@ using System.Collections.Generic;
 
 namespace FlashThunder.Managers
 {
-    public static class EventBus
+    public class EventBus
     {
+        private readonly Dictionary<Type, List<Delegate>> _subscribers;
 
-        private static class Events<T>
+        private readonly Dictionary<Type, object> _locks;
+
+        public EventBus()
         {
-            public static readonly List<Action<T>> Subscribers = [];
+            _subscribers = [];
+            _locks = [];
         }
 
-        private static readonly Dictionary<Type, object> _locks = [];
-
-        private static object GetLock<T>()
+        private object GetLock<T>()
         {
             lock (_locks)
             {
@@ -27,32 +29,50 @@ namespace FlashThunder.Managers
             }
         }
 
-        public static void Subscribe<T>(Action<T> handler)
+        public void Subscribe<T>(Action<T> handler)
         {
             lock (GetLock<T>())
             {
-                Events<T>.Subscribers.Add(handler);
+                if (_subscribers.TryGetValue(typeof(T), out var handlers))
+                {
+                    handlers.Add(handler);
+                }
+                else
+                {
+                    _subscribers[typeof(T)] = [handler];
+                }
             }
         }
 
-        public static void Unsubscribe<T>(Action<T> handler)
+        public void Unsubscribe<T>(Action<T> handler)
         {
             lock (GetLock<T>())
             {
-                Events<T>.Subscribers.Remove(handler);
+                if (_subscribers.TryGetValue(typeof(T), out var handlers))
+                {
+                    handlers.Remove(handler);
+                    if (handlers.Count == 0)
+                    {
+                        _subscribers.Remove(typeof(T));
+                    }
+                }
             }
         }
 
-        public static void Publish<T>(T data)
+        public void Publish<T>(T data)
         {
-            List<Action<T>> subscribers;
+            List<Delegate> actions;
             lock (GetLock<T>())
             {
-                subscribers = [.. Events<T>.Subscribers];
+                if(!_subscribers.TryGetValue(typeof(T), out var mySubs))
+                    return;
+                // we need a new list to avoid concurrent modification
+                actions = [.. mySubs];
             }
-            foreach(var action in subscribers)
+
+            foreach(var action in actions)
             {
-                action(data);
+                ((Action<T>)action)(data);
             }
         }
     }

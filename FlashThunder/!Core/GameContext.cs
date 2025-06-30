@@ -9,15 +9,16 @@ namespace FlashThunder.Core
     public sealed class GameContext : IDisposable
     {
         // - - - [ Private Fields ] - - -
-
         // inputbridge only needs to be disposed of with GameContext. nothing should rly be
         // interacting with it outside of Dispose
         private readonly InputMediator _inputBridge;
+        // (systems shouldn't know about each other anyways)
         private readonly SequentialSystem<float> _updateSystems;
         private readonly SequentialSystem<SpriteBatch> _drawSystems;
 
         // - - - [ Public Properties ] - - -
         public World World { get; init; }
+
 
         // hold a ref. to assetmanager, but this shouldn't really be changed by GameContext
         public TexManager AssetManager { get; init; }

@@ -16,22 +16,33 @@ namespace FlashThunder.Managers
     public delegate GraphicalUiElement UIElementFactory();
     public sealed class UIManager : IDisposable
     {
-
+        private static Point OriginalUIDimensions = new(1920, 1080);
+        
         private static GumService Gum => GumService.Default;
         private readonly Dictionary<ScreenLayer, GraphicalUiElement> _layers;
-        public UIManager()
+        private readonly EventBus _eventBus;
+        public UIManager(EventBus eventBus)
         {
             _layers = [];
-            EventBus.Subscribe<LoadScreenEvent>(OnLoadRequest);
+            _eventBus = eventBus;
+            _eventBus.Subscribe<LoadScreenEvent>(OnLoadRequest);
         }
+
+
+        public UIManager RescaleUIToResolution(GameWindow window)
+        {
+            window.AllowUserResizing = true;
+            var zoom = window.ClientBounds.Height / (float)OriginalUIDimensions.Y;
+            Gum.Renderer.Camera.Zoom = zoom;
+            GraphicalUiElement.CanvasWidth = OriginalUIDimensions.X / zoom;
+            GraphicalUiElement.CanvasHeight = OriginalUIDimensions.Y / zoom;
+            return this;
+        }
+
 
         public UIManager SetupListeners(GameWindow window)
         {
-            window.ClientSizeChanged += (s,a) =>
-            {
-                GraphicalUiElement.CanvasWidth = window.ClientBounds.Width;
-                GraphicalUiElement.CanvasHeight = window.ClientBounds.Height;
-            };
+            window.ClientSizeChanged += (s,a) => RescaleUIToResolution(window);
             return this;
         }
 
@@ -93,7 +104,7 @@ namespace FlashThunder.Managers
 
         public void Dispose()
         {
-            EventBus.Unsubscribe<LoadScreenEvent>(OnLoadRequest);
+            _eventBus.Unsubscribe<LoadScreenEvent>(OnLoadRequest);
             GC.SuppressFinalize(this);
         }
     }

@@ -9,19 +9,13 @@ namespace FlashThunder.Managers
 {
     public sealed class StateManager
     {
-        private readonly Dictionary<Type, IGameState> _states;
+        private readonly Dictionary<Type, Func<IGameState>> _stateFacs;
         private IGameState _currentState;
 
-        public StateManager()
+        public StateManager(EventBus eventBus)
         {
-            _states = [];
-            EventBus.Subscribe<ChangeStateEvent>(OnStateChanged);
-        }
-
-        public StateManager Register(IGameState state)
-        {
-            _states.Add(state.GetType(), state);
-            return this;
+            _stateFacs = [];
+            eventBus.Subscribe<ChangeStateEvent>(OnStateChanged);
         }
 
         public void OnStateChanged(ChangeStateEvent msg)
@@ -29,12 +23,25 @@ namespace FlashThunder.Managers
             SwitchTo(msg.To);
         }
 
+        public StateManager Register(Type state, Func<IGameState> stateFac)
+        {
+            _stateFacs.Add(state, stateFac);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Enter a new state, exiting the current one.
+        /// </summary>
+        /// <param name="stateType"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
         public StateManager SwitchTo(Type stateType)
         {
-            if (_states.TryGetValue(stateType, out IGameState state))
+            if (_stateFacs.TryGetValue(stateType, out Func<IGameState> stateFac))
             {
                 _currentState?.Exit();
-                _currentState = state;
+                _currentState = stateFac();
                 _currentState?.Enter();
             } else
             {

@@ -6,6 +6,7 @@ using FlashThunder.Managers;
 using MonoGameGum;
 using FlashThunder.States;
 using FlashThunder.Defs;
+using FlashThunder.States.Factories;
 
 namespace FlashThunder.Core
 {
@@ -17,14 +18,15 @@ namespace FlashThunder.Core
 
         // TODO: This should just be a menuAction input manager.
         // The game input manager should only exist within the game runtime
-        private InputManager<GameAction> _gameInputManager;
+        private InputManager<GameAction> _gameInputMngr;
 
         // TODO: Same for this. We should still ahve an assetmanager for the menu tho.
         // Actually think about this abit because we don't want to reload textures all the time
-        private TexManager _texManager;
-        private TileManager _tileManager;
-        private UIManager _uiManager;
-        private StateManager _stateManager;
+        private TexManager _texMngr;
+        private TileManager _tileMngr;
+        private UIManager _uiMngr;
+        private StateManager _stateMngr;
+        private EventBus _higherEventBus;
 
 
         public CoreGame()
@@ -39,8 +41,9 @@ namespace FlashThunder.Core
         {
             // - - - [ Initialize higher systems ] - - -
             GumService.Default.Initialize(this, AssetPaths.UIProj);
+            _higherEventBus = new EventBus();
 
-            _gameInputManager = new InputManager<GameAction>()
+            _gameInputMngr = new InputManager<GameAction>()
                 .BindAction(Keys.W, GameAction.MoveUp)
                 .BindAction(Keys.S, GameAction.MoveDown)
                 .BindAction(Keys.D, GameAction.MoveRight)
@@ -48,12 +51,13 @@ namespace FlashThunder.Core
                 .BindAction(Keys.LeftShift, GameAction.SpeedUpCamera)
                 .BindAction(Keys.O, GameAction.SpawnTest);
 
-            _texManager = new TexManager(Content, "clearTile");
-            _tileManager = new TileManager();
-            _stateManager = new StateManager();
+            _texMngr = new TexManager(Content, "clearTile");
+            _tileMngr = new TileManager();
+            _stateMngr = new StateManager(_higherEventBus);
 
-            _uiManager = new UIManager()
-                .SetupListeners(Window);
+            _uiMngr = new UIManager(_higherEventBus)
+                .SetupListeners(Window)
+                .RescaleUIToResolution(Window);
 
             _graphics.IsFullScreen = true;
             _graphics.HardwareModeSwitch = false;
@@ -65,13 +69,14 @@ namespace FlashThunder.Core
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            _texManager
+            _texMngr
                 .LoadDefinitions("texture_manifest.json");
-            _tileManager
-                .LoadDefinitions(_texManager, "tile_defs.json");
-            _stateManager
-                .Register(new GameRunningState(_texManager, _gameInputManager, _tileManager))
-                .Register(new MenuState())
+            _tileMngr
+                .LoadDefinitions(_texMngr, "tile_defs.json");
+            _stateMngr
+                .Register(typeof(GameRunningState), new GameRunningStateFactory
+                (_higherEventBus, _gameInputMngr, _texMngr, _tileMngr).Create)
+                .Register(typeof(MenuState), () => new MenuState(_higherEventBus))
                 .SwitchTo(typeof(MenuState));
         }
 
@@ -80,9 +85,9 @@ namespace FlashThunder.Core
             var dt = (float) gameTime.ElapsedGameTime.TotalSeconds;
 
             // - - - [ Higher system updates ] - - -
-            _gameInputManager.Update();
-            _stateManager.Update(dt);
-            _uiManager.Update(gameTime);
+            _gameInputMngr.Update();
+            _stateMngr.Update(dt);
+            _uiMngr.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -91,11 +96,11 @@ namespace FlashThunder.Core
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // - - - [ Spritebatch begins here ] - - -
-            _stateManager.Draw(_spriteBatch);
+            _stateMngr.Draw(_spriteBatch);
             _spriteBatch.End();
 
             // -- [ Spritebatch ends here ] - - -
-            _uiManager.Draw();
+            _uiMngr.Draw();
             base.Draw(gameTime);
         }
     }

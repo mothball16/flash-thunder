@@ -10,21 +10,24 @@ using System;
 
 namespace FlashThunder.States
 {
-    internal class MenuState : IGameState
+    internal class MenuState : IGameState, ITitleScreenPresenter
     {
         private readonly UIElementFactory _uiFactory;
-
-        public MenuState()
+        private readonly EventBus _eventBus;
+        public MenuState(EventBus eventBus)
         {
-            _uiFactory = () => new TitleScreen().Visual;
+            _eventBus = eventBus;
+            _uiFactory = () => new TitleScreen(this).Visual;
         }
         public void Enter()
         {
-            EventBus.Publish<LoadScreenEvent>(new()
+            // call the UImanager to load the view with its dependencies
+            _eventBus.Publish<LoadScreenEvent>(new()
             {
                 ScreenFactory = _uiFactory,
                 Layer = ScreenLayer.Primary
             });
+            
         }
         public void Exit()
         {
@@ -37,6 +40,24 @@ namespace FlashThunder.States
         public void Draw(SpriteBatch sb)
         {
             sb.Begin();
+        }
+
+        public void ToGame()
+        {
+            _eventBus.Publish<ChangeStateEvent>(new()
+            {
+                To = typeof(GameRunningState),
+                From = typeof(MenuState)
+            });
+        }
+
+        public void ToShop()
+        {
+            _eventBus.Publish<ChangeStateEvent>(new()
+            {
+                To = typeof(GameRunningState),
+                From = typeof(MenuState)
+            });
         }
     }
 }

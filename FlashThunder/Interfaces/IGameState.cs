@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using FlashThunder.Events;
+using FlashThunder.Managers;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace FlashThunder.Interfaces

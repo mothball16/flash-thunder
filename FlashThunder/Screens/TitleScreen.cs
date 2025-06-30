@@ -9,36 +9,24 @@ namespace FlashThunder.Screens
 {
     internal partial class TitleScreen : IUpdateScreen
     {
+        private readonly ITitleScreenPresenter _presenter;
+        public TitleScreen(ITitleScreenPresenter presenter)
+        {
+            _presenter = presenter;
+        }
         partial void CustomInitialize()
         {
-            PlayButton.Click += (s, a) => ToGame();
-            ShopButton.Click += (s, a) => ToShop();
-
+            PlayButton.Click += (s, a) => _presenter.ToGame();
+            ShopButton.Click += (s, a) => _presenter.ToShop();
         }
 
 
-        private static void ToGame()
-        {
-            EventBus.Publish<ChangeStateEvent>(new()
-            {
-                To = typeof(GameRunningState),
-                From = typeof(MenuState)
-            });
-        }
-
-        private static void ToShop()
-        {
-            EventBus.Publish<ChangeStateEvent>(new()
-            {
-                To = typeof(GameRunningState),
-                From = typeof(MenuState)
-            });
-        }
+       
 
         public void Update(GameTime gameTime)
         {
-            //CautionLineTop.TextureLeft = (CautionLineTop.TextureLeft + 1) % 100;
-            //CautionLineBottom.TextureLeft = (CautionLineTop.TextureLeft + 1) % 100;
+            CautionLineTop.TextureLeft = (CautionLineTop.TextureLeft + 1) % 500;
+            CautionLineBottom.TextureLeft = (CautionLineTop.TextureLeft - 1) % 500;
         }
 
     }
