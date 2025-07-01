@@ -53,13 +53,15 @@
     <PackageReference Include="TextCopy" Version="6.2.1" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="!ECSGameLogic\Misc\" />
     <Folder Include="Content\Data\" />
     <Folder Include="Content\Audio\" />
+    <Folder Include="Content\Textures\Elements\" />
     <Folder Include="Content\UI\" />
-    <Folder Include="ECSGameLogic\Systems\Misc\" />
+    <Folder Include="!ECSGameLogic\Systems\Misc\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ECSGameLogic\Systems\OnUpdate\Reactive\SpawnProcessingSystem.cs" />
+    <None Include="!ECSGameLogic\Systems\OnUpdate\Reactive\SpawnProcessingSystem.cs" />
   </ItemGroup>
     <ItemGroup>
 	    <None Update="Content\GumProject\**\*.*">

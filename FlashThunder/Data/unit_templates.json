@@ -1,6 +1,7 @@
 {
   "infantry_scout": {
     "components": {
+
       "spriteData": {
         "textureAlias": "unit_infantry_scout",
         "sizeX": 1,
@@ -21,7 +22,7 @@
       },
       "move": {
         "range": 2,
-        "traverse": ["land","water","air"]
+        "traverse": [ "land", "water", "air" ]
       },
       "attacks": [
         {
@@ -29,7 +30,7 @@
           "cooldown": 1
         }
       ]
-      
+
     }
   }
 }

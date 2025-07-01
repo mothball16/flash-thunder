@@ -3,6 +3,7 @@ using DefaultEcs;
 using DefaultEcs.System;
 using Microsoft.Xna.Framework.Graphics;
 using FlashThunder.Managers;
+using FlashThunder.Factories;
 
 namespace FlashThunder.Core
 {

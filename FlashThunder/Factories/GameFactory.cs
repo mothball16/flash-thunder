@@ -18,14 +18,20 @@ using System.Text;
 using System.Threading.Tasks;
 using DefaultEcs;
 using Dcrew.MonoGame._2D_Camera;
+using FlashThunder.ECSGameLogic.Systems.OnUpdate.Core;
+using FlashThunder.ECSGameLogic.Systems.OnUpdate.Units;
+using FlashThunder.States;
+using Microsoft.Xna.Framework;
+using FlashThunder._ECSGameLogic.Misc;
+using FlashThunder.Utilities;
 
-namespace FlashThunder.States.Factories
+namespace FlashThunder.Factories
 {
     /// <summary>
     /// Holds the bigass InitContext method so that GameRunningState is not taken up 50% by creation
     /// stuff
     /// </summary>
-    internal class GameRunningStateFactory : IGameStateFactory
+    internal class GameFactory : IGameStateFactory
     {
         // lasting dependencies in-between sessions
         private readonly EventBus _eventBus;
@@ -33,7 +39,7 @@ namespace FlashThunder.States.Factories
         private readonly InputManager<GameAction> _gameInputManager;
         private readonly TileManager _tileManager;
 
-        public GameRunningStateFactory(
+        public GameFactory(
             EventBus eventBus,
             InputManager<GameAction> gameInputManager,
             TexManager texManager,
@@ -69,23 +75,37 @@ namespace FlashThunder.States.Factories
             var actionUpdate = new ActionPollingSystem(world);
 
             // initialize the systems (update)
-            var entityCounting = new DebugSystem(world);
+            var entityCounting = new EntityCountingSystem(_eventBus, world);
             var playerCommand = new PlayerCommandSystem(world);
             var playerCameraInput = new PlayerCameraInputSystem(world);
+
             var playerDebuggingInput = new PlayerDebuggingInputSystem(world);
+            var debuggingGeneral = new DebugSystem(world);
+
+            var controlledEntityMarker = new ControlledEntityMarkerSystem(world);
 
             var spawnerSystem = new SpawnProcessingSystem(world, factory);
+            var entityDisposalTicker = new EntityDisposalTickerSystem(world);
+            var entityFinalDisposal = new EntityFinalDisposalSystem(world);
 
             var _updateSystems = new SequentialSystem<float>(
                 actionUpdate, // Updates active actions
                 mousePolling, // Updates mouse resource
                 entityCounting, // (DEBUGGING) Testing entity count
 
+                
+
                 playerCommand, // Processes any player game commands on this frame
                 playerCameraInput, // Processes any camera-specific commands on this frame
+
                 playerDebuggingInput, // (DEBUGGING) Testing input response
+                debuggingGeneral, // (DEBUGGING) General debugging system
+
+                controlledEntityMarker, // Places a marker on all controlled entities
 
                 spawnerSystem, // Handles any RequestSpawns
+                entityDisposalTicker, // Ticks the entity disposal system
+                entityFinalDisposal, // Actually removes the entities
                 cameraControl // Updates the physical camera in preparation for render
                 );
 
@@ -129,11 +149,23 @@ namespace FlashThunder.States.Factories
             var mapSettings = new EnvironmentResource()
             {
                 TileSize = 64,
+                FocusedTeam = "client",
+                Teams = ["client", "enemy"]
             };
+
+            // optimized thing for position lookups ( the old solution was checking every entity Lol )
+            var entityPositions = world.GetEntities()
+                .With<GridPosComponent>()
+                .AsMultiMap(new DelegatedEqualityComparer<GridPosComponent>(
+                    (obj) => HashCode.Combine(obj.X, obj.Y),
+                    (x,y) => (x.X == y.X && x.Y == y.Y)
+                    ));
 
             world.Set(tileMap);
             world.Set(mapSettings);
+            world.Set(entityPositions);
         }
+
 
         public IGameState Create()
         {

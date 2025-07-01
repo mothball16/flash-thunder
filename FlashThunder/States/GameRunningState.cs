@@ -38,7 +38,7 @@ namespace FlashThunder.States
         {
             _eventBus.Publish<LoadScreenEvent>(new()
             {
-                ScreenFactory = () => new GameScreen().Visual,
+                ScreenFactory = () => new GameScreen(_eventBus).Visual,
                 Layer = ScreenLayer.Primary
             });
         }

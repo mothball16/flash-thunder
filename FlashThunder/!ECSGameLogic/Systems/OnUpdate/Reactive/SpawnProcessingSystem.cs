@@ -2,12 +2,14 @@
 using System;
 using DefaultEcs;
 using DefaultEcs.System;
-using FlashThunder.Core;
 using FlashThunder.Defs;
 using FlashThunder.ECSGameLogic.Components;
+using FlashThunder.Extensions;
+using FlashThunder.Factories;
 
 internal sealed class SpawnProcessingSystem : ISystem<float>
 {
+    private readonly World _world;
     private readonly EntitySet _entitySet;
     private readonly EntityFactory _entityFactory;
 
@@ -15,6 +17,7 @@ internal sealed class SpawnProcessingSystem : ISystem<float>
 
     public SpawnProcessingSystem(World world, EntityFactory factory)
     {
+        _world = world;
         _entityFactory = factory;
 
         _entitySet = world.GetEntities()
@@ -24,6 +27,7 @@ internal sealed class SpawnProcessingSystem : ISystem<float>
 
     public void Update(float dt)
     {
+        
         foreach (ref readonly Entity request in _entitySet.GetEntities())
         {
             var requestInfo = request.Get<SpawnRequestComponent>();
@@ -34,8 +38,7 @@ internal sealed class SpawnProcessingSystem : ISystem<float>
                 Console.WriteLine(
                     $"{requestInfo.EntityID} was requested @ {requestInfo.X}, {requestInfo.Y}");
             }
-
-            request.Dispose();
+            _world.AddDebris(request);
         }
     }
 

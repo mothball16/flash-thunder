@@ -9,7 +9,7 @@ using FlashThunder.Extensions;
 using FlashThunder.ECSGameLogic.Components;
 using FlashThunder.ECSGameLogic.Components.UnitStats;
 
-namespace FlashThunder.Core
+namespace FlashThunder.Factories
 {
     /// <summary>
     /// Spawns entities by entity ID.
@@ -82,6 +82,9 @@ namespace FlashThunder.Core
                     case nameof(ArmorComponent): LoadDefault<ArmorComponent>(rawData); break;
                     case nameof(TileMapComponent): LoadDefault<TileMapComponent>(rawData); break;
                     case nameof(MoveComponent): LoadDefault<MoveComponent>(rawData); break;
+                    case nameof(ToDestroyComponent): LoadDefault<ToDestroyComponent>(rawData); break;
+                    case nameof(ToDestroyInFramesComponent): LoadDefault<ToDestroyInFramesComponent>(rawData); break;
+                    case nameof(ToDestroyInSecondsComponent): LoadDefault<ToDestroyInSecondsComponent>(rawData); break;
 
                     // - - - [ components w/ special handling ] - - -
                     case nameof(HealthComponent):

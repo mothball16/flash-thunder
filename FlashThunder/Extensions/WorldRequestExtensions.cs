@@ -2,6 +2,7 @@
 using DefaultEcs;
 using FlashThunder.ECSGameLogic.Components;
 using FlashThunder.ECSGameLogic.Resources;
+using System;
 
 namespace FlashThunder.Extensions
 {
@@ -17,6 +18,19 @@ namespace FlashThunder.Extensions
                 X = x,
                 Y = y
             });
+        }
+
+        public static void AddDebris(this World world, Entity e)
+        {
+            e.Set(new ToDestroyComponent());
+        }
+        public static void AddDebris(this World world, Entity e, int frames)
+        {
+            e.Set(new ToDestroyInFramesComponent { Lifetime = frames});
+        }
+        public static void AddDebris(this World world, Entity e, float seconds)
+        {
+            e.Set(new ToDestroyInSecondsComponent { Lifetime = seconds });
         }
 
         public static Point TileOfMouse(this World world)

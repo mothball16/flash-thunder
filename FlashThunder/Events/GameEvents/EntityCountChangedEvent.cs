@@ -1,0 +1,12 @@
+﻿using System;
+
+namespace FlashThunder.Events
+{
+    /// <summary>
+    /// An event used to notify listeners that a state change is requested.
+    /// </summary>
+    public struct EntityCountChangedEvent
+    {
+        public int Count { get; set; }
+    }
+}

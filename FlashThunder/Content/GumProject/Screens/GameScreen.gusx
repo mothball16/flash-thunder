@@ -5,13 +5,13 @@
     <Name>Default</Name>
     <Variable>
       <Type>string</Type>
-      <Name>TextInstance.Text</Name>
+      <Name>UnitCount.Text</Name>
       <Value xsi:type="xsd:string">Active Units: 10</Value>
       <SetsValue>true</SetsValue>
     </Variable>
   </State>
   <Instance>
-    <Name>TextInstance</Name>
+    <Name>UnitCount</Name>
     <BaseType>Text</BaseType>
     <DefinedByBase>false</DefinedByBase>
   </Instance>

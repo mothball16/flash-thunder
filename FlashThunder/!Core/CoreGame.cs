@@ -6,7 +6,7 @@ using FlashThunder.Managers;
 using MonoGameGum;
 using FlashThunder.States;
 using FlashThunder.Defs;
-using FlashThunder.States.Factories;
+using FlashThunder.Factories;
 
 namespace FlashThunder.Core
 {
@@ -74,7 +74,7 @@ namespace FlashThunder.Core
             _tileMngr
                 .LoadDefinitions(_texMngr, "tile_defs.json");
             _stateMngr
-                .Register(typeof(GameRunningState), new GameRunningStateFactory
+                .Register(typeof(GameRunningState), new GameFactory
                 (_higherEventBus, _gameInputMngr, _texMngr, _tileMngr).Create)
                 .Register(typeof(TitleState), () => new TitleState(_higherEventBus))
                 .SwitchTo(typeof(TitleState));
@@ -97,9 +97,10 @@ namespace FlashThunder.Core
 
             // - - - [ Spritebatch begins here ] - - -
             _stateMngr.Draw(_spriteBatch);
-            _spriteBatch.End();
 
             // -- [ Spritebatch ends here ] - - -
+            _spriteBatch.End();
+
             _uiMngr.Draw();
             base.Draw(gameTime);
         }

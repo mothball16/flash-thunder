@@ -1,5 +1,9 @@
 [
   {
+    "textureAlias": "element_controlled_tile",
+    "textureName": "Textures/Elements/controlled-tile"
+  },
+  {
     "textureAlias": "tile_asteroid",
     "textureName": "Textures/Tiles/tile_asteroid"
   },

@@ -1,10 +1,22 @@
 {
-  "testEntity": {
+  "test_entity": {
     "components": {
       "spriteData": {
         "textureAlias": "tile_white",
         "sizeX": 1,
         "sizeY": 1
+      }
+    }
+  },
+  "control_marker": {
+    "components": {
+      "spriteData": {
+        "textureAlias": "element_controlled_tile",
+        "sizeX": 1,
+        "sizeY": 1
+      },
+      "toDestroyInFrames": {
+        "lifetime": 1
       }
     }
   }

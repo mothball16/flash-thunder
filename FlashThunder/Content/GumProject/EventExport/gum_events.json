@@ -609,6 +609,20 @@
         "ElementType": "Screens",
         "EventType": 5,
         "TimestampUtc": "2025-06-29T06:55:33.9978956Z"
+      },
+      {
+        "NewName": "GameScreen.EntityCount",
+        "OldName": "GameScreen.TextInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-01T03:40:52.074573Z"
+      },
+      {
+        "NewName": "GameScreen.UnitCount",
+        "OldName": "GameScreen.EntityCount",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-01T03:40:57.0147398Z"
       }
     ]
   }

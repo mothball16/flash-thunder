@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FlashThunder.Interfaces;
+using System;
 using System.Collections.Generic;
 
 namespace FlashThunder.Managers
@@ -6,7 +7,7 @@ namespace FlashThunder.Managers
     /// <summary>
     /// A simple thread-safe event bus implementation.
     /// </summary>
-    public class EventBus
+    public class EventBus : IEventPublisher, IEventSubscriber
     {
         private readonly Dictionary<Type, List<Delegate>> _subscribers;
         private readonly Dictionary<Type, object> _locks;

@@ -35,7 +35,7 @@ partial class GameScreen : MonoGameGum.Forms.Controls.FrameworkElement
             return gue;
         });
     }
-    public TextRuntime TextInstance { get; protected set; }
+    public TextRuntime UnitCount { get; protected set; }
 
     public GameScreen(InteractiveGue visual) : base(visual) { }
     public GameScreen()
@@ -47,7 +47,7 @@ partial class GameScreen : MonoGameGum.Forms.Controls.FrameworkElement
     protected override void ReactToVisualChanged()
     {
         base.ReactToVisualChanged();
-        TextInstance = this.Visual?.GetGraphicalUiElementByName("TextInstance") as TextRuntime;
+        UnitCount = this.Visual?.GetGraphicalUiElementByName("UnitCount") as TextRuntime;
         CustomInitialize();
     }
     //Not assigning variables because Object Instantiation Type is set to By Name rather than Fully In Code
