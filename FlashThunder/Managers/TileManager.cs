@@ -29,7 +29,7 @@ namespace FlashThunder.Managers
         /// <summary>
         /// Attempts to retrieve the texture by name.
         /// </summary>
-        /// <param name="name">The name the texture should be mapped to.</param>
+        /// <param name="tileName">The name the texture should be mapped to.</param>
         /// <returns>The Texture2D object mapped to the name.</returns>
         /// <exception cref="KeyNotFoundException">
         /// Throws if neither tex or default could be found.

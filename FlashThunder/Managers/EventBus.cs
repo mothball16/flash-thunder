@@ -3,10 +3,12 @@ using System.Collections.Generic;
 
 namespace FlashThunder.Managers
 {
+    /// <summary>
+    /// A simple thread-safe event bus implementation.
+    /// </summary>
     public class EventBus
     {
         private readonly Dictionary<Type, List<Delegate>> _subscribers;
-
         private readonly Dictionary<Type, object> _locks;
 
         public EventBus()
@@ -15,6 +17,12 @@ namespace FlashThunder.Managers
             _locks = [];
         }
 
+        /// <summary>
+        /// Attempts to get the lock of the specified event type. If no lock is found for that type,
+        /// create one.
+        /// </summary>
+        /// <typeparam name="T">The event type</typeparam>
+        /// <returns>The lock for the event type</returns>
         private object GetLock<T>()
         {
             lock (_locks)

@@ -20,9 +20,6 @@ namespace FlashThunder.Screens
             ShopButton.Click += (s, a) => _presenter.ToShop();
         }
 
-
-       
-
         public void Update(GameTime gameTime)
         {
             CautionLineTop.TextureLeft = (CautionLineTop.TextureLeft + 1) % 500;

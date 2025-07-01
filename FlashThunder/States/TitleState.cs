@@ -10,11 +10,11 @@ using System;
 
 namespace FlashThunder.States
 {
-    internal class MenuState : IGameState, ITitleScreenPresenter
+    internal class TitleState : IGameState, ITitleScreenPresenter
     {
         private readonly UIElementFactory _uiFactory;
         private readonly EventBus _eventBus;
-        public MenuState(EventBus eventBus)
+        public TitleState(EventBus eventBus)
         {
             _eventBus = eventBus;
             _uiFactory = () => new TitleScreen(this).Visual;
@@ -47,7 +47,7 @@ namespace FlashThunder.States
             _eventBus.Publish<ChangeStateEvent>(new()
             {
                 To = typeof(GameRunningState),
-                From = typeof(MenuState)
+                From = typeof(TitleState)
             });
         }
 
@@ -56,7 +56,7 @@ namespace FlashThunder.States
             _eventBus.Publish<ChangeStateEvent>(new()
             {
                 To = typeof(GameRunningState),
-                From = typeof(MenuState)
+                From = typeof(TitleState)
             });
         }
     }

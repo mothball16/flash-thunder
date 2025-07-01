@@ -13,7 +13,6 @@ namespace FlashThunder.Screens
     {
         partial void CustomInitialize()
         {
-        
         }
     }
 }

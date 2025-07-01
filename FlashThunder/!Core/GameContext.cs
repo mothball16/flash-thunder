@@ -17,14 +17,13 @@ namespace FlashThunder.Core
         private readonly SequentialSystem<SpriteBatch> _drawSystems;
 
         // - - - [ Public Properties ] - - -
-        public World World { get; init; }
-
-
-        // hold a ref. to assetmanager, but this shouldn't really be changed by GameContext
-        public TexManager AssetManager { get; init; }
+        public World World { get; }
+        public EntityFactory Factory { get; }
+        public TexManager AssetManager { get; }
 
         public GameContext(
             World world,
+            EntityFactory factory,
             TexManager assetManager,
             InputMediator inputBridge,
             SequentialSystem<float> onUpd,
@@ -32,6 +31,7 @@ namespace FlashThunder.Core
         {
             // set properties
             World = world;
+            Factory = factory;
             AssetManager = assetManager;
 
             // set priv fields

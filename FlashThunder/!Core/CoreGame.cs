@@ -76,8 +76,8 @@ namespace FlashThunder.Core
             _stateMngr
                 .Register(typeof(GameRunningState), new GameRunningStateFactory
                 (_higherEventBus, _gameInputMngr, _texMngr, _tileMngr).Create)
-                .Register(typeof(MenuState), () => new MenuState(_higherEventBus))
-                .SwitchTo(typeof(MenuState));
+                .Register(typeof(TitleState), () => new TitleState(_higherEventBus))
+                .SwitchTo(typeof(TitleState));
         }
 
         protected override void Update(GameTime gameTime)

@@ -52,11 +52,71 @@ namespace FlashThunder.States.Factories
             // set up the ecs world
             var world = new World();
 
+            // TODO: REMOVE THIS ONCE A PROPER INITIALIZATION IS READY
+            InitWorld(world);
+
             // set up the entity factory
             var factory = new EntityFactory(world, _texManager)
                 .LoadTemplates("entity_templates.json")
                 .LoadTemplates("unit_templates.json");
 
+            // set up the connections between higher systems and the ecs architecture
+            // input is for all input event transmission
+            // mouse is for frame-by-frame updates of specifically the mouse
+            var inputBridge = new InputMediator(world, _gameInputManager);
+            var mousePolling = new MousePollingSystem(world, _gameInputManager, camera);
+            var cameraControl = new CameraControlSystem(world, camera);
+            var actionUpdate = new ActionPollingSystem(world);
+
+            // initialize the systems (update)
+            var entityCounting = new DebugSystem(world);
+            var playerCommand = new PlayerCommandSystem(world);
+            var playerCameraInput = new PlayerCameraInputSystem(world);
+            var playerDebuggingInput = new PlayerDebuggingInputSystem(world);
+
+            var spawnerSystem = new SpawnProcessingSystem(world, factory);
+
+            var _updateSystems = new SequentialSystem<float>(
+                actionUpdate, // Updates active actions
+                mousePolling, // Updates mouse resource
+                entityCounting, // (DEBUGGING) Testing entity count
+
+                playerCommand, // Processes any player game commands on this frame
+                playerCameraInput, // Processes any camera-specific commands on this frame
+                playerDebuggingInput, // (DEBUGGING) Testing input response
+
+                spawnerSystem, // Handles any RequestSpawns
+                cameraControl // Updates the physical camera in preparation for render
+                );
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            // initialize the systems (draw)
+            var sbInit = new SpriteBatchInitSystem(world);
+            var tileMapRender = new TileMapRenderSystem(world, _tileManager);
+            var entityRender = new EntityRenderSystem(world);
+            var selectedTileRender = new SelectedTileRenderSystem(world);
+
+            var _drawSystems = new SequentialSystem<SpriteBatch>(
+                sbInit, // Using our current environment, begin SB based off it
+                tileMapRender, // Tilemap to be rendered at the bottom
+                entityRender, // Entities to be rendered on top of tilemap
+                selectedTileRender // Selected tile to be rendered on top of entities
+                );
+
+            // send back the initialized GameContext
+            return new GameContext(
+                world: world,
+                factory: factory,
+                assetManager: _texManager,
+                inputBridge: inputBridge,
+                onUpd: _updateSystems,
+                onDraw: _drawSystems
+                );
+        }
+
+        private void InitWorld(World world)
+        {
             // FOR NOW: manually initialize the map
             var tileMap = new TileMapComponent()
             {
@@ -73,62 +133,12 @@ namespace FlashThunder.States.Factories
 
             world.Set(tileMap);
             world.Set(mapSettings);
-
-            // set up the connections between higher systems and the ecs architecture
-            // input is for all input event transmission
-            // mouse is for frame-by-frame updates of specifically the mouse
-            var inputBridge = new InputMediator(world, _gameInputManager);
-            var mousePollingSystem = new MousePollingSystem(world, _gameInputManager, camera);
-            var cameraControlSystem = new CameraControlSystem(world, camera);
-            var actionUpdateSystem = new ActionPollingSystem(world);
-
-            // initialize the systems (update)
-            var entityCountingSystem = new DebugSystem(world);
-            var playerCommandSystem = new PlayerCommandSystem(world);
-            var playerCameraInputSystem = new PlayerCameraInputSystem(world);
-            var playerDebuggingInputSystem = new PlayerDebuggingInputSystem(world);
-
-            var spawnerSystem = new SpawnProcessingSystem(world, factory);
-
-            var _updateSystems = new SequentialSystem<float>(
-                actionUpdateSystem, // Updates active actions
-                mousePollingSystem, // Updates mouse resource
-                entityCountingSystem, // (DEBUGGING) Testing entity count
-
-                playerCommandSystem, // Processes any player game commands on this frame
-                playerCameraInputSystem, // Processes any camera-specific commands on this frame
-                playerDebuggingInputSystem, // (DEBUGGING) Testing input response
-
-                spawnerSystem, // Handles any RequestSpawns
-                cameraControlSystem // Updates the physical camera in preparation for render
-                );
-
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-            // initialize the systems (draw)
-            var sbInitSystem = new SpriteBatchInitSystem(world);
-            var tileMapRenderSystem = new TileMapRenderSystem(world, _tileManager);
-            var entityRenderSystem = new EntityRenderSystem(world);
-
-            var _drawSystems = new SequentialSystem<SpriteBatch>(
-                sbInitSystem, // Using our current environment, begin SB based off it
-                tileMapRenderSystem, // Tilemap to be rendered at the bottom
-                entityRenderSystem // Entities to be rendered on top of tilemap
-                );
-
-            // send back the initialized GameContext
-            return new GameContext(
-                world: world,
-                assetManager: _texManager,
-                inputBridge: inputBridge,
-                onUpd: _updateSystems,
-                onDraw: _drawSystems
-                );
         }
 
         public IGameState Create()
         {
             var context = InitContext();
+            InitWorld(context.World);
             return new GameRunningState(_eventBus, context);
         }
     }
