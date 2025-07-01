@@ -3,9 +3,13 @@
     "components": {
 
       "spriteData": {
-        "textureAlias": "unit_infantry_scout",
-        "sizeX": 1,
-        "sizeY": 1
+        "layers": {
+          "base": {
+            "textureAlias": "unit_infantry_scout",
+            "sizeX": 1,
+            "sizeY": 1
+          }
+        }
       },
       "health": {
         "maxHealth": 100

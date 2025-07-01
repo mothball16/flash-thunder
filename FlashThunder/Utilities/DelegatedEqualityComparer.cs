@@ -8,7 +8,7 @@ namespace FlashThunder.Utilities
 {
     /// <summary>
     /// Credit: https://stackoverflow.com/a/42456012/30180794
-    /// For anonymous equality comparers
+    /// For equality comparer shortcut cause im not making a class for two lines of code
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class DelegatedEqualityComparer<T> : EqualityComparer<T>

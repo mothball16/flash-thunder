@@ -53,7 +53,6 @@
     <PackageReference Include="TextCopy" Version="6.2.1" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="!ECSGameLogic\Misc\" />
     <Folder Include="Content\Data\" />
     <Folder Include="Content\Audio\" />
     <Folder Include="Content\Textures\Elements\" />

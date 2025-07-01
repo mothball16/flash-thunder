@@ -22,8 +22,8 @@ using FlashThunder.ECSGameLogic.Systems.OnUpdate.Core;
 using FlashThunder.ECSGameLogic.Systems.OnUpdate.Units;
 using FlashThunder.States;
 using Microsoft.Xna.Framework;
-using FlashThunder._ECSGameLogic.Misc;
 using FlashThunder.Utilities;
+using FlashThunder._ECSGameLogic.ComponentLoaders;
 
 namespace FlashThunder.Factories
 {
@@ -61,8 +61,14 @@ namespace FlashThunder.Factories
             // TODO: REMOVE THIS ONCE A PROPER INITIALIZATION IS READY
             InitWorld(world);
 
+
+            List<IComponentLoader> componentLoaders = [
+                new HealthComponentLoader(),
+                new SpriteDataComponentLoader(_texManager)
+                ];
+
             // set up the entity factory
-            var factory = new EntityFactory(world, _texManager)
+            var factory = new EntityFactory(world, componentLoaders)
                 .LoadTemplates("entity_templates.json")
                 .LoadTemplates("unit_templates.json");
 

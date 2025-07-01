@@ -8,27 +8,95 @@ using FlashThunder.Managers;
 using FlashThunder.Extensions;
 using FlashThunder.ECSGameLogic.Components;
 using FlashThunder.ECSGameLogic.Components.UnitStats;
+using FlashThunder._ECSGameLogic.Misc;
+using System.Text.Json;
+using Microsoft.Xna.Framework.Graphics;
+using FlashThunder._ECSGameLogic;
+using FlashThunder.Interfaces;
+using System.Reflection;
+using System.Linq;
+using DefaultEcs.System;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Security.Cryptography;
 
 namespace FlashThunder.Factories
 {
+    public delegate void ComponentLoaderDelegate(Entity e, JsonElement data);
+
     /// <summary>
     /// Spawns entities by entity ID.
     /// </summary>
     public class EntityFactory
     {
+        private const string ComponentIdentifier = "Component";
         private readonly World _world;
-        private readonly TexManager _texManager;
         private readonly Dictionary<string, EntityTemplateDef> _templates;
+        private readonly Dictionary<string, ComponentLoaderDelegate> _loaders;
 
-        public EntityFactory(World world, TexManager textureManager)
+        public EntityFactory(World world, List<IComponentLoader> loaders)
         {
             _world = world;
-            _texManager = textureManager;
             _templates = [];
+            _loaders = [];
+            MapComponentsToLoaders();
+            loaders.ForEach(l => AddCustomLoader(l));
         }
 
-        private static string ToComponentKey(string raw)
-            => string.Concat(raw.FirstCharToUpper(), "Component");
+        private static string ClassToComponentKey(string raw, string suffix)
+            => raw[..raw.LastIndexOf(suffix)].FirstCharToLower();
+
+        /// <summary>
+        /// Adds a custom loader to the loader dictionary.
+        /// </summary>
+        /// <param name="loader"></param>
+        public void AddCustomLoader(IComponentLoader loader)
+        {
+            _loaders[ClassToComponentKey(loader.GetType().Name, ComponentIdentifier)]
+                = (e, data) => loader.LoadComponent(e, data);
+        }
+
+        public static ComponentLoaderDelegate CreateTypedLoader<T>()
+        {
+            return (e, data) =>
+            {
+                var component = DataLoader.DeserObject<T>(data.GetRawText());
+                e.Set(component);
+            };
+        }
+
+        /// <summary>
+        /// From the classes/structs in our assembly that match our component identifier,
+        /// add them to the loader dictionary with a default loading method.
+        /// This should only be run once during initialization.
+        /// </summary>
+        /// <remarks>
+        /// This should eventually be refactored because it relies on hacky string manipulation
+        /// </remarks>
+        public void MapComponentsToLoaders()
+        {
+            // get all classes/structs that match our component naming scheme
+            var components = Assembly
+                .GetExecutingAssembly()
+                .GetTypes()
+                .Where(t =>
+                    t.Name.EndsWith(ComponentIdentifier)
+                    && (t.IsClass || t.IsValueType))
+                .ToList();
+
+            // bind all components to the default loader
+            foreach (var componentType in components)
+            {
+                var loaderKey = ClassToComponentKey(componentType.Name, ComponentIdentifier);
+                // create a loader for handling loading of that specific component type
+                var typedLoader = typeof(EntityFactory)
+                    .GetMethod(nameof(CreateTypedLoader), BindingFlags.Public | BindingFlags.Static)
+                    .MakeGenericMethod(componentType)
+                    .Invoke(null, null) as ComponentLoaderDelegate;
+
+                // add the new typed loader to the loader dictionary
+                _loaders[loaderKey] = typedLoader;
+            }
+        }
 
         public EntityFactory LoadTemplates(string filePath)
         {
@@ -60,60 +128,16 @@ namespace FlashThunder.Factories
             if (!_templates.TryGetValue(id, out EntityTemplateDef template))
                 throw new KeyNotFoundException($"[ERROR] {id} was not found in the entity templates.");
 
-            // Local helper for when we don't need any additional logic.
-            void LoadDefault<T>(string data)
-            {
-                var component = DataLoader.DeserObject<T>(data);
-                entity.Set<T>(component);
-            }
-
             foreach (var componentRep in template.Components)
             {
-                var rawData = componentRep.Value.GetRawText();
-                var jsonData = componentRep.Value;
-                var componentName = ToComponentKey(componentRep.Key);
-
-                switch (componentName)
+                var cmpName = componentRep.Key;
+                var cmpData = componentRep.Value;
+                if (!_loaders.TryGetValue(cmpName, out ComponentLoaderDelegate loader))
                 {
-                    // - - - [ components that get handled by default ] - - -
-                    case nameof(VisionComponent): LoadDefault<VisionComponent>(rawData); break;
-                    case nameof(ControlledComponent): LoadDefault<ControlledComponent>(rawData); break;
-                    case nameof(GridPosComponent): LoadDefault<GridPosComponent>(rawData); break;
-                    case nameof(ArmorComponent): LoadDefault<ArmorComponent>(rawData); break;
-                    case nameof(TileMapComponent): LoadDefault<TileMapComponent>(rawData); break;
-                    case nameof(MoveComponent): LoadDefault<MoveComponent>(rawData); break;
-                    case nameof(ToDestroyComponent): LoadDefault<ToDestroyComponent>(rawData); break;
-                    case nameof(ToDestroyInFramesComponent): LoadDefault<ToDestroyInFramesComponent>(rawData); break;
-                    case nameof(ToDestroyInSecondsComponent): LoadDefault<ToDestroyInSecondsComponent>(rawData); break;
-
-                    // - - - [ components w/ special handling ] - - -
-                    case nameof(HealthComponent):
-                        var max = jsonData.GetProperty("maxHealth").GetInt32();
-                        var healthExists = jsonData.TryGetProperty("health", out var health);
-                        var healthComponent = new HealthComponent()
-                        {
-                            MaxHealth = max,
-                            Health = healthExists ? health.GetInt32() : max
-                        };
-                        entity.Set(healthComponent);
-                        break;
-                    case nameof(SpriteDataComponent):
-                        var tex = _texManager
-                            [jsonData.GetProperty("textureAlias").GetString()];
-
-                        var scaleX = jsonData.GetProperty("sizeX").GetInt32();
-                        var scaleY = jsonData.GetProperty("sizeY").GetInt32();
-
-                        var component = new SpriteDataComponent(tex, scaleX, scaleY);
-                        entity.Set(component);
-                        break;
-
-                    default: // - - - [ unhandled component (not good), throw exception ] - - -
-                        Console.WriteLine(
-                            $"[ERROR] Unhandled component {componentName} in entity template {id}");
-                        break;
-
+                    Console.WriteLine($"No loader found for {cmpName}");
+                    continue;
                 }
+                loader(entity, cmpData);
             }
 
             return entity;

@@ -33,16 +33,23 @@ namespace FlashThunder.ECSGameLogic.Systems.OnDraw
             {
                 var spData = e.Get<SpriteDataComponent>();
                 var pos = e.Get<GridPosComponent>();
+                Console.WriteLine("fuh?");
 
-                sb.Draw(
-                    texture: spData.Texture,
-                    destinationRectangle: new(
-                        pos.X * _tileSize,
-                        pos.Y * _tileSize,
-                        _tileSize,
-                        _tileSize
-                        ),
-                    color: Color.White);
+                foreach (var layer in spData.Layers.Values)
+                {
+                    sb.Draw(
+                        texture: layer.Texture,
+
+                        destinationRectangle: new Rectangle(
+                            pos.X * _tileSize,
+                            pos.Y * _tileSize,
+                            _tileSize,
+                            _tileSize
+                            ),
+                        color: Color.White
+                        //layerDepth: layer.ZIndex
+                        );
+                }
             }
         }
 

@@ -1,13 +1,32 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using FlashThunder._ECSGameLogic.Misc;
+using Microsoft.Xna.Framework.Graphics;
+using RenderingLibrary.Graphics;
+using System;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace FlashThunder.ECSGameLogic.Components
 {
-    public class SpriteDataComponent(Texture2D texture, int x, int y)
+    /// <summary>
+    /// Represents a collection of sprite layers for rendering. The ZIndex of each SpriteLayer
+    /// determines what is rendered over the other.
+    /// </summary>
+    public class SpriteDataComponent
     {
-        public Texture2D Texture { get; set; } = texture;
+        public Dictionary<string, SpriteLayer> Layers { get; set; }
+        public SpriteDataComponent(Dictionary<string, SpriteLayer> layers)
+        {
+            Layers = layers;
+        }
 
-        // scale as 1, 1 means that the sprite will be contained within a 1 x 1 tile
-        public int SizeX { get; set; } = x;
-        public int SizeY { get; set; } = y;
+        // shortcut methods
+        public void AddLayer(string layerName, SpriteLayer layer)
+            => Layers.Add(layerName, layer);
+
+        public bool TryGetLayer(string layerName, out SpriteLayer layer)
+            => Layers.TryGetValue(layerName, out layer);
+
+        public void RemoveLayer(string layerName)
+            => Layers.Remove(layerName);
     }
 }
