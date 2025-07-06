@@ -1,8 +1,7 @@
-﻿namespace FlashThunder.ECSGameLogic.Components.UnitStats
+﻿namespace FlashThunder.ECSGameLogic.Components.UnitStats;
+
+internal struct MoveComponent
 {
-    public struct MoveComponent
-    {
-        public int Range { get; set; }
-        public string[] Traverse { get; set; }
-    }
+    public int Range { get; set; }
+    public string[] Traverse { get; set; }
 }

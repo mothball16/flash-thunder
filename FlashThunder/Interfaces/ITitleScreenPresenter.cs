@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlashThunder.Interfaces
+namespace FlashThunder.Interfaces;
+
+internal interface ITitleScreenPresenter
 {
-    internal interface ITitleScreenPresenter
-    {
-        public void ToGame();
-        public void ToShop();
-    }
+    public void ToGame();
+    public void ToShop();
 }

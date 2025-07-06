@@ -5,158 +5,157 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 
-namespace FlashThunder.Managers
+namespace FlashThunder.Managers;
+
+/// <summary>
+/// Handles the loading and retrieving of textures.
+/// </summary>
+internal class TexManager
 {
-    /// <summary>
-    /// Handles the loading and retrieving of textures.
-    /// </summary>
-    public class TexManager
+    private const string DefaultName = "!default";
+    private readonly Dictionary<string, Texture2D> _cache;
+    private readonly ContentManager _contentManager;
+
+    public TexManager(ContentManager cm, string defaultTex = null)
     {
-        private const string DefaultName = "!default";
-        private readonly Dictionary<string, Texture2D> _cache;
-        private readonly ContentManager _contentManager;
+        _cache = [];
+        _contentManager = cm;
 
-        public TexManager(ContentManager cm, string defaultTex = null)
+        if (defaultTex != null)
+            RegisterDefault(defaultTex);
+    }
+
+    public Texture2D this[string name]
+    {
+        get { return Get(name); }
+        set { Set(name, value); }
+    }
+
+    private bool TryLoad(string name, out Texture2D tex)
+    {
+        try
         {
-            _cache = [];
-            _contentManager = cm;
-
-            if (defaultTex != null)
-                RegisterDefault(defaultTex);
+            tex = _contentManager.Load<Texture2D>(name);
+            return true;
         }
-
-        public Texture2D this[string name]
+        catch (Exception ex)
         {
-            get { return Get(name); }
-            set { Set(name, value); }
+            tex = null;
+
+            Console.WriteLine($"[WARNING] Failed to load texture {name}. " +
+                $"\nDetails: {ex.Message}");
+
+            return false;
         }
+    }
 
-        private bool TryLoad(string name, out Texture2D tex)
-        {
-            try
-            {
-                tex = _contentManager.Load<Texture2D>(name);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                tex = null;
-
-                Console.WriteLine($"[WARNING] Failed to load texture {name}. " +
-                    $"\nDetails: {ex.Message}");
-
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Initialize a texture with the provided alias for future lookup.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public TexManager Register(string alias, string name)
-        {
-            if (TryLoad(name, out Texture2D tex))
-                _cache[alias] = tex;
-            else
-                Console.WriteLine($"[WARNING] Texture {name} failed to register!");
-
-            return this;
-        }
-
-        /// <summary>
-        /// Initialize a texture as the default texture in the cache.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public TexManager RegisterDefault(string name)
-            => Register(DefaultName, name);
-
-        /// <summary>
-        /// Directly pass a texture to be stored, foregoing the Register logic.
-        /// </summary>
-        /// <param name="alias"></param>
-        /// <param name="tex"></param>
-        /// <returns></returns>
-        public TexManager Set(string alias, Texture2D tex)
-        {
+    /// <summary>
+    /// Initialize a texture with the provided alias for future lookup.
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    public TexManager Register(string alias, string name)
+    {
+        if (TryLoad(name, out Texture2D tex))
             _cache[alias] = tex;
-            return this;
-        }
+        else
+            Console.WriteLine($"[WARNING] Texture {name} failed to register!");
 
-        /// <summary>
-        /// Directly set the default to a texture, foregoing the Register logic.
-        /// </summary>
-        /// <param name="tex"></param>
-        /// <returns></returns>
-        public TexManager SetDefault(Texture2D tex)
-            => Set(DefaultName, tex);
+        return this;
+    }
 
-        /// <summary>
-        /// Attempts to retrieve the texture by name.
-        /// </summary>
-        /// <param name="name">The name the texture should be mapped to.</param>
-        /// <returns>The Texture2D object mapped to the name.</returns>
-        /// <exception cref="KeyNotFoundException">
-        /// Throws if neither tex or default could be found.
-        /// </exception>
-        public Texture2D Get(string name)
+    /// <summary>
+    /// Initialize a texture as the default texture in the cache.
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    public TexManager RegisterDefault(string name)
+        => Register(DefaultName, name);
+
+    /// <summary>
+    /// Directly pass a texture to be stored, foregoing the Register logic.
+    /// </summary>
+    /// <param name="alias"></param>
+    /// <param name="tex"></param>
+    /// <returns></returns>
+    public TexManager Set(string alias, Texture2D tex)
+    {
+        _cache[alias] = tex;
+        return this;
+    }
+
+    /// <summary>
+    /// Directly set the default to a texture, foregoing the Register logic.
+    /// </summary>
+    /// <param name="tex"></param>
+    /// <returns></returns>
+    public TexManager SetDefault(Texture2D tex)
+        => Set(DefaultName, tex);
+
+    /// <summary>
+    /// Attempts to retrieve the texture by name.
+    /// </summary>
+    /// <param name="name">The name the texture should be mapped to.</param>
+    /// <returns>The Texture2D object mapped to the name.</returns>
+    /// <exception cref="KeyNotFoundException">
+    /// Throws if neither tex or default could be found.
+    /// </exception>
+    public Texture2D Get(string name)
+    {
+        if (!_cache.TryGetValue(name, out Texture2D tex))
         {
-            if (!_cache.TryGetValue(name, out Texture2D tex))
+            Console.WriteLine(
+                $"[WARNING] Texture {name} wasn't found in the texture cache." +
+                $"Attempting to retrieve default instead.");
+
+            // if we don't even have a default, throw an exception
+            if (!_cache.TryGetValue(DefaultName, out Texture2D defaultTile))
             {
-                Console.WriteLine(
-                    $"[WARNING] Texture {name} wasn't found in the texture cache." +
-                    $"Attempting to retrieve default instead.");
-
-                // if we don't even have a default, throw an exception
-                if (!_cache.TryGetValue(DefaultName, out Texture2D defaultTile))
-                {
-                    throw new KeyNotFoundException(
-                        $"No default texture was found to replacing missing texture {name}.");
-                }
-
-                // set the tex to default (we know that it does exist now)
-                tex = defaultTile;
+                throw new KeyNotFoundException(
+                    $"No default texture was found to replacing missing texture {name}.");
             }
 
-            return tex;
+            // set the tex to default (we know that it does exist now)
+            tex = defaultTile;
         }
 
-        /// <summary>
-        /// Clears out everything.
-        /// </summary>
-        public TexManager Clear(bool clearDefault = false)
+        return tex;
+    }
+
+    /// <summary>
+    /// Clears out everything.
+    /// </summary>
+    public TexManager Clear(bool clearDefault = false)
+    {
+        Texture2D temp = null;
+
+        if (!clearDefault && _cache.TryGetValue(DefaultName, out Texture2D val))
         {
-            Texture2D temp = null;
-
-            if (!clearDefault && _cache.TryGetValue(DefaultName, out Texture2D val))
-            {
-                temp = val;
-            }
-
-            _cache.Clear();
-
-            if (temp != null)
-            {
-                _cache[DefaultName] = temp;
-            }
-
-            return this;
+            temp = val;
         }
 
-        public TexManager LoadDefinitions(string path)
+        _cache.Clear();
+
+        if (temp != null)
         {
-            var defs = DataLoader.LoadObject<List<TextureDef>>(path);
-
-            foreach (var def in defs)
-            {
-                Register(
-                    def.TextureAlias ?? def.TextureName,
-                    def.TextureName
-                    );
-            }
-
-            return this;
+            _cache[DefaultName] = temp;
         }
+
+        return this;
+    }
+
+    public TexManager LoadDefinitions(string path)
+    {
+        var defs = DataLoader.LoadObject<List<TextureDef>>(path);
+
+        foreach (var def in defs)
+        {
+            Register(
+                def.TextureAlias ?? def.TextureName,
+                def.TextureName
+                );
+        }
+
+        return this;
     }
 }

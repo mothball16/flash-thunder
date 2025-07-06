@@ -1,14 +1,13 @@
-﻿namespace FlashThunder.ECSGameLogic.Components
+﻿namespace FlashThunder.ECSGameLogic.Components;
+
+internal struct ToDestroyComponent
 {
-    public struct ToDestroyComponent
-    {
-    }
-    public struct ToDestroyInFramesComponent
-    {
-        public int Lifetime { get; set; }
-    }
-    public struct ToDestroyInSecondsComponent
-    {
-        public float Lifetime { get; set; }
-    }
+}
+internal struct ToDestroyInFramesComponent
+{
+    public int Lifetime { get; set; }
+}
+internal struct ToDestroyInSecondsComponent
+{
+    public float Lifetime { get; set; }
 }

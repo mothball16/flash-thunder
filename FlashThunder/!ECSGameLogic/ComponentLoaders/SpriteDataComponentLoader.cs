@@ -13,36 +13,35 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace FlashThunder._ECSGameLogic.ComponentLoaders
+namespace FlashThunder.ECSGameLogic.ComponentLoaders;
+
+internal class SpriteDataComponentLoader : IComponentLoader
 {
-    internal class SpriteDataComponentLoader : IComponentLoader
+    private readonly TexManager _texManager;
+    public SpriteDataComponentLoader(TexManager texManager)
     {
-        private readonly TexManager _texManager;
-        public SpriteDataComponentLoader(TexManager texManager)
+        _texManager = texManager;
+    }
+    public void LoadComponent(Entity e, JsonElement rawData)
+    {
+        Dictionary<string, SpriteLayer> initializedLayers = [];
+        SpriteLayer LoadLayer(JsonElement raw)
         {
-            _texManager = texManager;
+            var tex = _texManager[raw.GetProperty("textureAlias").GetString()];
+            var scaleX = raw.GetProperty("sizeX").GetInt32();
+            var scaleY = raw.GetProperty("sizeY").GetInt32();
+            return new SpriteLayer
+            {
+                Texture = tex,
+                SizeX = scaleX,
+                SizeY = scaleY
+            };
         }
-        public void LoadComponent(Entity e, JsonElement rawData)
+        //full initialization
+        foreach(var layer in rawData.GetProperty("layers").EnumerateObject())
         {
-            Dictionary<string, SpriteLayer> initializedLayers = [];
-            SpriteLayer LoadLayer(JsonElement raw)
-            {
-                var tex = _texManager[raw.GetProperty("textureAlias").GetString()];
-                var scaleX = raw.GetProperty("sizeX").GetInt32();
-                var scaleY = raw.GetProperty("sizeY").GetInt32();
-                return new SpriteLayer
-                {
-                    Texture = tex,
-                    SizeX = scaleX,
-                    SizeY = scaleY
-                };
-            }
-            //full initialization
-            foreach(var layer in rawData.GetProperty("layers").EnumerateObject())
-            {
-                initializedLayers.Add(layer.Name, LoadLayer(layer.Value));
-            }
-            e.Set(new SpriteDataComponent(initializedLayers));
+            initializedLayers.Add(layer.Name, LoadLayer(layer.Value));
         }
+        e.Set(new SpriteDataComponent(initializedLayers));
     }
 }

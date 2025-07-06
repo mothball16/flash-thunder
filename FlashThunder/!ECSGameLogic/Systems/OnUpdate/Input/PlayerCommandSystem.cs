@@ -1,36 +1,29 @@
 ﻿using DefaultEcs;
 using DefaultEcs.System;
+using FlashThunder._ECSGameLogic;
 using FlashThunder.ECSGameLogic.Components;
+using System;
 
-namespace FlashThunder.ECSGameLogic.Systems.OnUpdate.Input
+namespace FlashThunder.ECSGameLogic.Systems.OnUpdate.Input;
+
+/// <summary>
+/// Modifies the intents of all controlled units.
+/// </summary>
+[With(typeof(ControlledComponent), typeof(GridPosComponent))]
+internal sealed class PlayerCommandSystem : AEntitySetSystem<GameFrameSnapshot>
 {
-    /// <summary>
-    /// Modifies the intents of all controlled units.
-    /// </summary>
-    internal sealed class PlayerCommandSystem : ISystem<float>
+    private readonly World _world;
+
+    public bool IsEnabled { get; set; }
+
+    public PlayerCommandSystem(World world) : base(world)
     {
-        private readonly World _world;
-        private readonly EntitySet _entitySet;
+        _world = world;
+    }
 
-        public bool IsEnabled { get; set; }
-
-        public PlayerCommandSystem(World world)
-        {
-            _world = world;
-
-            _entitySet = world.GetEntities()
-                .With<ControlledComponent>()
-                .With<GridPosComponent>()
-                .AsSet();
-        }
-
-        public void Update(float dt)
-        {
-            foreach (ref readonly Entity e in _entitySet.GetEntities())
-            {
-            }
-        }
-
-        public void Dispose() { }
+    protected override void Update(GameFrameSnapshot state, in Entity entity)
+    {
+        throw new NotSupportedException("PlayerCommandSystem is not implemented yet. " +
+"This system is intended to modify the intents of all controlled units based on player input.");
     }
 }

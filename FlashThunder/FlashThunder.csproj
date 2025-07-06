@@ -31,8 +31,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Aether.Physics2D.Diagnostics.MG" Version="2.2.0" />
-    <PackageReference Include="Aether.Physics2D.MG" Version="2.2.0" />
     <PackageReference Include="Dcrew.MonoGame.2D_Camera" Version="1.5.0" />
     <PackageReference Include="DefaultEcs" Version="0.17.2" />
     <PackageReference Include="FontStashSharp" Version="1.3.10" />
@@ -60,7 +58,7 @@
     <Folder Include="!ECSGameLogic\Systems\Misc\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="!ECSGameLogic\Systems\OnUpdate\Reactive\SpawnProcessingSystem.cs" />
+    <None Include="!ECSGameLogic\Systems\OnUpdate\Set\Reactive\SpawnProcessingSystem.cs" />
   </ItemGroup>
     <ItemGroup>
 	    <None Update="Content\GumProject\**\*.*">

@@ -1,10 +1,9 @@
-namespace FlashThunder.Components
+namespace FlashThunder.Components;
+
+partial class Icon
 {
-    partial class Icon
+    partial void CustomInitialize()
     {
-        partial void CustomInitialize()
-        {
-        
-        }
+    
     }
 }

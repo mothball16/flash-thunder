@@ -1,13 +1,14 @@
-﻿namespace FlashThunder.ECSGameLogic.Systems.OnUpdate.Reactive;
+﻿namespace FlashThunder.ECSGameLogic.Systems.OnUpdate.Set.Reactive;
 using System;
 using DefaultEcs;
 using DefaultEcs.System;
+using FlashThunder._ECSGameLogic;
 using FlashThunder.Defs;
 using FlashThunder.ECSGameLogic.Components;
 using FlashThunder.Extensions;
 using FlashThunder.Factories;
 
-internal sealed class SpawnProcessingSystem : ISystem<float>
+internal sealed class SpawnProcessingSystem : ISystem<GameFrameSnapshot>
 {
     private readonly World _world;
     private readonly EntitySet _entitySet;
@@ -25,7 +26,7 @@ internal sealed class SpawnProcessingSystem : ISystem<float>
             .AsSet();
     }
 
-    public void Update(float dt)
+    public void Update(GameFrameSnapshot _)
     {
         
         foreach (ref readonly Entity request in _entitySet.GetEntities())

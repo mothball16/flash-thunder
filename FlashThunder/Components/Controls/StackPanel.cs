@@ -7,13 +7,12 @@ using RenderingLibrary.Graphics;
 
 using System.Linq;
 
-namespace FlashThunder.Components
+namespace FlashThunder.Components;
+
+partial class StackPanel
 {
-    partial class StackPanel
+    partial void CustomInitialize()
     {
-        partial void CustomInitialize()
-        {
-        
-        }
+    
     }
 }

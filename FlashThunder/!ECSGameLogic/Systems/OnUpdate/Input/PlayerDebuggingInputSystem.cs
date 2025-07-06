@@ -1,47 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using DefaultEcs;
+﻿using DefaultEcs;
 using DefaultEcs.System;
-using FlashThunder.Enums;
+using FlashThunder._ECSGameLogic;
 using FlashThunder.Defs;
-using FlashThunder.Extensions;
 using FlashThunder.ECSGameLogic.Events;
+using FlashThunder.Enums;
+using FlashThunder.Extensions;
+using System;
+using System.Collections.Generic;
 
-namespace FlashThunder.ECSGameLogic.Systems.OnUpdate.Input
+namespace FlashThunder.ECSGameLogic.Systems.OnUpdate.Input;
+
+internal sealed class PlayerDebuggingInputSystem : ISystem<GameFrameSnapshot>
 {
-    internal sealed class PlayerDebuggingInputSystem : ISystem<float>
+    private readonly World _world;
+    private readonly List<IDisposable> _subscriptions;
+    private GameFrameSnapshot _lastSnapshot;
+    public bool IsEnabled { get; set; }
+
+    public PlayerDebuggingInputSystem(World world)
     {
-        private readonly World _world;
-        private readonly List<IDisposable> _subscriptions;
-        public bool IsEnabled { get; set; }
+        _world = world;
 
-        public PlayerDebuggingInputSystem(World world)
+        _subscriptions = [
+            world.Subscribe<ActionActivatedEvent>(OnActionActivated)
+            ];
+    }
+
+    public void OnActionActivated(in ActionActivatedEvent msg)
+    {
+        if (msg.Action == GameAction.SpawnTest)
         {
-            _world = world;
-
-            _subscriptions = [
-                world.Subscribe<ActionActivatedEvent>(OnActionActivated)
-
-                ];
+            var mouseTile = _lastSnapshot.Mouse.TilePosition;
+            _world.RequestSpawn(EntityID.InfantryScout, mouseTile.X, mouseTile.Y);
         }
+    }
 
-        public void OnActionActivated(in ActionActivatedEvent msg)
-        {
-            if (msg.Action == GameAction.SpawnTest)
-            {
-                var mouseTile = _world.TileOfMouse();
-                _world.RequestSpawn(EntityID.InfantryScout, mouseTile.X, mouseTile.Y);
-            }
-        }
+    public void Update(GameFrameSnapshot state)
+    {
+        _lastSnapshot = state;
+    }
 
-        public void Update(float dt)
-        {
-        }
-
-        public void Dispose()
-        {
-            _subscriptions.ForEach(s => s.Dispose());
-            GC.SuppressFinalize(this);
-        }
+    public void Dispose()
+    {
+        _subscriptions.ForEach(s => s.Dispose());
+        GC.SuppressFinalize(this);
     }
 }

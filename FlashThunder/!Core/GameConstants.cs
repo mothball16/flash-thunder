@@ -1,7 +1,6 @@
-﻿namespace FlashThunder.Core
+﻿namespace FlashThunder.Core;
+
+internal static class GameConstants
 {
-    public static class GameConstants
-    {
-        // Temporary
-    }
+    public const int TileSize = 64;
 }

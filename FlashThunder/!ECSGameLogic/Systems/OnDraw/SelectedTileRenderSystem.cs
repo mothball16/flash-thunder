@@ -7,38 +7,35 @@ using FlashThunder.ECSGameLogic.Resources;
 using FlashThunder.ECSGameLogic.Components;
 using MonoGame.Shapes;
 using System;
+using FlashThunder._ECSGameLogic;
+using FlashThunder.Core;
 
-namespace FlashThunder.ECSGameLogic.Systems.OnDraw
+namespace FlashThunder.ECSGameLogic.Systems.OnDraw;
+
+/// <summary>
+/// Renders the tilemap. Done separately because it's handled differently than entity rendering.
+/// </summary>
+internal sealed class SelectedTileRenderSystem : ISystem<DrawFrameSnapshot>
 {
-    /// <summary>
-    /// Renders the tilemap. Done separately because it's handled differently than entity rendering.
-    /// </summary>
-    internal sealed class SelectedTileRenderSystem : ISystem<SpriteBatch>
+    private readonly World _world;
+    private const int t = GameConstants.TileSize;
+    public bool IsEnabled { get; set; }
+
+    public SelectedTileRenderSystem(World world)
     {
-        private readonly World _world;
-        public bool IsEnabled { get; set; }
+        _world = world;
+    }
 
-        public SelectedTileRenderSystem(World world)
-        {
-            _world = world;
-        }
+    public void Update(DrawFrameSnapshot state)
+    {
 
-        public void Update(SpriteBatch sb)
-        {
-            var envRes = _world.Get<EnvironmentResource>();
-            var mouseRes = _world.Get<MouseResource>();
-            sb.DrawRectangle(
-                new Rectangle(
-                    mouseRes.TileX * envRes.TileSize,
-                    mouseRes.TileY * envRes.TileSize,
-                    envRes.TileSize,
-                    envRes.TileSize),
-                new Color(255,200,200),
-                2);
-        }
+        state.SpriteBatch.DrawRectangle(
+            new Rectangle(state.Mouse.TileX * t, state.Mouse.TileY * t, t, t),
+            new Color(255,200,200),
+            2);
+    }
 
-        public void Dispose()
-        {
-        }
+    public void Dispose()
+    {
     }
 }

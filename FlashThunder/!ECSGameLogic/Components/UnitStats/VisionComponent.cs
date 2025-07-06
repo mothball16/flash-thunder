@@ -1,7 +1,6 @@
-﻿namespace FlashThunder.ECSGameLogic.Components.UnitStats
+﻿namespace FlashThunder.ECSGameLogic.Components.UnitStats;
+
+internal struct VisionComponent
 {
-    public struct VisionComponent
-    {
-        public int Value { get; set; }
-    }
+    public int Value { get; set; }
 }

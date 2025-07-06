@@ -6,14 +6,13 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Text.Json;
 
-namespace FlashThunder.Interfaces
+namespace FlashThunder.Interfaces;
+
+/// <summary>
+/// Used to handle special cases of component loading where dependencies are required.
+/// 
+/// </summary>
+public interface IComponentLoader
 {
-    /// <summary>
-    /// Used to handle special cases of component loading where dependencies are required.
-    /// 
-    /// </summary>
-    public interface IComponentLoader
-    {
-        public void LoadComponent(Entity e, JsonElement rawData);
-    }
+    public void LoadComponent(Entity e, JsonElement rawData);
 }

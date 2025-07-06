@@ -1,9 +1,8 @@
-﻿namespace FlashThunder.ECSGameLogic.Components
+﻿namespace FlashThunder.ECSGameLogic.Components;
+
+internal struct SpawnRequestComponent
 {
-    public struct SpawnRequestComponent
-    {
-        public string EntityID { get; set; }
-        public int X { get; set; }
-        public int Y { get; set; }
-    }
+    public string EntityID { get; set; }
+    public int X { get; set; }
+    public int Y { get; set; }
 }

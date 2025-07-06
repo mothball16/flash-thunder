@@ -1,7 +1,6 @@
-﻿namespace FlashThunder.ECSGameLogic.Components
+﻿namespace FlashThunder.ECSGameLogic.Components;
+
+internal struct ControlledComponent
 {
-    public struct ControlledComponent
-    {
-        public string Owner { get; set; }
-    }
+    public string Owner { get; set; }
 }

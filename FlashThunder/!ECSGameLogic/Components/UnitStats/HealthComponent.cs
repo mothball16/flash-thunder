@@ -1,8 +1,7 @@
-﻿namespace FlashThunder.ECSGameLogic.Components.UnitStats
+﻿namespace FlashThunder.ECSGameLogic.Components.UnitStats;
+
+internal struct HealthComponent
 {
-    public struct HealthComponent
-    {
-        public int Health { get; set; }
-        public int MaxHealth { get; set; }
-    }
+    public int Health { get; set; }
+    public int MaxHealth { get; set; }
 }

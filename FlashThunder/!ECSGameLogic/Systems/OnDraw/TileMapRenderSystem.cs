@@ -5,51 +5,52 @@ using Microsoft.Xna.Framework;
 using FlashThunder.Managers;
 using FlashThunder.ECSGameLogic.Resources;
 using FlashThunder.ECSGameLogic.Components;
+using FlashThunder.Core;
+using FlashThunder._ECSGameLogic;
 
-namespace FlashThunder.ECSGameLogic.Systems.OnDraw
+namespace FlashThunder.ECSGameLogic.Systems.OnDraw;
+
+/// <summary>
+/// Renders the tilemap. Done separately because it's handled differently than entity rendering.
+/// </summary>
+internal sealed class TileMapRenderSystem : ISystem<DrawFrameSnapshot>
 {
-    /// <summary>
-    /// Renders the tilemap. Done separately because it's handled differently than entity rendering.
-    /// </summary>
-    internal sealed class TileMapRenderSystem : ISystem<SpriteBatch>
+    private readonly TileMapComponent _map;
+    private readonly TileManager _tiles;
+    private const int t = GameConstants.TileSize;
+
+    public bool IsEnabled { get; set; }
+
+    public TileMapRenderSystem(World world, TileManager tiles)
     {
-        private readonly TileMapComponent _map;
-        private readonly TileManager _tiles;
-        private readonly int _tileSize;
-        public bool IsEnabled { get; set; }
+        _tiles = tiles;
+        _map = world.Get<TileMapComponent>();
+    }
 
-        public TileMapRenderSystem(World world, TileManager tiles)
+    public void Update(DrawFrameSnapshot state)
+    {
+        var tileMap = _map.Map;
+
+        for (int row = 0; row < tileMap.Length; row++)
         {
-            _tiles = tiles;
-            _map = world.Get<TileMapComponent>();
-            _tileSize = world.Get<EnvironmentResource>().TileSize;
-        }
-
-        public void Update(SpriteBatch sb)
-        {
-            var tileMap = _map.Map;
-
-            for (int row = 0; row < tileMap.Length; row++)
+            for (int col = 0; col < tileMap[row].Length; col++)
             {
-                for (int col = 0; col < tileMap[row].Length; col++)
-                {
-                    var rep = tileMap[row][col];
-                    var tile = _tiles[rep];
+                var rep = tileMap[row][col];
+                var tile = _tiles[rep];
 
-                    var tileBounds = new Rectangle
-                        (col * _tileSize, row * _tileSize, _tileSize, _tileSize);
+                var tileBounds = new Rectangle
+                    (col * t, row * t, t, t);
 
-                    sb.Draw(
-                        tile.Texture,
-                        tileBounds,
-                        Color.White
-                        );
-                }
+                state.SpriteBatch.Draw(
+                    tile.Texture,
+                    tileBounds,
+                    Color.White
+                    );
             }
         }
+    }
 
-        public void Dispose()
-        {
-        }
+    public void Dispose()
+    {
     }
 }

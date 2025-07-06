@@ -1,10 +1,9 @@
-namespace FlashThunder.Components
+namespace FlashThunder.Components;
+
+partial class ButtonStandard
 {
-    partial class ButtonStandard
+    partial void CustomInitialize()
     {
-        partial void CustomInitialize()
-        {
-        
-        }
+    
     }
 }
