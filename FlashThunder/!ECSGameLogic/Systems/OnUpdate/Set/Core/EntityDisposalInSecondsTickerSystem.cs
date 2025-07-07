@@ -12,7 +12,7 @@ namespace FlashThunder.ECSGameLogic.Systems.OnUpdate.Input;
 /// <summary>
 /// Manages and disposes of entities marked for deletion.
 /// </summary>
-[With(typeof(ToDestroyInSecondsComponent))]
+[With(typeof(DestroyInSecondsRequestComponent))]
 internal sealed class EntityDisposalInSecondsTickerSystem : AEntitySetSystem<GameFrameSnapshot>
 {
     public EntityDisposalInSecondsTickerSystem(World world) : base(world)
@@ -21,9 +21,9 @@ internal sealed class EntityDisposalInSecondsTickerSystem : AEntitySetSystem<Gam
 
     protected override void Update(GameFrameSnapshot state, in Entity entity)
     {
-        ref var destroyComp = ref entity.Get<ToDestroyInSecondsComponent>();
+        ref var destroyComp = ref entity.Get<DestroyInSecondsRequestComponent>();
         if (destroyComp.Lifetime <= 0)
-            entity.Set(new ToDestroyComponent());
+            entity.Set(new DestroyRequestComponent());
         destroyComp.Lifetime -= state.DeltaTime;
     }
 }

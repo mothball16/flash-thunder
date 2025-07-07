@@ -1,9 +1,6 @@
 ﻿using FlashThunder.Enums;
+using FlashThunder.Snapshots;
 
 namespace FlashThunder.ECSGameLogic.Events;
 
-internal readonly struct ActionActivatedEvent
-{
-    public readonly GameAction Action;
-    public ActionActivatedEvent(GameAction action) => Action = action;
-}
+internal readonly record struct ActionActivatedEvent(GameAction Action, MouseSnapshot Mouse);

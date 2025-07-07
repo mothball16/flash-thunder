@@ -7,9 +7,14 @@ using MonoGameGum;
 using FlashThunder.States;
 using FlashThunder.Defs;
 using FlashThunder.Factories;
+using FlashThunder.Utilities;
+using System.Collections.Generic;
+using System;
 
 namespace FlashThunder.Core;
-
+/// <summary>
+/// Fat!
+/// </summary>
 internal class CoreGame : Game
 {
 
@@ -43,13 +48,7 @@ internal class CoreGame : Game
         GumService.Default.Initialize(this, AssetPaths.UIProj);
         _higherEventBus = new EventBus();
 
-        _gameInputMngr = new InputManager<GameAction>()
-            .BindAction(Keys.W, GameAction.MoveUp)
-            .BindAction(Keys.S, GameAction.MoveDown)
-            .BindAction(Keys.D, GameAction.MoveRight)
-            .BindAction(Keys.A, GameAction.MoveLeft)
-            .BindAction(Keys.LeftShift, GameAction.SpeedUpCamera)
-            .BindAction(Keys.O, GameAction.SpawnTest);
+        _gameInputMngr = BuildInputManager(new InputManager<GameAction>(), AssetPaths.Keybinds);
 
         _texMngr = new TexManager(Content, "clearTile");
         _tileMngr = new TileManager();
@@ -66,6 +65,33 @@ internal class CoreGame : Game
         base.Initialize();
     }
 
+    // TODO: Move this out of CoreGame (where should this go?)
+    private static InputManager<GameAction> BuildInputManager(
+        InputManager<GameAction> mngr,
+        string filePath)
+    {
+        mngr.UnbindAll();
+        foreach (var bind in DataLoader.LoadObject<List<KeybindDef>>(filePath))
+        {
+            switch (bind.InputType)
+            {
+                case InputType.Keyboard:
+                    mngr.BindAction(
+                        Enum.Parse<Keys>(bind.Identifier),
+                        bind.Action);
+                    break;
+                case InputType.Mouse:
+                    mngr.BindAction(
+                        Enum.Parse<MouseButtonType>(bind.Identifier),
+                        bind.Action);
+                    break;
+                default:
+                    throw new NotImplementedException(
+                        $"Input type {bind.InputType} is not implemented in the input manager!");
+            }
+        }
+        return mngr;
+    }
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);

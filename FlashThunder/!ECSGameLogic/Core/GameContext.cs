@@ -21,7 +21,6 @@ internal sealed class GameContext : IDisposable
     public InputManager<GameAction> InputManager { get; init; }
 
     // inside context runtime
-    public InputMediator InputBridge { get; init; }
     public World World { get; init; }
     public EntityFactory Factory { get; init; }
     public SequentialSystem<GameFrameSnapshot> UpdateSystems { get; init; }
@@ -67,8 +66,7 @@ internal sealed class GameContext : IDisposable
     /// </summary>
     public void Dispose()
     {
-        World.Dispose();
-        InputBridge?.Dispose();
+        World?.Dispose();
         UpdateSystems?.Dispose();
         DrawSystems?.Dispose();
         Camera?.Dispose();

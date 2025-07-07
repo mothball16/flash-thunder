@@ -36,6 +36,7 @@ partial class GameScreen : MonoGameGum.Forms.Controls.FrameworkElement
         });
     }
     public TextRuntime UnitCount { get; protected set; }
+    public TextRuntime TurnOrder { get; protected set; }
 
     public GameScreen(InteractiveGue visual) : base(visual) { }
     public GameScreen()
@@ -48,6 +49,7 @@ partial class GameScreen : MonoGameGum.Forms.Controls.FrameworkElement
     {
         base.ReactToVisualChanged();
         UnitCount = this.Visual?.GetGraphicalUiElementByName("UnitCount") as TextRuntime;
+        TurnOrder = this.Visual?.GetGraphicalUiElementByName("TurnOrder") as TextRuntime;
         CustomInitialize();
     }
     //Not assigning variables because Object Instantiation Type is set to By Name rather than Fully In Code

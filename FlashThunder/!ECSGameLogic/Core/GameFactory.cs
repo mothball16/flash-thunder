@@ -22,6 +22,7 @@ using FlashThunder.ECSGameLogic.Systems.OnUpdate.Set.Reactive;
 using FlashThunder.ECSGameLogic.Systems.OnUpdate.Core;
 using FlashThunder._ECSGameLogic;
 using FlashThunder.Defs;
+using FlashThunder._ECSGameLogic.Components.TeamStats;
 
 namespace FlashThunder.Factories;
 
@@ -33,9 +34,8 @@ internal class GameFactory : IGameStateFactory
 {
     // lasting dependencies in-between sessions
     private readonly EventBus _eventBus;
-
-    private readonly TexManager _texManager;
     private readonly InputManager<GameAction> _gameInputManager;
+    private readonly TexManager _texManager;
     private readonly TileManager _tileManager;
 
     public GameFactory(
@@ -63,6 +63,7 @@ internal class GameFactory : IGameStateFactory
 
         // TODO: REMOVE THIS ONCE A PROPER INITIALIZATION IS READY
         InitWorld(world);
+        InitTurnOrder(world);
 
         List<IComponentLoader> componentLoaders = [
             new HealthComponentLoader(),
@@ -73,11 +74,6 @@ internal class GameFactory : IGameStateFactory
         var factory = new EntityFactory(world, componentLoaders)
             .LoadTemplates("entity_templates.json")
             .LoadTemplates("unit_templates.json");
-
-        // set up the connections between higher systems and the ecs architecture
-        // input is for all input event transmission
-        // mouse is for frame-by-frame updates of specifically the mouse
-        var inputBridge = new InputMediator(world, _gameInputManager);
         
         var cameraControl = new CameraControlSystem(world, camera);
 
@@ -86,15 +82,13 @@ internal class GameFactory : IGameStateFactory
 
         var _updateSystems = new SequentialSystem<GameFrameSnapshot>(
             entityCounting, // (DEBUGGING) Testing entity count
-            CreatePlayerControlSystems(world),
             CreateEntityManagementSystems(world),
+            CreatePlayerControlSystems(world),
             CreateRequestHandlerSystems(world, factory),
             CreateDisposalSystems(world),
 
             cameraControl // Updates the physical camera in preparation for render
             );
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
         // initialize the systems (draw)
         var _drawSystems = new SequentialSystem<DrawFrameSnapshot>(
@@ -105,7 +99,6 @@ internal class GameFactory : IGameStateFactory
         return new GameContext {
             AssetManager = _texManager,
             InputManager = _gameInputManager,
-            InputBridge = inputBridge,
             World = world,
             Factory = factory,
             UpdateSystems = _updateSystems,
@@ -135,16 +128,19 @@ internal class GameFactory : IGameStateFactory
         return new(
             playerCommand, // Processes any player game commands on this frame
             playerCameraInput, // Processes any camera-specific commands on this frame
-
             playerDebuggingInput // (DEBUGGING) Testing input response
             );
     }
 
-    private static SequentialSystem<GameFrameSnapshot> CreateRequestHandlerSystems(World world, EntityFactory factory)
+    private SequentialSystem<GameFrameSnapshot> CreateRequestHandlerSystems(World world, EntityFactory factory)
     {
-        var spawnerSystem = new SpawnProcessingSystem(world, factory);
+        var spawner = new SpawnProcessingSystem(world, factory);
+        var unitSelection = new UnitSelectionSystem(world);
+        var turnOrder = new TurnProcessingSystem(world, _eventBus);
         return new(
-            spawnerSystem // Processes any spawn requests
+            spawner, // Processes any spawn requests
+            unitSelection, // Processes any unit selection requests
+            turnOrder // Processes the turn order by cycling to the next team on request
             );
     }
     private static SequentialSystem<GameFrameSnapshot> CreateEntityManagementSystems(World world)
@@ -182,12 +178,6 @@ internal class GameFactory : IGameStateFactory
             ],
         };
 
-        var mapSettings = new EnvironmentResource()
-        {
-            FocusedTeam = "client",
-            Teams = ["client", "enemy"]
-        };
-
         // optimized thing for position lookups ( the old solution was checking every entity Lol )
         var entityPositions = world.GetEntities()
             .With<GridPosComponent>()
@@ -197,8 +187,26 @@ internal class GameFactory : IGameStateFactory
                 ));
 
         world.Set(tileMap);
-        world.Set(mapSettings);
         world.Set(entityPositions);
+    }
+
+    private static void InitTurnOrder(World world)
+    {
+        // FOR NOW: manually initialize the teams and turn orders, we will do actual loading later.
+        var turnOrder = new TurnOrderResource();
+        var myTeam = world.CreateEntity();
+        var notMyTeam = world.CreateEntity();
+        myTeam.Set(new TeamTagComponent("player"));
+        myTeam.Set(new IsCurrentTurnComponent());
+        myTeam.Set(new EnemiesWithComponent([notMyTeam]));
+
+        notMyTeam.Set(new TeamTagComponent("enemy"));
+        notMyTeam.Set(new EnemiesWithComponent([myTeam]));
+
+        turnOrder.Order.Enqueue(myTeam);
+        turnOrder.Order.Enqueue(notMyTeam);
+
+        world.Set(turnOrder);
     }
 
     public IGameState Create()

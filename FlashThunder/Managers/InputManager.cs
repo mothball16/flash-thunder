@@ -28,11 +28,12 @@ internal class InputManager<TActionEnum> where TActionEnum : Enum
     private readonly Dictionary<Keys, TActionEnum> _actions;
     private readonly Dictionary<MouseButtonType, TActionEnum> _mActions;
     private readonly HashSet<TActionEnum> _active, _released, _activated;
-
     // communication
     public event Action<TActionEnum> OnActivated, OnReleased;
 
     public event Action<Point> OnMouseMoved;
+
+    public event Action<int> OnMouseScrolled;
     public InputManager()
     {
         _actions = [];
@@ -118,7 +119,6 @@ internal class InputManager<TActionEnum> where TActionEnum : Enum
     /// <summary>
     /// Updates the input data in the manager.
     /// </summary>
-    /// <param name="kbState">The KeyboardState on this frame.</param>
     /// <returns>Itself.</returns>
     public InputManager<TActionEnum> Update()
     {
@@ -204,19 +204,39 @@ internal class InputManager<TActionEnum> where TActionEnum : Enum
             }
 
             if (pressed && !lastPressed)
+            {
+                _activated.Add(data.Value);
                 OnActivated?.Invoke(data.Value);
+            }
             else if (!pressed && lastPressed)
+            {
+                _released.Add(data.Value);
                 OnReleased?.Invoke(data.Value);
+            }
         }
 
         // check MouseMoved
         if (_m.Position != _prevM.Position)
             OnMouseMoved?.Invoke(_m.Position);
+
+        // check MouseSrolled
+        int scrollDiff = _m.ScrollWheelValue - _prevM.ScrollWheelValue;
+        if (scrollDiff != 0)
+            OnMouseScrolled?.Invoke(scrollDiff);
     }
 
     #endregion - - - [ Helpers ] - - -
 
     #region - - - [ Polling Methods ] - - - -
+
+    public IReadOnlySet<TActionEnum> GetActiveActions()
+        => _active;
+
+    public IReadOnlySet<TActionEnum> GetJustActivatedActions()
+        => _activated;
+
+    public IReadOnlySet<TActionEnum> GetJustReleasedActions()
+        => _released;
 
     // Checks whether a single action is currently being held
     public bool IsActive(TActionEnum action)

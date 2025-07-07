@@ -14,11 +14,10 @@ namespace FlashThunder.ECSGameLogic.Systems.OnDraw;
 internal sealed class EntityRenderSystem : AEntitySetSystem<DrawFrameSnapshot>
 {
     // - - - [ Private Fields ] - - -
-    private readonly int _tileSize;
+    private readonly int t = GameConstants.TileSize;
 
     public EntityRenderSystem(World world) : base(world)
     {
-        _tileSize = GameConstants.TileSize;
     }
 
     protected override void Update(DrawFrameSnapshot state, in Entity entity)
@@ -30,15 +29,13 @@ internal sealed class EntityRenderSystem : AEntitySetSystem<DrawFrameSnapshot>
         {
             state.SpriteBatch.Draw(
                 texture: layer.Texture,
-                destinationRectangle: new Rectangle(
-                    pos.X * _tileSize,
-                    pos.Y * _tileSize,
-                    _tileSize,
-                    _tileSize
-                    ),
-                color: Color.White
-                //layerDepth: layer.ZIndex
-                );
+                destinationRectangle: new Rectangle(pos.X * t, pos.Y * t, t, t),
+                sourceRectangle: null,
+                color: Color.White,
+                rotation: 0,
+                origin: default,
+                effects: SpriteEffects.None,
+                layerDepth: layer.ZIndex);
         }
         
     }

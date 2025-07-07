@@ -10,16 +10,12 @@ using System.Collections.Generic;
 
 namespace FlashThunder.ECSGameLogic.Systems.OnUpdate.Input;
 
-internal sealed class PlayerDebuggingInputSystem : ISystem<GameFrameSnapshot>
+internal sealed class PlayerDebuggingInputSystem : AStandardSystem<GameFrameSnapshot>
 {
-    private readonly World _world;
     private readonly List<IDisposable> _subscriptions;
-    private GameFrameSnapshot _lastSnapshot;
-    public bool IsEnabled { get; set; }
 
-    public PlayerDebuggingInputSystem(World world)
+    public PlayerDebuggingInputSystem(World world) : base(world)
     {
-        _world = world;
 
         _subscriptions = [
             world.Subscribe<ActionActivatedEvent>(OnActionActivated)
@@ -30,19 +26,25 @@ internal sealed class PlayerDebuggingInputSystem : ISystem<GameFrameSnapshot>
     {
         if (msg.Action == GameAction.SpawnTest)
         {
-            var mouseTile = _lastSnapshot.Mouse.TilePosition;
-            _world.RequestSpawn(EntityID.InfantryScout, mouseTile.X, mouseTile.Y);
+            var mouseTile = msg.Mouse.TilePosition;
+            World.RequestSpawn(EntityID.InfantryScout, mouseTile.X, mouseTile.Y);
+        } 
+        else if(msg.Action == GameAction.EndTurn)
+        {
+            World.RequestNextTurn();
         }
     }
 
-    public void Update(GameFrameSnapshot state)
+    public override void Update(GameFrameSnapshot _)
     {
-        _lastSnapshot = state;
     }
 
-    public void Dispose()
+    protected override void Dispose(bool disposing)
     {
-        _subscriptions.ForEach(s => s.Dispose());
-        GC.SuppressFinalize(this);
+        if (disposing)
+        {
+            _subscriptions.ForEach(s => s.Dispose());
+        }
+        base.Dispose(disposing);
     }
 }

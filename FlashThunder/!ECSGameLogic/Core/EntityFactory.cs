@@ -122,8 +122,9 @@ internal class EntityFactory
 
     public Entity CreateEntity(string id)
     {
+        if (id != EntityID.ControlMarker)
+            Console.WriteLine($"loading {id}");
         var entity = _world.CreateEntity();
-
         if (!_templates.TryGetValue(id, out EntityTemplateDef template))
             throw new KeyNotFoundException($"[ERROR] {id} was not found in the entity templates.");
 
@@ -138,7 +139,8 @@ internal class EntityFactory
             }
             loader(entity, cmpData);
         }
-
+        if (id != EntityID.ControlMarker)
+            Console.WriteLine($"loaded {id}");
         return entity;
     }
 
@@ -147,6 +149,8 @@ internal class EntityFactory
 
     public Entity CreateEntity(string id, int x, int y)
     {
+        if (id != EntityID.ControlMarker)
+            Console.WriteLine($"loading {id} (1)");
         var entity = CreateEntity(id);
         entity.Set<GridPosComponent>(new(x, y));
         return entity;

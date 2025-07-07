@@ -11,47 +11,32 @@ using FlashThunder.ECSGameLogic.Components.UnitStats;
 using FlashThunder.Extensions;
 using FlashThunder.Defs;
 using FlashThunder._ECSGameLogic;
+using FlashThunder._ECSGameLogic.Components;
 
 namespace FlashThunder.ECSGameLogic.Systems.OnUpdate.Units;
 
 /// <summary>
 /// Creates a marker underneath all controlled entities.
 /// </summary>
-internal sealed class ControlledEntityMarkerSystem : ISystem<GameFrameSnapshot>
+[With(typeof(GridPosComponent), typeof(IdentifierComponent))]
+internal sealed class ControlledEntityMarkerSystem : AEntitySetSystem<GameFrameSnapshot>
 {
-    private readonly World _world;
-    public bool IsEnabled { get; set; }
-
-    /// <summary>
-    /// Any entities controlled and with a position on the grid should fall here.
-    /// </summary>
-    private readonly EntitySet _entitySet;
-
-    public ControlledEntityMarkerSystem(World world)
+    private readonly TurnOrderResource _turnOrder;
+    public ControlledEntityMarkerSystem(World world) : base(world)
     {
-        _world = world;
-        _entitySet = world.GetEntities()
-            .With<GridPosComponent>()
-            .With<ControlledComponent>()
-            .AsSet();
+        _turnOrder = world.Get<TurnOrderResource>();
     }
 
-    public void Update(GameFrameSnapshot _)
+    protected override void Update(GameFrameSnapshot state, in Entity entity)
     {
-        var env = _world.Get<EnvironmentResource>();
-        foreach (Entity e in _entitySet.GetEntities())
+        //guard clause -- if the entity is controlled (but not by us), skip it
+        if (_turnOrder.Current != entity.Get<OwnableComponent>().Owner
+            || entity.Get<IdentifierComponent>().ID == EntityID.ControlMarker)
         {
-             //guard clause -- if the entity is controlled (but not by us), skip it
-            if (env.FocusedTeam != e.Get<ControlledComponent>().Owner)
-                continue;
-
-            var pos = e.Get<GridPosComponent>();
-            _world.RequestSpawn(EntityID.ControlMarker, pos.X, pos.Y);
-
+            return;
         }
-    }
 
-    public void Dispose()
-    {
+        var pos = entity.Get<GridPosComponent>();
+        World.RequestSpawn(EntityID.ControlMarker, pos.X, pos.Y);
     }
 }

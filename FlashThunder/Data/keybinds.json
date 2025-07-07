@@ -1,0 +1,42 @@
+[
+  {
+    "InputType": "Keyboard",
+    "Identifier": "W",
+    "Action": "MoveUp"
+  },
+  {
+    "InputType": "Keyboard",
+    "Identifier": "S",
+    "Action": "MoveDown"
+  },
+  {
+    "InputType": "Keyboard",
+    "Identifier": "D",
+    "Action": "MoveRight"
+  },
+  {
+    "InputType": "Keyboard",
+    "Identifier": "A",
+    "Action": "MoveLeft"
+  },
+  {
+    "InputType": "Keyboard",
+    "Identifier": "LeftShift",
+    "Action": "SpeedUpCamera"
+  },
+  {
+    "InputType": "Keyboard",
+    "Identifier": "O",
+    "Action": "SpawnTest"
+  },
+  {
+    "InputType": "Mouse",
+    "Identifier": "Left",
+    "Action": "Select"
+  },
+  {
+    "InputType": "Keyboard",
+    "Identifier": "M",
+    "Action": "EndTurn"
+  }
+]

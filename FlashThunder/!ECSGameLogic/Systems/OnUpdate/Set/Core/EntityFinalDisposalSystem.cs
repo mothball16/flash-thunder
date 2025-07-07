@@ -12,7 +12,7 @@ namespace FlashThunder.ECSGameLogic.Systems.OnUpdate.Core;
 /// <summary>
 /// Manages and disposes of entities marked for deletion.
 /// </summary>
-[With(typeof(ToDestroyComponent))]
+[With(typeof(DestroyRequestComponent))]
 internal sealed class EntityFinalDisposalSystem : AEntitySetSystem<GameFrameSnapshot>
 {
     public EntityFinalDisposalSystem(World world) : base(world) { }

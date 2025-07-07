@@ -1,7 +1,11 @@
 ﻿using FlashThunder.Defs;
+using FlashThunder.Enums;
+using FlashThunder.Managers;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.IO;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace FlashThunder.Utilities;
 
@@ -19,7 +23,10 @@ public static class DataLoader
         PropertyNameCaseInsensitive = true,
         WriteIndented = true,
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        Converters = { new JsonStringEnumConverter() }
     };
+
+    
 
     /// <summary>
     /// Loads object of type T from the specified file.
@@ -33,6 +40,7 @@ public static class DataLoader
     /// <returns>The instantiated object</returns>
     public static T LoadObject<T>(string filePath)
     {
+        
         try
         {
             using var reader = new StreamReader(Prefix + filePath);
