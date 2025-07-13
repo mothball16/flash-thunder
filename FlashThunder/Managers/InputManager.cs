@@ -1,4 +1,4 @@
-﻿using FlashThunder.Snapshots;
+﻿using FlashThunder.GameLogic.Resources;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -20,7 +20,7 @@ public enum MouseButtonType
 /// retrieving actions mapped to keys.
 /// </summary>
 /// <typeparam name="TActionEnum">The action enum to map keys to.</typeparam>
-internal class InputManager<TActionEnum> where TActionEnum : Enum
+internal class InputManager<TActionEnum> : IInputState<TActionEnum> where TActionEnum : Enum
 {
     private KeyboardState _kb, _prevKb;
     private MouseState _m, _prevM;
@@ -28,12 +28,14 @@ internal class InputManager<TActionEnum> where TActionEnum : Enum
     private readonly Dictionary<Keys, TActionEnum> _actions;
     private readonly Dictionary<MouseButtonType, TActionEnum> _mActions;
     private readonly HashSet<TActionEnum> _active, _released, _activated;
+
     // communication
     public event Action<TActionEnum> OnActivated, OnReleased;
 
     public event Action<Point> OnMouseMoved;
 
     public event Action<int> OnMouseScrolled;
+
     public InputManager()
     {
         _actions = [];
@@ -58,7 +60,7 @@ internal class InputManager<TActionEnum> where TActionEnum : Enum
     }
 
     /// <summary>
-    /// Binds an action to a mouse button type, overwriting any bind that may have previously 
+    /// Binds an action to a mouse button type, overwriting any bind that may have previously
     /// existed.
     /// </summary>
     /// <param name="type">The type to bind the action to.</param>
@@ -79,6 +81,14 @@ internal class InputManager<TActionEnum> where TActionEnum : Enum
         => _actions.Remove(key);
 
     /// <summary>
+    /// Attempts to unbind an action from a mouse input type.
+    /// </summary>
+    /// <param name="type">The key mapping to unbind the action from.</param>
+    /// <returns>Whether it was a success (Whether the key was mapped to begin with)</returns>
+    public bool TryUnbindAction(MouseButtonType type)
+        => _mActions.Remove(type);
+
+    /// <summary>
     /// Attempts to retrieve an action mapped to a key.
     /// </summary>
     /// <param name="key">The key that is to be checked.</param>
@@ -86,6 +96,15 @@ internal class InputManager<TActionEnum> where TActionEnum : Enum
     /// <returns>Whether an action existed under that bind.</returns>
     public bool TryGetAction(Keys key, out TActionEnum action)
         => _actions.TryGetValue(key, out action);
+
+    /// <summary>
+    /// Attempts to retrieve an action mapped to a mouse input type.
+    /// </summary>
+    /// <param name="type">The key that is to be checked.</param>
+    /// <param name="action">The action, if it exists under that keybind.</param>
+    /// <returns>Whether an action existed under that bind.</returns>
+    public bool TryGetAction(MouseButtonType type, out TActionEnum action)
+        => _mActions.TryGetValue(type, out action);
 
     /// <summary>
     /// Gets all actions binded to the manager.
@@ -189,15 +208,18 @@ internal class InputManager<TActionEnum> where TActionEnum : Enum
                     lastPressed = _prevM.LeftButton == ButtonState.Pressed;
 
                     break;
+
                 case MouseButtonType.Right:
                     pressed = _m.RightButton == ButtonState.Pressed;
                     lastPressed = _prevM.RightButton == ButtonState.Pressed;
 
                     break;
+
                 case MouseButtonType.Middle:
                     pressed = _m.MiddleButton == ButtonState.Pressed;
                     lastPressed = _prevM.MiddleButton == ButtonState.Pressed;
                     break;
+
                 default:
                     throw new KeyNotFoundException(
                         $"An invalid MouseButtonType was provided. How??");
@@ -229,44 +251,21 @@ internal class InputManager<TActionEnum> where TActionEnum : Enum
 
     #region - - - [ Polling Methods ] - - - -
 
-    public IReadOnlySet<TActionEnum> GetActiveActions()
-        => _active;
-
-    public IReadOnlySet<TActionEnum> GetJustActivatedActions()
-        => _activated;
-
-    public IReadOnlySet<TActionEnum> GetJustReleasedActions()
-        => _released;
-
-    // Checks whether a single action is currently being held
-    public bool IsActive(TActionEnum action)
-        => _active.Contains(action);
-
-    // Checks whether a group of actions is currently being held
-    public bool AreActive(IEnumerable<TActionEnum> actionsToCheck)
-        => actionsToCheck.All(IsActive);
-
-    // Checks whether a single action si currently not beind held
-    public bool IsInactive(TActionEnum action)
-        => !_active.Contains(action);
-
-    // Checks whether a group of actions is currently not held
-    public bool AreInactive(IEnumerable<TActionEnum> actionsToCheck)
-        => actionsToCheck.All(IsInactive);
-
-    // Checks whether a single action was just activated this frame
-    public bool JustActivated(TActionEnum action)
-        => _activated.Contains(action);
-
-    // Checks whether a single action was just de-activated this frame
-    public bool JustDeactivated(TActionEnum action)
-        => _released.Contains(action);
-
-    public Point GetMousePosition()
+    public Point MousePosition
         => _m.Position;
 
-    public MouseState GetMouseState()
+    public MouseState MouseState
         => _m;
-    #endregion - - - [ Polling Methods ] - - - -
 
+    public IReadOnlySet<TActionEnum> Active
+        => _active;
+
+    public IReadOnlySet<TActionEnum> JustActivated
+        => _activated;
+
+    public IReadOnlySet<TActionEnum> JustReleased
+        => _released;
+
+
+    #endregion - - - [ Polling Methods ] - - - -
 }

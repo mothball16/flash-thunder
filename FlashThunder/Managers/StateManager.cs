@@ -1,5 +1,5 @@
 ﻿using FlashThunder.Events;
-using FlashThunder.Interfaces;
+using FlashThunder.States;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -7,26 +7,26 @@ using System.Collections.Generic;
 
 namespace FlashThunder.Managers;
 
-internal sealed class StateManager
+internal sealed class StateManager : IDisposable
 {
     private readonly Dictionary<Type, Func<IGameState>> _stateFacs;
-    private IGameState _currentState;
+    private readonly EventBus _eventBus;
 
+    private IGameState _currentState;
     public StateManager(EventBus eventBus)
     {
+        _eventBus = eventBus;
         _stateFacs = [];
-        eventBus.Subscribe<ChangeStateEvent>(OnStateChanged);
+
+        eventBus.Subscribe<ChangeStateEvent>(OnStateChangedRequest);
     }
 
-    public void OnStateChanged(ChangeStateEvent msg)
-    {
-        SwitchTo(msg.To);
-    }
+    public void OnStateChangedRequest(ChangeStateEvent msg)
+        => SwitchTo(msg.To);
 
     public StateManager Register(Type state, Func<IGameState> stateFac)
     {
         _stateFacs.Add(state, stateFac);
-
         return this;
     }
 
@@ -58,5 +58,10 @@ internal sealed class StateManager
     public void Draw(SpriteBatch sb)
     {
         _currentState?.Draw(sb);
+    }
+
+    public void Dispose()
+    {
+        _eventBus.Unsubscribe<ChangeStateEvent>(OnStateChangedRequest);
     }
 }

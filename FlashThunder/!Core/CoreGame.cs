@@ -10,6 +10,7 @@ using FlashThunder.Factories;
 using FlashThunder.Utilities;
 using System.Collections.Generic;
 using System;
+using FlashThunder.Events;
 
 namespace FlashThunder.Core;
 /// <summary>
@@ -27,7 +28,7 @@ internal class CoreGame : Game
 
     // TODO: Same for this. We should still ahve an assetmanager for the menu tho.
     // Actually think about this abit because we don't want to reload textures all the time
-    private TexManager _texMngr;
+    private TextureManager _texMngr;
     private TileManager _tileMngr;
     private UIManager _uiMngr;
     private StateManager _stateMngr;
@@ -50,9 +51,9 @@ internal class CoreGame : Game
 
         _gameInputMngr = BuildInputManager(new InputManager<GameAction>(), AssetPaths.Keybinds);
 
-        _texMngr = new TexManager(Content, "clearTile");
-        _tileMngr = new TileManager();
+        _texMngr = new TextureManager(Content, "clearTile");
         _stateMngr = new StateManager(_higherEventBus);
+        _tileMngr = new TileManager();
 
         _uiMngr = new UIManager(_higherEventBus)
             .SetupListeners(Window)
@@ -102,9 +103,10 @@ internal class CoreGame : Game
 
         // tell the state manager how to create each registered game state
         _stateMngr
-            .Register(typeof(GameRunningState), new GameFactory(_higherEventBus, _gameInputMngr, _texMngr, _tileMngr).Create)
+            .Register(typeof(GameRunningState), new GameRunningStateFactory(_higherEventBus, _gameInputMngr, _texMngr, _tileMngr).Create)
             .Register(typeof(TitleState), () => new TitleState(_higherEventBus))
             .SwitchTo(typeof(TitleState));
+
     }
 
     protected override void Update(GameTime gameTime)

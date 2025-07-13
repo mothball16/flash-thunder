@@ -1,4 +1,4 @@
-﻿using DefaultEcs;
+﻿using fennecs;
 using System;
 
 namespace FlashThunder.Events;

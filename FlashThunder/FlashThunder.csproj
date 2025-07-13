@@ -32,7 +32,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Dcrew.MonoGame.2D_Camera" Version="1.5.0" />
-    <PackageReference Include="DefaultEcs" Version="0.17.2" />
+    <PackageReference Include="fennecs" Version="0.5.16-beta" />
     <PackageReference Include="FontStashSharp" Version="1.3.10" />
     <PackageReference Include="Gum.MonoGame" Version="2025.6.14.1" />
     <PackageReference Include="ImGui.NET" Version="1.91.6.1" />
@@ -51,16 +51,11 @@
     <PackageReference Include="TextCopy" Version="6.2.1" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Abstract\" />
+    <Folder Include="GameLogic\Components\Requests\" />
     <Folder Include="Content\Data\" />
     <Folder Include="Content\Audio\" />
     <Folder Include="Content\Textures\Elements\" />
     <Folder Include="Content\UI\" />
-    <Folder Include="!ECSGameLogic\Systems\Misc\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="!ECSGameLogic\Components\Requests\DestroyInFramesRequestComponent.cs" />
-    <None Include="!ECSGameLogic\Systems\OnUpdate\Reactive\SpawnProcessingSystem.cs" />
   </ItemGroup>
     <ItemGroup>
 	    <None Update="Content\GumProject\**\*.*">

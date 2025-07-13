@@ -1,8 +1,5 @@
 ﻿# Entities
 > Entities require just a component dictionary
-> The key of each chunk of component data will have its first letter capitalized and "Component" added
-to the end. For example, "health" -> "HealthComponent".
-> This translated name must match with an existing component class name.
 
 # Textures
 > Textures require a textureAlias and a textureName. 

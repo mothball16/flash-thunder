@@ -1,0 +1,11 @@
+{
+  "internal_init_camera": {
+    "components": {
+      "worldCamera": {
+        "response": 10,
+        "scale": 1
+      },
+      "activeCamera": {}
+    }
+  }
+}

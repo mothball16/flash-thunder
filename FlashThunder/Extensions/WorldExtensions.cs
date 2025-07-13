@@ -1,51 +1,43 @@
 ﻿using Microsoft.Xna.Framework;
-using DefaultEcs;
 using FlashThunder.ECSGameLogic.Components;
-using FlashThunder.ECSGameLogic.Resources;
 using System;
+using fennecs;
 using FlashThunder.Defs;
+using System.Collections;
+using System.Linq;
 
 namespace FlashThunder.Extensions;
 
+file struct UniqueResourceTag;
+
+/// <summary>
+/// this pattern "borrowed" from some convo in fennecs discord in 2024
+/// </summary>
 public static class WorldExtensions
 {
-
-    public static void RequestSpawn(this World world, string entityID, int x, int y)
-        => RequestSpawn(world, entityID, x, y, world.Get<TurnOrderResource>().Current);
-
-    public static void RequestSpawn(this World world, string entityID, int x, int y, Entity owner)
+    private static Entity GetResourceEntity(this World world)
     {
-        var request = world.CreateEntity();
-        request.Set(new SpawnRequestComponent(
-            entityID,
-            x,
-            y,
-            owner
-        ));
-        if (entityID != EntityID.ControlMarker)
+        var query = world.Query<UniqueResourceTag>().Compile();
+        if (query.IsEmpty)
         {
-            Console.WriteLine($"{request} requested to create {entityID} on {x},{y}. has component {request.Get<SpawnRequestComponent>().EntityID}");
+            world.Entity().Add<UniqueResourceTag>().Spawn();
         }
+        return query[0];
+    }
+    public static ref T GetResource<T>(this World world)
+        => ref world.GetResourceEntity().Ref<T>();
+
+    public static bool TryGetResource<T>(this World world, out T resource)
+    {
+        if (world.GetResourceEntity().Has<T>())
+        {
+            resource = world.GetResource<T>();
+            return true;
+        }
+        resource = default;
+        return false;
     }
 
-    public static void RequestNextTurn(this World world)
-    {
-        var request = world.CreateEntity();
-        request.Set(new NextTurnRequestComponent());
-    }
-
-    public static void AddDebris(this World world, Entity e)
-    {
-        e.Set(new DestroyRequestComponent());
-    }
-
-    public static void AddDebris(this World world, Entity e, int frames)
-    {
-        e.Set(new DestroyInFramesRequestComponent { Lifetime = frames });
-    }
-
-    public static void AddDebris(this World world, Entity e, float seconds)
-    {
-        e.Set(new DestroyInSecondsRequestComponent { Lifetime = seconds });
-    }
+    public static void SetResource<T>(this World world, T resource)
+        => world.GetResourceEntity().Add<T>(resource);
 }

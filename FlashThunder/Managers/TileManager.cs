@@ -38,8 +38,7 @@ internal class TileManager
     {
         if (!_cache.TryGetValue(tileName, out TileDef tile))
         {
-            Console.WriteLine(
-                $"[WARNING] Tile {tileName} wasn't found in the texture cache." +
+            Logger.Warn("Tile {tileName} wasn't found in the texture cache." +
                 $"Attempting to retrieve default instead.");
 
             // if we don't even have a default, throw an exception
@@ -69,7 +68,7 @@ internal class TileManager
     /// Load JSON file into the TileManager cache.
     /// </summary>
     /// <param name="filePath"></param>
-    public TileManager LoadDefinitions(TexManager textures, string filePath)
+    public TileManager LoadDefinitions(TextureManager textures, string filePath)
     {
         _cache = DataLoader.LoadObject<Dictionary<char, TileDef>>(filePath);
 

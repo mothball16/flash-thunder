@@ -1,6 +1,7 @@
 ﻿using FlashThunder.Enums;
 using FlashThunder.Events;
 using FlashThunder.Interfaces;
+using FlashThunder.Screens;
 using Gum.DataTypes;
 using Gum.Wireframe;
 using Microsoft.Xna.Framework;
@@ -13,7 +14,6 @@ using System.Linq;
 
 namespace FlashThunder.Managers;
 
-public delegate GraphicalUiElement UIElementFactory();
 internal sealed class UIManager : IDisposable
 {
     private static Point OriginalUIDimensions = new(1920, 1080);
@@ -67,21 +67,17 @@ internal sealed class UIManager : IDisposable
         }
     }
 
-    public void LoadScreen(UIElementFactory screenFac, ScreenLayer layer)
+    public void LoadScreen(UIElementFactory factory, ScreenLayer layer, Action<GraphicalUiElement> callback = null)
     {
         CleanupLayer(layer);
-
-        // the caller is responsible for dependencies here
-        var newScreen = screenFac();
+        var newScreen = factory();
         newScreen.AddToRoot();
         newScreen.Z = (int) layer;
 
-
         // create new element and add to stuff
         _layers.Add(layer, newScreen);
-        
+        callback?.Invoke(newScreen);
     }
-
 
     public void Update(GameTime gameTime)
     {

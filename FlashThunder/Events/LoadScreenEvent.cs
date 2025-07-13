@@ -5,6 +5,7 @@ using System;
 
 namespace FlashThunder.Events;
 
+public delegate GraphicalUiElement UIElementFactory();
 /// <summary>
 /// An event used to notify listeners that a state change is requested.
 /// </summary>

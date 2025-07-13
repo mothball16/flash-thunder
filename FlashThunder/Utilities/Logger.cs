@@ -1,0 +1,45 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace FlashThunder.Utilities;
+
+/// <summary>
+/// Very poorly coded logger for more organized printing to console.
+/// To be scrapped once an actual debugging system is made.
+/// </summary>
+internal static class Logger
+{
+    [MethodImpl(MethodImplOptions.NoInlining)]  //This will prevent inlining by the complier.
+    public static string GetCaller()
+        => new StackTrace(1, false).GetFrame(1).GetMethod().DeclaringType.Name;
+    
+    public static void Error(string msg)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine($"[{GetCaller()}] {msg}");
+    }
+
+    public static void Warn(string msg)
+    {
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine($"[{GetCaller()}] {msg}");
+    }
+
+    public static void Print(string msg)
+    {
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine($"[{GetCaller()}] {msg}");
+    }
+
+    public static void Confirm(string msg)
+    {
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine($"[{GetCaller()}] {msg}");
+    }
+}
