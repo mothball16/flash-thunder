@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FlashThunder.Extensions;
+namespace FlashThunder.Utilities;
 
 /// <summary>
 /// credit: https://stackoverflow.com/a/4405876/30180794

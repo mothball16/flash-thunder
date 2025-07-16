@@ -18,6 +18,7 @@ using FlashThunder._ECSGameLogic.Components.TeamStats;
 using FlashThunder.GameLogic.Commands;
 using FlashThunder.GameLogic.Systems.OnUpdate;
 using FlashThunder.GameLogic.Systems.OnDraw;
+using FlashThunder.GameLogic.Events;
 
 namespace FlashThunder.Factories;
 
@@ -93,6 +94,7 @@ internal class GameRunningStateFactory : IGameStateFactory
     {
         List<IUpdateSystem<float>> updateSystems = [];
         List<IUpdateSystem<SpriteBatch>> drawSystems = [];
+        List<IDisposable> disposables = [];
 
         // initialize the physical camera
         var camera = new Camera();
@@ -112,7 +114,6 @@ internal class GameRunningStateFactory : IGameStateFactory
             .Map<GridPosition>().Map<WorldPosition>()
             .Map<Armor>()
             .Map<SelectedTag>()
-            .Map<SpriteData>()
             .Map<ActiveCamera>().Map<WorldCamera>();
 
         // set up the environment
@@ -140,13 +141,22 @@ internal class GameRunningStateFactory : IGameStateFactory
             entityRender
         ]);
 
-        // - - - [ commands to complete world initialization ] - - -
-        // set up default active camera
-        factory.CreatePrefab("internal_init_camera");
+        // - - - [ event handler initialization ] - - -
+        var nextTurn = new NextTurnHandler(world, _eventBus);
+        var spawnPrefab = new SpawnPrefabHandler(world, factory);
 
-        // call the command to run
-        new NextTurnCommand(world, _eventBus).Execute();
+        disposables.AddRange([ 
+            nextTurn,
+            spawnPrefab
+            ]);
 
-        return new GameRunningState(_eventBus, updateSystems, drawSystems);
+        // - - - [ final world setup ] - - -
+        world.GetEvents().Publish<SpawnPrefabRequestEvent>(new("internal_init_camera"));
+        world.GetEvents().Publish<SpawnPrefabRequestEvent>(new("infantry_scout",
+            (e) => {
+                e.Add(new GridPosition(0,0));
+            }));
+
+        return new GameRunningState(_eventBus, updateSystems, drawSystems, disposables);
     }
 }

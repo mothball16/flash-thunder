@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using FlashThunder.Managers;
-using FlashThunder.Extensions;
 using FlashThunder.ECSGameLogic.Components;
 using FlashThunder.ECSGameLogic.Components.UnitStats;
 using System.Text.Json;
@@ -38,30 +37,31 @@ internal class EntityFactory
         _loaders = [];
     }
 
+    private static string ToComponentKey<T>()
+        => typeof(T).Name.FirstCharToLower();
+
     /// <summary>
     /// Maps a component type to the DEFAULT loader. Can be overridden by AddCustomLoader.
     /// </summary>
-    public EntityFactory Map<T>()
+    public EntityFactory Map<T>(IComponentLoader loader = null)
     {
-        // add the new typed loader to the loader dictionary
-        _loaders[typeof(T).Name.FirstCharToLower()] = (e, data) =>
-        {
-            var component = DataLoader.DeserObject<T>(data.GetRawText());
-            e.Add(component);
-        };
-        return this;
-    }
+        // get key and check for any bad practices in usage
+        var key = ToComponentKey<T>();
+        if (_loaders.ContainsKey(key))
+            Logger.Warn($"Loader on {key} was re-assigned. Loaders should not be re-assigned after creation.");
 
-    /// <summary>
-    /// Maps a component type to a custom loader.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="loader"></param>
-    /// <returns></returns>
-    public EntityFactory Map<T>(IComponentLoader loader)
-    {
+        // add the new typed loader to the loader dictionary
         _loaders[typeof(T).Name.FirstCharToLower()]
-            = (e, data) => loader.LoadComponent(e, data);
+            // do we have a custom loader?
+            = loader == null
+            // (no) load default
+            ? (e, data) =>
+            {
+                var component = DataLoader.DeserObject<T>(data.GetRawText());
+                e.Add(component);
+            }
+            // (yes) load custom
+            : (e, data) => loader.LoadComponent(e, data);
         return this;
     }
 
@@ -90,6 +90,7 @@ internal class EntityFactory
 
     public Entity CreatePrefab(string id)
     {
+        Logger.Print("!! beginning entity creation...");
         var entity = _world.Spawn();
         if (!_templates.TryGetValue(id, out EntityTemplateDef template))
             throw new KeyNotFoundException($"[ERROR] {id} was not found in the entity templates.");

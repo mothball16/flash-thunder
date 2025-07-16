@@ -3,6 +3,7 @@ using fennecs;
 using FlashThunder.Core;
 using FlashThunder.Enums;
 using FlashThunder.Events;
+using FlashThunder.Extensions;
 using FlashThunder.Factories;
 using FlashThunder.GameLogic;
 using FlashThunder.Managers;
@@ -20,13 +21,14 @@ namespace FlashThunder.States;
 internal sealed class GameRunningState(
     EventBus eventBus,
     List<IUpdateSystem<float>> updateSystems,
-    List<IUpdateSystem<SpriteBatch>> drawSystems)
+    List<IUpdateSystem<SpriteBatch>> drawSystems,
+    List<IDisposable> disposables)
     : IGameState
 {
     private readonly EventBus _eventBus = eventBus;
     private readonly List<IUpdateSystem<float>> _updateSystems = updateSystems;
     private readonly List<IUpdateSystem<SpriteBatch>> _drawSystems = drawSystems;
-
+    private readonly List<IDisposable> _disposables = disposables;
     public void Enter()
     {
         _eventBus.Publish<LoadScreenEvent>(new()
@@ -51,6 +53,9 @@ internal sealed class GameRunningState(
 
     public void Dispose()
     {
+        _disposables.ForEach(s => s.Dispose());
+        _updateSystems.ForEach(s => s.Dispose());
+        _drawSystems.ForEach(s => s.Dispose());
 
     }
 }

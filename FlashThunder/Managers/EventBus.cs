@@ -3,10 +3,24 @@ using System.Collections.Generic;
 
 namespace FlashThunder.Managers;
 
+public sealed class EventConnection<T> : IDisposable
+{
+    private readonly Action<T> _action;
+    private readonly EventBus _bus;
+    public EventConnection(EventBus bus, Action<T> action)
+    {
+        _bus = bus;
+        _action = action;
+    }
+    public void Dispose()
+    {
+        _bus.Unsubscribe<T>(_action);
+    }
+}
 /// <summary>
 /// A simple thread-safe event bus implementation.
 /// </summary>
-internal class EventBus : IEventPublisher, IEventSubscriber
+public class EventBus : IEventPublisher, IEventSubscriber
 {
     private readonly Dictionary<Type, List<Delegate>> _subscribers;
     private readonly Dictionary<Type, object> _locks;
@@ -37,7 +51,7 @@ internal class EventBus : IEventPublisher, IEventSubscriber
         }
     }
 
-    public void Subscribe<T>(Action<T> handler)
+    public EventConnection<T> Subscribe<T>(Action<T> handler)
     {
         lock (GetLock<T>())
         {
@@ -49,6 +63,7 @@ internal class EventBus : IEventPublisher, IEventSubscriber
             {
                 _subscribers[typeof(T)] = [handler];
             }
+            return new EventConnection<T>(this, handler);
         }
     }
 

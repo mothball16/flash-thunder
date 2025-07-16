@@ -5,10 +5,17 @@ using fennecs;
 using FlashThunder.Defs;
 using System.Collections;
 using System.Linq;
+using System.Windows.Input;
+using System.Collections.Generic;
+using FlashThunder.GameLogic;
+using FlashThunder.Managers;
 
 namespace FlashThunder.Extensions;
 
+#region  - - - [ resources ] - - -
 file struct UniqueResourceTag;
+
+#endregion
 
 /// <summary>
 /// this pattern "borrowed" from some convo in fennecs discord in 2024
@@ -40,4 +47,16 @@ public static class WorldExtensions
 
     public static void SetResource<T>(this World world, T resource)
         => world.GetResourceEntity().Add<T>(resource);
+
+    public static void SetResource<T>(this World world) where T : new()
+        => world.SetResource(new T());
+    internal static EventBus GetEvents(this World world)
+    {
+        if (world.TryGetResource<EventBus>(out var eventBus))
+            return eventBus;
+
+        eventBus = new EventBus();
+        world.SetResource(eventBus);
+        return eventBus;
+    }
 }

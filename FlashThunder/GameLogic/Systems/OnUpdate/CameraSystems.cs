@@ -24,7 +24,7 @@ namespace FlashThunder.GameLogic.Systems.OnUpdate
         private readonly Camera _physicalCamera = camera;
         private readonly Stream<Components.WorldCamera> _cameras
             = world.Query<Components.WorldCamera>().Stream();
-        private readonly Stream<Components.WorldCamera> _selectedCamera 
+        private readonly Stream<Components.WorldCamera> _selectedCamera
             = world.Query<Components.WorldCamera, ActiveCamera>().Stream();
 
         public void Update(float dt)
@@ -39,7 +39,7 @@ namespace FlashThunder.GameLogic.Systems.OnUpdate
         {
             var input = world.GetResource<InputResource>();
             var camSpeed = input.Active.Contains(GameAction.SpeedUpCamera) 
-                ? 16 
+                ? 16
                 : 4;
 
             if (input.Active.Contains(GameAction.MoveLeft))

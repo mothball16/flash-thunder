@@ -21,3 +21,5 @@
 # The line between ECS and OOP
 - ECS should be used for manipulation of world entities/data
 - OOP should be used for high-level state management / operations on single instances
+
+# Roadmap
