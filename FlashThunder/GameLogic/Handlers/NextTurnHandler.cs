@@ -32,7 +32,7 @@ internal sealed class NextTurnHandler : IDisposable
         _world = world;
         _uiNotifier = uiNotifier;
         _subscriptions = [
-            world.GetEvents().Subscribe<NextTurnRequestEvent>(Execute)
+            world.Subscribe<NextTurnRequestEvent>(Execute)
         ];
     }
     public void Execute(NextTurnRequestEvent _)

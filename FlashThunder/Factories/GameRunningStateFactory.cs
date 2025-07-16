@@ -19,6 +19,8 @@ using FlashThunder.GameLogic.Commands;
 using FlashThunder.GameLogic.Systems.OnUpdate;
 using FlashThunder.GameLogic.Systems.OnDraw;
 using FlashThunder.GameLogic.Events;
+using FlashThunder.GameLogic.Components.Relations;
+using FlashThunder.GameLogic.Services;
 
 namespace FlashThunder.Factories;
 
@@ -69,25 +71,31 @@ internal class GameRunningStateFactory : IGameStateFactory
         world.SetResource(mapResource);
     }
 
+    private void InitServices(World world, EntityFactory factory)
+    {
+        var teamService = new TeamService(world, factory);
+        world.SetResource(teamService);
+    }
+
     /// <summary>
     /// Builds the teams for now. When JSON loading is ready this will be replaced for
     /// a data-oriented loader.
     /// </summary>
     /// <param name="world"></param>
-    public void InitTeams(World world, EntityFactory factory)
+    public void InitTeams(World world)
     {
+        var teamService = world.GetResource<TeamService>();
         ref var turnOrder = ref world.GetResource<TurnOrderResource>();
-
-        var ourTeam = factory.CreateTeamBundle(
-            new TeamTag("Section 4"),
-            new Faction("Northern Alliance"),
-            new IsPlayerControllable());
-
-        var enemyTeam = factory.CreateTeamBundle(
-            new TeamTag("Southern Special Warfare Command"),
-            new Faction("Southern Coalition"));
-        turnOrder.Order.Add(ourTeam);
-        turnOrder.Order.Add(enemyTeam);
+        turnOrder.Order.Add(
+            teamService.CreateTeam(
+                "Section 4",
+                "Northern Alliance",
+                true));
+        turnOrder.Order.Add(
+            teamService.CreateTeam(
+                "Southern Special Warfare Command",
+                "Southern Coalition",
+                false));
     }
 
     public IGameState Create()
@@ -100,28 +108,32 @@ internal class GameRunningStateFactory : IGameStateFactory
         var camera = new Camera();
 
         // initialize the ECS world
-        var world = new World();
+        var world = new World().InitializeExtensions();
 
         // set up the entity factory
         var factory = new EntityFactory(world)
+            .LoadTemplates("internal_templates.json")
             .LoadTemplates("entity_templates.json")
             .LoadTemplates("unit_templates.json")
-            .LoadTemplates("internal_templates.json")
             .Map<Health>(new HealthComponentLoader())
             .Map<SpriteData>(new SpriteDataComponentLoader(_texManager))
             .Map<Move>().Map<MoveIntent>()
             .Map<Vision>().Map<MaxRange>()
             .Map<GridPosition>().Map<WorldPosition>()
             .Map<Armor>()
-            .Map<SelectedTag>()
-            .Map<ActiveCamera>().Map<WorldCamera>();
+            .Map<SelectedTag>().Map<SelectableTag>()
+            .Map<ActiveCamera>().Map<WorldCamera>()
+            .Map<Range>();
 
         // set up the environment
         InitResources(world);
-        InitTeams(world, factory);
-
+        InitServices(world, factory);
+        InitTeams(world);
 
         // - - - [ system initialization ] - - -
+
+        var mousePolling = new MousePollingSystem(world, camera);
+        var unitSelection = new UnitSelectionSystem(world);
 
         // camera control
         var cameraSystems = new CameraSystems(world, camera);
@@ -132,6 +144,8 @@ internal class GameRunningStateFactory : IGameStateFactory
         var entityRender = new EntityRenderSystem(world);
 
         updateSystems.AddRange([
+            mousePolling,
+            unitSelection,
             cameraSystems
         ]);
 
@@ -151,11 +165,14 @@ internal class GameRunningStateFactory : IGameStateFactory
             ]);
 
         // - - - [ final world setup ] - - -
-        world.GetEvents().Publish<SpawnPrefabRequestEvent>(new("internal_init_camera"));
-        world.GetEvents().Publish<SpawnPrefabRequestEvent>(new("infantry_scout",
-            (e) => {
-                e.Add(new GridPosition(0,0));
-            }));
+        
+        world.Publish<SpawnPrefabRequestEvent>(new("internal_init_camera"));
+        world.Publish<SpawnPrefabRequestEvent>(new()
+        {
+            Name = "infantry_scout",
+            Position = new(0, 0),
+            Team = "Section 4"
+        });
 
         return new GameRunningState(_eventBus, updateSystems, drawSystems, disposables);
     }

@@ -56,6 +56,5 @@ internal sealed class GameRunningState(
         _disposables.ForEach(s => s.Dispose());
         _updateSystems.ForEach(s => s.Dispose());
         _drawSystems.ForEach(s => s.Dispose());
-
     }
 }

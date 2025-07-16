@@ -28,4 +28,16 @@ public readonly record struct MouseResource(
         => TilePosition.X;
     public readonly int TileY
         => TilePosition.Y;
+
+    public override string ToString()
+    {
+        return $"MouseResource: " +
+               $"Screen({ScreenX}, {ScreenY}), " +
+               $"World({WorldX}, {WorldY}), " +
+               $"Tile({TileX}, {TileY}), " +
+               $"Diff({MouseDiff.X}, {MouseDiff.Y}), " +
+               $"Delta({MouseDelta}), " +
+               $"ScrollDelta({ScrollDelta}), " +
+               $"LPressed: {LPressed}, MPressed: {MPressed}, RPressed: {RPressed}";
+    }
 }

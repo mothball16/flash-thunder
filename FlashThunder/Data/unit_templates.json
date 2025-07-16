@@ -1,6 +1,7 @@
 {
   "infantry_scout": {
     "components": {
+      "selectableTag": {},
       "spriteData": {
         "layers": {
           "base": {
