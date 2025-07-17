@@ -35,6 +35,11 @@
     "Action": "Select"
   },
   {
+    "InputType": "Mouse",
+    "Identifier": "Right",
+    "Action": "Deselect"
+  },
+  {
     "InputType": "Keyboard",
     "Identifier": "M",
     "Action": "EndTurn"

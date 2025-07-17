@@ -1,18 +1,22 @@
+using fennecs;
 using FlashThunder._ECSGameLogic.Components.TeamStats;
+using FlashThunder.ECSGameLogic.Components;
 using FlashThunder.Events;
+using FlashThunder.GameLogic.Components;
 using FlashThunder.Managers;
 using Gum.Converters;
 using Gum.DataTypes;
 using Gum.Managers;
 using Gum.Wireframe;
-
+using Microsoft.Xna.Framework;
 using RenderingLibrary.Graphics;
-
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace FlashThunder.Screens;
 
-internal partial class GameScreen
+internal partial class GameScreen : IUpdateScreen
 {
     public GameScreenPresenter Presenter { get; set; }
 
@@ -29,19 +33,73 @@ internal partial class GameScreen
     {
         //nothing yet..
     }
+
+    public void Update(GameTime gameTime)
+    {
+        Presenter.Update();
+    }
 }
 
-internal sealed class GameScreenPresenter
+internal sealed class GameScreenPresenter : IDisposable
 {
     private readonly GameScreen _view;
-    private readonly IEventSubscriber _subscriber;
+    private readonly List<IDisposable> _disposables;
+    private readonly Query _selected;
 
-    public GameScreenPresenter(GameScreen view, IEventSubscriber subscriber)
+    private bool _showingSelectedUnitScreen;
+
+    public GameScreenPresenter(World model, GameScreen view, IEventSubscriber subscriber)
     {
         _view = view;
-        _subscriber = subscriber;
+        
+        _selected = model.Query<SelectedTag>().Compile();
+        _disposables = [
+            subscriber.Subscribe<EntityCountChangedEvent>(view.OnEntityCountChanged),
+            subscriber.Subscribe<TurnOrderChangedEvent>(view.OnTurnOrderChanged)
+        ];
+    }
 
-        subscriber.Subscribe<EntityCountChangedEvent>(view.OnEntityCountChanged);
-        subscriber.Subscribe<TurnOrderChangedEvent>(view.OnTurnOrderChanged);
+    private void DisplaySelectedUnitInformation(Entity e)
+    {
+        _view.UnitInformation.Visible = true;
+        UpdateHealthBar(e.Ref<Health>());
+    }
+
+    private void UpdateHealthBar(Health health)
+    {
+        var hpPercent = (float) health.CurHealth / health.MaxHealth;
+        _view.HealthText.Text = $"HP: {health.CurHealth} / {health.MaxHealth}";
+        _view.HealthBar.Width = Math.Clamp(hpPercent * 100,0,100);
+    }
+
+    private void HideSelectedUnitInformation()
+    {
+        _view.UnitInformation.Visible = false;
+    }
+
+    public void Update()
+    {
+        var somethingIsSelected = _selected.Count > 0;
+        if (somethingIsSelected)
+        {
+            if (!_showingSelectedUnitScreen)
+            {
+                _showingSelectedUnitScreen = true;
+                DisplaySelectedUnitInformation(_selected[0]);
+            }
+        } else
+        {
+            if (_showingSelectedUnitScreen)
+            {
+                _showingSelectedUnitScreen = false;
+                HideSelectedUnitInformation();
+            }
+
+        }
+    }
+
+    public void Dispose()
+    {
+        _disposables.ForEach(d => d.Dispose());
     }
 }

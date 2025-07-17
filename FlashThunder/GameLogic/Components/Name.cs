@@ -6,5 +6,4 @@ using System.Threading.Tasks;
 
 namespace FlashThunder.GameLogic.Components;
 
-internal readonly record struct SelectableTag;
-
+internal readonly record struct Name(string Value);

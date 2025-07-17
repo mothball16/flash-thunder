@@ -3,7 +3,6 @@ using FlashThunder.GameLogic;
 
 namespace FlashThunder.ECSGameLogic.Components;
 
-[ComponentName("moveIntent")]
 internal struct MoveIntent
 {
     public Direction Dir { get; set; }

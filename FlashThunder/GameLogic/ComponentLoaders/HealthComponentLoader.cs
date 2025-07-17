@@ -1,7 +1,7 @@
 ﻿using fennecs;
 using FlashThunder.Defs;
-using FlashThunder.ECSGameLogic.Components.UnitStats;
 using FlashThunder.GameLogic;
+using FlashThunder.GameLogic.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;

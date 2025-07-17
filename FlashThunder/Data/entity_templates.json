@@ -11,22 +11,5 @@
         }
       }
     }
-  },
-  "control_marker": {
-    "components": {
-      "spriteData": {
-        "layers": {
-          "base": {
-            "textureAlias": "element_controlled_tile",
-            "sizeX": 1,
-            "sizeY": 1
-          }
-        }
-      },
-      "destroyInFramesRequest": {
-        "lifetime": 1
-      }
-    }
   }
-
 }

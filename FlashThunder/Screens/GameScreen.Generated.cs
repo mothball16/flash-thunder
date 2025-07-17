@@ -37,6 +37,12 @@ partial class GameScreen : MonoGameGum.Forms.Controls.FrameworkElement
     }
     public TextRuntime UnitCount { get; protected set; }
     public TextRuntime TurnOrder { get; protected set; }
+    public ContainerRuntime UnitInformation { get; protected set; }
+    public TextRuntime UnitName { get; protected set; }
+    public ContainerRuntime HealthDisplay { get; protected set; }
+    public ColoredRectangleRuntime BaseBar { get; protected set; }
+    public ColoredRectangleRuntime HealthBar { get; protected set; }
+    public TextRuntime HealthText { get; protected set; }
 
     public GameScreen(InteractiveGue visual) : base(visual) { }
     public GameScreen()
@@ -50,6 +56,12 @@ partial class GameScreen : MonoGameGum.Forms.Controls.FrameworkElement
         base.ReactToVisualChanged();
         UnitCount = this.Visual?.GetGraphicalUiElementByName("UnitCount") as TextRuntime;
         TurnOrder = this.Visual?.GetGraphicalUiElementByName("TurnOrder") as TextRuntime;
+        UnitInformation = this.Visual?.GetGraphicalUiElementByName("UnitInformation") as ContainerRuntime;
+        UnitName = this.Visual?.GetGraphicalUiElementByName("UnitName") as TextRuntime;
+        HealthDisplay = this.Visual?.GetGraphicalUiElementByName("HealthDisplay") as ContainerRuntime;
+        BaseBar = this.Visual?.GetGraphicalUiElementByName("BaseBar") as ColoredRectangleRuntime;
+        HealthBar = this.Visual?.GetGraphicalUiElementByName("HealthBar") as ColoredRectangleRuntime;
+        HealthText = this.Visual?.GetGraphicalUiElementByName("HealthText") as TextRuntime;
         CustomInitialize();
     }
     //Not assigning variables because Object Instantiation Type is set to By Name rather than Fully In Code

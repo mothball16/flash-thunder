@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using FlashThunder.Managers;
 using FlashThunder.ECSGameLogic.Components;
-using FlashThunder.ECSGameLogic.Components.UnitStats;
 using System.Text.Json;
 using Microsoft.Xna.Framework.Graphics;
 using FlashThunder._ECSGameLogic;

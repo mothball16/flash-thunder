@@ -9,7 +9,6 @@ using Dcrew.MonoGame._2D_Camera;
 using FlashThunder.States;
 using FlashThunder.ECSGameLogic.ComponentLoaders;
 using fennecs;
-using FlashThunder.ECSGameLogic.Components.UnitStats;
 using FlashThunder.GameLogic.Resources;
 using FlashThunder.Extensions;
 using FlashThunder.GameLogic;
@@ -142,6 +141,7 @@ internal class GameRunningStateFactory : IGameStateFactory
         var sbInit = new RenderInitSystem(camera);
         var tileRender = new TileRenderSystem(world, _tileManager);
         var entityRender = new EntityRenderSystem(world);
+        var decorators = new DecoratorSystems(world, _texManager.Get("element_controlled_tile"));
 
         updateSystems.AddRange([
             mousePolling,
@@ -152,7 +152,8 @@ internal class GameRunningStateFactory : IGameStateFactory
         drawSystems.AddRange([
             sbInit,
             tileRender,
-            entityRender
+            entityRender,
+            decorators
         ]);
 
         // - - - [ event handler initialization ] - - -
@@ -174,6 +175,6 @@ internal class GameRunningStateFactory : IGameStateFactory
             Team = "Section 4"
         });
 
-        return new GameRunningState(_eventBus, updateSystems, drawSystems, disposables);
+        return new GameRunningState(world, _eventBus, updateSystems, drawSystems, disposables);
     }
 }

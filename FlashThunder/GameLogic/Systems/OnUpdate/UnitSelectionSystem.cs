@@ -19,24 +19,45 @@ namespace FlashThunder.GameLogic.Systems.OnUpdate
 {
     internal sealed class UnitSelectionSystem(World world) : IUpdateSystem<float>
     {
-        private readonly Stream<GridPosition> _query
+        private readonly Stream<GridPosition> _selectable
             = world.Query<GridPosition>()
             .Has<SelectableTag>()
             .Stream();
+
+        private readonly Stream<SelectedTag> _curSelected
+            = world.Query<SelectedTag>().Stream();
+
         private readonly World _world = world;
+
+        private void ClearSelection()
+            => _curSelected.For((in Entity e, ref SelectedTag _) => e.Remove<SelectedTag>());
+
         public void Update(float upd)
         {
+            // - - - [ edge handling ] - - -
             var input = _world.GetResource<InputResource>();
+            if (input.JustActivated.Contains(GameAction.Deselect))
+            {
+                ClearSelection();
+                return;
+            }
+            // if select action didn't happen, don't do anything
+            // ( consider moving this over to a handler )
             if (!input.JustActivated.Contains(GameAction.Select))
                 return;
-            var mouse = _world.GetResource<MouseResource>();
-            Logger.Print($"{mouse}");
 
-            _query.For((in Entity e, ref GridPosition pos) =>
+            // - - - [ the actual logic ] - - -
+
+            // figure out what unit we are trying to select
+            var mouse = _world.GetResource<MouseResource>();
+
+            // add selected tag to any unit on that tile
+            _selectable.For((in Entity e, ref GridPosition pos) =>
             {
                 if(pos.X == mouse.TileX && pos.Y == mouse.TileY)
                 {
-                    Logger.Confirm($"Unit found on tile {pos.X}, {pos.Y}");
+                    ClearSelection();
+                    e.Add<SelectedTag>();
                 }
             });
         }

@@ -19,6 +19,7 @@ namespace FlashThunder.States;
 /// for updating and drawing.
 /// </summary>
 internal sealed class GameRunningState(
+    World world,
     EventBus eventBus,
     List<IUpdateSystem<float>> updateSystems,
     List<IUpdateSystem<SpriteBatch>> drawSystems,
@@ -36,7 +37,7 @@ internal sealed class GameRunningState(
             ScreenFactory = () =>
             {
                 var view = new GameScreen();
-                view.Presenter = new GameScreenPresenter(view, _eventBus);
+                view.Presenter = new GameScreenPresenter(world, view, _eventBus);
                 return view.Visual;
             },
             Layer = ScreenLayer.Primary
@@ -53,6 +54,7 @@ internal sealed class GameRunningState(
 
     public void Dispose()
     {
+        world.Dispose();
         _disposables.ForEach(s => s.Dispose());
         _updateSystems.ForEach(s => s.Dispose());
         _drawSystems.ForEach(s => s.Dispose());

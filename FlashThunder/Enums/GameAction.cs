@@ -3,6 +3,8 @@
 public enum GameAction
 {
     Select,
+    Deselect,
+
     MoveLeft,
     MoveRight,
     MoveUp,
