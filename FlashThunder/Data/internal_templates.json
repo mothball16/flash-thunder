@@ -1,11 +1,16 @@
 {
   "internal_init_camera": {
     "components": {
+      "isPlayerControllable": {},
+      "activeCamera": {},
       "worldCamera": {
         "response": 10,
         "scale": 1
       },
-      "activeCamera": {}
+      "smoothScalable": {
+        "scale": 1,
+        "response": 10
+      }
     }
   }
 }

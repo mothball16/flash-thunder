@@ -128,7 +128,10 @@ internal class GameRunningStateFactory : IGameStateFactory
             .Map<Armor>()
             .Map<SelectedTag>().Map<SelectableTag>()
             .Map<ActiveCamera>().Map<WorldCamera>()
-            .Map<Range>();
+            .Map<Range>()
+            .Map<WorldToGridMover>()
+            .Map<SmoothScalable>()
+            .Map<IsPlayerControllable>();
 
         // set up the environment
         InitResources(world);
@@ -137,25 +140,32 @@ internal class GameRunningStateFactory : IGameStateFactory
 
         // - - - [ system initialization ] - - -
 
+        // [!] update
         var mousePolling = new MousePollingSystem(world, camera);
         var unitSelection = new UnitSelectionSystem(world);
 
-        // camera control
+        // pre-render
+        var worldMoveToGridPos = new WorldToGridMoverSystem(world);
         var cameraSystems = new CameraSystems(world, camera);
 
-        // rendering
+        // [!] rendering
         var sbInit = new RenderInitSystem(camera);
         var tileRender = new TileRenderSystem(world, _tileManager);
-        var entityRender = new EntityRenderSystem(world);
-        var decorators = new DecoratorSystems(world, _texManager.Get("element_controlled_tile"));
+        var entityRender = new EntityRenderSystems(world);
+        var decorators = new DecoratorSystems(
+            world: world,
+            selectedTexture: _texManager.Get("element_controlled_tile"),
+            hoveringTileTexture: _texManager.Get("tile_hovering_tile")
+            );
 
-        // post-cycle
+        // [!] post-cycle
         var janitor = new JanitorSystems(world);
 
         updateSystems.AddRange([
             mousePolling,
             unitSelection,
-            cameraSystems
+            worldMoveToGridPos,
+            cameraSystems,
         ]);
 
         drawSystems.AddRange([

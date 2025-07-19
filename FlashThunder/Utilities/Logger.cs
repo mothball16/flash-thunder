@@ -1,4 +1,5 @@
-﻿using System;
+﻿using fennecs;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -41,5 +42,16 @@ internal static class Logger
     {
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine($"[{GetCaller()}] {msg}");
+    }
+
+    public static void PrintEntityComponents(Entity e)
+    {
+        var sb = new StringBuilder($"Entity {e.GetHashCode()}\n- - -\n");
+        foreach (var comp in e.Components)
+        {
+            sb.AppendLine($"> {comp.Type}, {comp.Box.Value}");
+        }
+        sb.AppendLine($"- - -");
+        Print(sb.ToString());
     }
 }

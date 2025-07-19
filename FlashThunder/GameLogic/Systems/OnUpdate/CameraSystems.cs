@@ -14,49 +14,85 @@ using FlashThunder.Enums;
 using FlashThunder.GameLogic.Resources;
 using FlashThunder.GameLogic.Components;
 using FlashThunder.GameLogic.Events;
+using FlashThunder._ECSGameLogic.Components.TeamStats;
+using FlashThunder.Core;
 
 namespace FlashThunder.GameLogic.Systems.OnUpdate
 {
-    internal sealed class CameraSystems(World world, Camera camera) : IUpdateSystem<float>
+    internal sealed class CameraSystems : IUpdateSystem<float>
     {
-        /// <summary>
-        /// The Camera object that this system will control.
-        /// </summary>
-        private readonly Camera _physicalCamera = camera;
-        private readonly Stream<Components.WorldCamera> _cameras
-            = world.Query<Components.WorldCamera>().Stream();
-        private readonly Stream<Components.WorldCamera> _selectedCamera
-            = world.Query<Components.WorldCamera, ActiveCamera>().Stream();
+        private readonly World _world;
+        private readonly Camera _physicalCamera;
+        private readonly Stream<WorldCamera> _cameras;
+        private readonly Stream<WorldCamera> _selectedCamera;
+        private readonly Stream<WorldCamera, SmoothScalable> _scalableSelectedCamera;
+        private readonly Query _selectedIsMovable;
 
+        public CameraSystems(World world, Camera camera)
+        {
+            _world = world;
+            _physicalCamera = camera;
+
+            // init the queries
+            var baseQuery = world.Query<WorldCamera>();
+            _cameras = baseQuery
+                .Stream();
+            _selectedCamera = baseQuery.Has<ActiveCamera>()
+                .Stream();
+            _scalableSelectedCamera = world.Query<WorldCamera, SmoothScalable>()
+                .Has<IsPlayerControllable>()
+                .Has<ActiveCamera>()
+                .Stream();
+            _selectedIsMovable = baseQuery
+                .Has<IsPlayerControllable>()
+                .Compile();
+        }
+        private static float NumLerp(float a, float b, float t)
+            => a + (b - a) * t;
         public void Update(float dt)
         {
-            CameraInputSystem();
+            CameraInputSystem(dt);
+            CameraZoomSystem(dt);
             CameraUpdateSystem(dt);
             CameraSyncSystem();
         }
 
-        public void CameraInputSystem()
+        public void CameraInputSystem(float dt)
         {
-            var input = world.GetResource<InputResource>();
+            if(_selectedIsMovable.IsEmpty)
+                return;
+
+            var input = _world.GetResource<InputResource>();
             var camSpeed = input.IsActivated(GameAction.SpeedUpCamera)
-                ? 16
-                : 4;
+                ? 800
+                : 200;
 
             if (input.IsActivated(GameAction.MoveLeft))
-                world.Publish(new CamTranslationRequest(-camSpeed, 0));
+                _world.Publish(new CamTranslationRequest(-camSpeed * dt, 0));
 
             if (input.IsActivated(GameAction.MoveRight))
-                world.Publish(new CamTranslationRequest(camSpeed, 0));
+                _world.Publish(new CamTranslationRequest(camSpeed * dt, 0));
 
             if (input.IsActivated(GameAction.MoveUp))
-                world.Publish(new CamTranslationRequest(0, -camSpeed));
+                _world.Publish(new CamTranslationRequest(0, -camSpeed * dt));
 
             if (input.IsActivated(GameAction.MoveDown))
-                world.Publish(new CamTranslationRequest(0, camSpeed));
+                _world.Publish(new CamTranslationRequest(0, camSpeed * dt));
         }
 
+        public void CameraZoomSystem(float dt)
+        {
+            var mouse = _world.GetResource<MouseResource>();
+            _scalableSelectedCamera.For((in Entity e, ref WorldCamera cam, ref SmoothScalable scale) =>
+            {
+                scale.ScaleTarget += mouse.ScrollDelta / GameConstants.ScrollStep;
+                scale.ScaleTarget = Math.Clamp(scale.ScaleTarget, GameConstants.MinZoom, GameConstants.MaxZoom);
+
+            });
+        }
         public void CameraUpdateSystem(float dt)
         {
+            // positional update
             _cameras.For((ref WorldCamera cam) =>
             {
                 var finalTarget = cam.Target + cam.Offset + cam.Jitter;
@@ -66,17 +102,27 @@ namespace FlashThunder.GameLogic.Systems.OnUpdate
                 // reset jitter
                 cam.Jitter = Vector2.Zero;
             });
+
+            // scale update
+            _scalableSelectedCamera.For((ref WorldCamera _, ref SmoothScalable scale) =>
+            {
+                float rate = 1 - MathF.Exp(-dt * scale.ScaleResponse);
+                scale.ScaleCurrent = NumLerp(scale.ScaleCurrent, scale.ScaleTarget,rate);
+                
+            });
         }
 
         public void CameraSyncSystem()
         {
-            (_, WorldCamera cam) = _selectedCamera.FirstOrDefault();
-            if (cam == null)
+            _selectedCamera.For((ref WorldCamera cam) =>
             {
-                Logger.Error("No active camera!");
-                return;
-            }
-            _physicalCamera.XY = cam.Position;
+                _physicalCamera.XY = cam.Position;
+            });
+
+            _scalableSelectedCamera.For((ref WorldCamera cam, ref SmoothScalable scale) =>
+            {
+                _physicalCamera.Scale = new(scale.ScaleCurrent, scale.ScaleCurrent);
+            });
         }
 
         public void Dispose() { }

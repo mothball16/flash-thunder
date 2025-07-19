@@ -26,5 +26,5 @@ internal class WorldCamera
     /// </summary>
     public Vector2 Jitter { get; set; } = Vector2.Zero;
     public float Response { get; set; } = 0.5f;
-    public float Scale { get; set; } = 1;
+    public float Scale { get; set; }
 }

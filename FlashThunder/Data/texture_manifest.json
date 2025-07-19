@@ -1,5 +1,9 @@
 [
   {
+    "textureAlias": "tile_hovering_tile",
+    "textureName": "Textures/Elements/hovering-on-tile"
+  },
+  {
     "textureAlias": "element_controlled_tile",
     "textureName": "Textures/Elements/controlled-tile"
   },

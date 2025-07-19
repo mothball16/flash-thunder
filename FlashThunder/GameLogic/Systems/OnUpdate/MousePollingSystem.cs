@@ -30,7 +30,9 @@ namespace FlashThunder.GameLogic.Systems.OnUpdate
             var position = mouseState.Position;
 
             var mouseDiff = (position - _lastMouseState.Position);
-            var mouseDelta = (float) Math.Sqrt(mouseDiff.X * mouseDiff.X + mouseDiff.Y * mouseDiff.Y);
+            var mouseDelta = (float) Math.Sqrt(
+                (mouseDiff.X * mouseDiff.X) +
+                (mouseDiff.Y * mouseDiff.Y));
             float scrollDelta = mouseState.ScrollWheelValue - _lastMouseState.ScrollWheelValue;
 
             var worldPosition = _camera.ScreenToWorld(position);

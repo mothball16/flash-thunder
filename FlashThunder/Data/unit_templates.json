@@ -1,6 +1,9 @@
 {
   "infantry_scout": {
     "components": {
+      "worldToGridMover": {
+        "response": 5
+      },
       "selectableTag": {},
       "spriteData": {
         "layers": {
