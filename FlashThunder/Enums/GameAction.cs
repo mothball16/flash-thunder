@@ -2,7 +2,7 @@
 
 public enum GameAction
 {
-    Select,
+    Action,
     Deselect,
 
     MoveLeft,

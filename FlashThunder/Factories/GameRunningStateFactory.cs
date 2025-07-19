@@ -20,6 +20,7 @@ using FlashThunder.GameLogic.Systems.OnDraw;
 using FlashThunder.GameLogic.Events;
 using FlashThunder.GameLogic.Components.Relations;
 using FlashThunder.GameLogic.Services;
+using FlashThunder.GameLogic.Handlers;
 
 namespace FlashThunder.Factories;
 
@@ -55,7 +56,11 @@ internal class GameRunningStateFactory : IGameStateFactory
         var mouseResource = new MouseResource();
         var turnOrderResource = new TurnOrderResource();
         // this provides a read-only version of the input manager
-        InputResource inputResource = _gameInputManager;
+        var inputResource = new InputResource
+        {
+            Input = _gameInputManager,
+            ConsumedInputs = []
+        };
         // FOR NOW: manually initialize the map, we will do actual loading later.
         var mapResource = new MapResource
         {
@@ -101,6 +106,7 @@ internal class GameRunningStateFactory : IGameStateFactory
     {
         List<IUpdateSystem<float>> updateSystems = [];
         List<IUpdateSystem<SpriteBatch>> drawSystems = [];
+        List<IUpdateSystem<float>> postCycleSystems = [];
         List<IDisposable> disposables = [];
 
         // initialize the physical camera
@@ -143,6 +149,9 @@ internal class GameRunningStateFactory : IGameStateFactory
         var entityRender = new EntityRenderSystem(world);
         var decorators = new DecoratorSystems(world, _texManager.Get("element_controlled_tile"));
 
+        // post-cycle
+        var janitor = new JanitorSystems(world);
+
         updateSystems.AddRange([
             mousePolling,
             unitSelection,
@@ -156,25 +165,30 @@ internal class GameRunningStateFactory : IGameStateFactory
             decorators
         ]);
 
+        postCycleSystems.AddRange([
+            janitor
+        ]);
+
         // - - - [ event handler initialization ] - - -
         var nextTurn = new NextTurnHandler(world, _eventBus);
         var spawnPrefab = new SpawnPrefabHandler(world, factory);
-
-        disposables.AddRange([ 
+        var camChange = new CameraChangeHandler(world);
+        disposables.AddRange([
             nextTurn,
-            spawnPrefab
+            spawnPrefab,
+            camChange
             ]);
 
         // - - - [ final world setup ] - - -
         
-        world.Publish<SpawnPrefabRequestEvent>(new("internal_init_camera"));
-        world.Publish<SpawnPrefabRequestEvent>(new()
+        world.Publish<SpawnPrefabRequest>(new("internal_init_camera"));
+        world.Publish<SpawnPrefabRequest>(new()
         {
             Name = "infantry_scout",
             Position = new(0, 0),
             Team = "Section 4"
         });
 
-        return new GameRunningState(world, _eventBus, updateSystems, drawSystems, disposables);
+        return new GameRunningState(world, _eventBus, updateSystems, drawSystems, postCycleSystems, disposables);
     }
 }

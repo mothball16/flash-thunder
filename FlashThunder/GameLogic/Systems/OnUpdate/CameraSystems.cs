@@ -13,6 +13,7 @@ using FlashThunder.Extensions;
 using FlashThunder.Enums;
 using FlashThunder.GameLogic.Resources;
 using FlashThunder.GameLogic.Components;
+using FlashThunder.GameLogic.Events;
 
 namespace FlashThunder.GameLogic.Systems.OnUpdate
 {
@@ -29,35 +30,34 @@ namespace FlashThunder.GameLogic.Systems.OnUpdate
 
         public void Update(float dt)
         {
-            (_, Components.WorldCamera cam) = _selectedCamera.FirstOrDefault();
-            CameraInputSystem(cam);
+            CameraInputSystem();
             CameraUpdateSystem(dt);
             CameraSyncSystem();
         }
 
-        public void CameraInputSystem(WorldCamera cam)
+        public void CameraInputSystem()
         {
             var input = world.GetResource<InputResource>();
-            var camSpeed = input.Active.Contains(GameAction.SpeedUpCamera) 
+            var camSpeed = input.IsActivated(GameAction.SpeedUpCamera)
                 ? 16
                 : 4;
 
-            if (input.Active.Contains(GameAction.MoveLeft))
-                cam.Target += new Vector2(-camSpeed, 0);
+            if (input.IsActivated(GameAction.MoveLeft))
+                world.Publish(new CamTranslationRequest(-camSpeed, 0));
 
-            if (input.Active.Contains(GameAction.MoveRight))
-                cam.Target += new Vector2(camSpeed, 0);
+            if (input.IsActivated(GameAction.MoveRight))
+                world.Publish(new CamTranslationRequest(camSpeed, 0));
 
-            if (input.Active.Contains(GameAction.MoveUp))
-                cam.Target += new Vector2(0, -camSpeed);
+            if (input.IsActivated(GameAction.MoveUp))
+                world.Publish(new CamTranslationRequest(0, -camSpeed));
 
-            if (input.Active.Contains(GameAction.MoveDown))
-                cam.Target += new Vector2(0, camSpeed);
+            if (input.IsActivated(GameAction.MoveDown))
+                world.Publish(new CamTranslationRequest(0, camSpeed));
         }
 
         public void CameraUpdateSystem(float dt)
         {
-            _cameras.For((ref Components.WorldCamera cam) =>
+            _cameras.For((ref WorldCamera cam) =>
             {
                 var finalTarget = cam.Target + cam.Offset + cam.Jitter;
                 // update the camera
@@ -70,7 +70,7 @@ namespace FlashThunder.GameLogic.Systems.OnUpdate
 
         public void CameraSyncSystem()
         {
-            (_, Components.WorldCamera cam) = _selectedCamera.FirstOrDefault();
+            (_, WorldCamera cam) = _selectedCamera.FirstOrDefault();
             if (cam == null)
             {
                 Logger.Error("No active camera!");

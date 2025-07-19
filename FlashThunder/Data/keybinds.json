@@ -32,7 +32,7 @@
   {
     "InputType": "Mouse",
     "Identifier": "Left",
-    "Action": "Select"
+    "Action": "Action"
   },
   {
     "InputType": "Mouse",

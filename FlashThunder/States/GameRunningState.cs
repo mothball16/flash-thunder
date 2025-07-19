@@ -23,12 +23,14 @@ internal sealed class GameRunningState(
     EventBus eventBus,
     List<IUpdateSystem<float>> updateSystems,
     List<IUpdateSystem<SpriteBatch>> drawSystems,
+    List<IUpdateSystem<float>> postCycleSystems,
     List<IDisposable> disposables)
     : IGameState
 {
     private readonly EventBus _eventBus = eventBus;
     private readonly List<IUpdateSystem<float>> _updateSystems = updateSystems;
     private readonly List<IUpdateSystem<SpriteBatch>> _drawSystems = drawSystems;
+    private readonly List<IUpdateSystem<float>> _postCycleSystems = postCycleSystems;
     private readonly List<IDisposable> _disposables = disposables;
     public void Enter()
     {
@@ -50,7 +52,9 @@ internal sealed class GameRunningState(
     public void Draw(SpriteBatch sb)
     {
         _drawSystems.ForEach(s => s.Update(sb));
+        _postCycleSystems.ForEach(s => s.Update(0f));
     }
+
 
     public void Dispose()
     {
@@ -58,5 +62,6 @@ internal sealed class GameRunningState(
         _disposables.ForEach(s => s.Dispose());
         _updateSystems.ForEach(s => s.Dispose());
         _drawSystems.ForEach(s => s.Dispose());
+        _postCycleSystems.ForEach(s => s.Dispose());
     }
 }

@@ -21,12 +21,12 @@ internal sealed class SpawnPrefabHandler : IDisposable
     {
         _factory = factory;
         _subscriptions = [
-            world.Subscribe<SpawnPrefabRequestEvent>(Execute)
+            world.Subscribe<SpawnPrefabRequest>(Execute)
             ];
         _teamService = world.GetResource<TeamService>();
     }
 
-    public void Execute(SpawnPrefabRequestEvent msg)
+    public void Execute(SpawnPrefabRequest msg)
     {
         var entity = _factory.CreatePrefab(msg.Name);
 

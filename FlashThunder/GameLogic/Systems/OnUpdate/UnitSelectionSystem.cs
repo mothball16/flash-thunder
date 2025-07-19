@@ -14,50 +14,78 @@ using FlashThunder.Enums;
 using FlashThunder.GameLogic.Resources;
 using FlashThunder.GameLogic.Components;
 using FlashThunder.Core;
+using Microsoft.Xna.Framework.Input;
+using FlashThunder.GameLogic.Events;
 
 namespace FlashThunder.GameLogic.Systems.OnUpdate
 {
-    internal sealed class UnitSelectionSystem(World world) : IUpdateSystem<float>
+    internal sealed class UnitSelectionSystem : IUpdateSystem<float>
     {
-        private readonly Stream<GridPosition> _selectable
-            = world.Query<GridPosition>()
-            .Has<SelectableTag>()
-            .Stream();
+        private const int TileSize = GameConstants.TileSize;
+        private readonly Stream<GridPosition> _selectable;
+        private readonly Stream<SelectedTag> _curSelected;
 
-        private readonly Stream<SelectedTag> _curSelected
-            = world.Query<SelectedTag>().Stream();
+        private readonly World _world;
 
-        private readonly World _world = world;
+        public UnitSelectionSystem(World world)
+        {
+            _selectable = world.Query<GridPosition>()
+                .Has<SelectableTag>()
+                .Stream();
+            _curSelected = world.Query<SelectedTag>()
+                .Stream();
+            _world = world;
+        }
 
         private void ClearSelection()
             => _curSelected.For((in Entity e, ref SelectedTag _) => e.Remove<SelectedTag>());
 
+        /// <summary>
+        /// The operation that this system performs on the selected entity.
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="pos"></param>
+        private void SelectUnit(Entity e, GridPosition pos)
+        {
+            ClearSelection();
+            e.Add<SelectedTag>();
+
+            _world.Publish(new CamTranslationRequest(
+                pos.X + (TileSize / 2),
+                pos.Y + (TileSize / 2),
+                OffsetType: CamOffsetType.Absolute));
+        }
+
         public void Update(float upd)
         {
             // - - - [ edge handling ] - - -
+
             var input = _world.GetResource<InputResource>();
-            if (input.JustActivated.Contains(GameAction.Deselect))
+            if (input.WasJustActivated(GameAction.Deselect))
             {
                 ClearSelection();
                 return;
             }
-            // if select action didn't happen, don't do anything
-            // ( consider moving this over to a handler )
-            if (!input.JustActivated.Contains(GameAction.Select))
+
+            // we should not be able to select more than one unit
+            if (_curSelected.Count > 0)
                 return;
 
-            // - - - [ the actual logic ] - - -
+            // if select action didn't happen, don't do anything
+            if (!input.WasJustActivated(GameAction.Action))
+                return;
 
-            // figure out what unit we are trying to select
+            // - - - [ figure out what unit we are trying to select ] - - -
             var mouse = _world.GetResource<MouseResource>();
 
-            // add selected tag to any unit on that tile
             _selectable.For((in Entity e, ref GridPosition pos) =>
             {
                 if(pos.X == mouse.TileX && pos.Y == mouse.TileY)
                 {
-                    ClearSelection();
-                    e.Add<SelectedTag>();
+                    SelectUnit(e, pos);
+
+                    // we don't want to handle multiple actions in one frame, so have it expire
+                    input.UseAction(GameAction.Action);
                 }
             });
         }

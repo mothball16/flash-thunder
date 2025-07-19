@@ -185,7 +185,7 @@ public class Pathfinder<T>
                     float distSq = row != 0 && col != 0
                         ? 1.4f //approximately sqrt(2) for a diagonal movement
                         : 1; //the move is either horizontal or vertical
-                    float gVal = node.g + distSq;
+                    float gVal = node.G + distSq;
 
                     //if there's already a cheaper path that reaches that node, this search is redundant
                     //so terminate here

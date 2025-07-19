@@ -32,10 +32,10 @@ internal sealed class NextTurnHandler : IDisposable
         _world = world;
         _uiNotifier = uiNotifier;
         _subscriptions = [
-            world.Subscribe<NextTurnRequestEvent>(Execute)
+            world.Subscribe<NextTurnRequest>(Execute)
         ];
     }
-    public void Execute(NextTurnRequestEvent _)
+    public void Execute(NextTurnRequest _)
     {
         ref var _turnOrder = ref _world.GetResource<TurnOrderResource>();
         var order = _turnOrder.Order;
