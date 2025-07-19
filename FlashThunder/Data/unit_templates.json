@@ -27,7 +27,7 @@
       "vision": {
         "value": 2
       },
-      "move": {
+      "moveCapable": {
         "range": 2,
         "traverse": [ "land", "water", "air" ]
       },

@@ -17,7 +17,7 @@ using FlashThunder.Core;
 using Microsoft.Xna.Framework.Input;
 using FlashThunder.GameLogic.Events;
 
-namespace FlashThunder.GameLogic.Systems.OnUpdate
+namespace FlashThunder.GameLogic.Systems.OnUpdate.SelectionActions
 {
     internal sealed class UnitSelectionSystem : IUpdateSystem<float>
     {
@@ -51,8 +51,8 @@ namespace FlashThunder.GameLogic.Systems.OnUpdate
             e.Add<SelectedTag>();
 
             _world.Publish(new CamTranslationRequest(
-                pos.X + (TileSize / 2),
-                pos.Y + (TileSize / 2),
+                pos.X + TileSize / 2,
+                pos.Y + TileSize / 2,
                 OffsetType: CamOffsetType.Absolute));
         }
 

@@ -21,6 +21,7 @@ using FlashThunder.GameLogic.Events;
 using FlashThunder.GameLogic.Components.Relations;
 using FlashThunder.GameLogic.Services;
 using FlashThunder.GameLogic.Handlers;
+using FlashThunder.GameLogic.Systems.OnUpdate.SelectionActions;
 
 namespace FlashThunder.Factories;
 
@@ -122,7 +123,7 @@ internal class GameRunningStateFactory : IGameStateFactory
             .LoadTemplates("unit_templates.json")
             .Map<Health>(new HealthComponentLoader())
             .Map<SpriteData>(new SpriteDataComponentLoader(_texManager))
-            .Map<Move>().Map<MoveIntent>()
+            .Map<MoveCapable>().Map<MoveIntent>()
             .Map<Vision>().Map<MaxRange>()
             .Map<GridPosition>().Map<WorldPosition>()
             .Map<Armor>()

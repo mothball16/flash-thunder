@@ -1,17 +1,7 @@
 ﻿using FlashThunder.Defs;
 using FlashThunder.Utilities;
-using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using FlashThunder.Managers;
-using FlashThunder.ECSGameLogic.Components;
 using System.Text.Json;
-using Microsoft.Xna.Framework.Graphics;
-using FlashThunder._ECSGameLogic;
-using System.Reflection;
-using System.Linq;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Security.Cryptography;
 using fennecs;
 using FlashThunder.GameLogic;
 using FlashThunder._ECSGameLogic.Components.TeamStats;
@@ -44,22 +34,18 @@ internal class EntityFactory
     /// </summary>
     public EntityFactory Map<T>(IComponentLoader loader = null)
     {
-        // get key and check for any bad practices in usage
         var key = ToComponentKey<T>();
         if (_loaders.ContainsKey(key))
             Logger.Warn($"Loader on {key} was re-assigned. Loaders should not be re-assigned after creation.");
 
-        // add the new typed loader to the loader dictionary
-        _loaders[typeof(T).Name.FirstCharToLower()]
-            // do we have a custom loader?
-            = loader == null
-            // (no) load default
+        _loaders[key] = loader == null
+            // loader is default
             ? (e, data) =>
             {
                 var component = DataLoader.DeserObject<T>(data.GetRawText());
                 e.Add(component);
             }
-            // (yes) load custom
+            // loader is custom
             : (e, data) => loader.LoadComponent(e, data);
         return this;
     }
@@ -111,7 +97,8 @@ internal class EntityFactory
     }
 
     #region - - - [ Bundles ] - - -
-
+    // this area is used to define contracts for entities that are created across different parts
+    // of the codebase
     public Entity CreateTeamBundle(
         TeamTag teamTag,
         Faction faction,

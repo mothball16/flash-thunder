@@ -10,5 +10,5 @@
 internal readonly record struct Armor(int Hard, int Soft);
 internal readonly record struct Health(int CurHealth, int MaxHealth);
 internal readonly record struct MaxRange(int Value);
-internal readonly record struct Move(int Range, string[] Traverse);
+internal readonly record struct MoveCapable(int Range, string[] Traverse);
 internal readonly record struct Vision(int Value);

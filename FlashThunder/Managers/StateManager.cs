@@ -11,14 +11,15 @@ internal sealed class StateManager : IDisposable
 {
     private readonly Dictionary<Type, Func<IGameState>> _stateFacs;
     private readonly EventBus _eventBus;
+    private readonly List<IDisposable> _subscriptions;
 
     private IGameState _currentState;
     public StateManager(EventBus eventBus)
     {
         _eventBus = eventBus;
         _stateFacs = [];
-
-        eventBus.Subscribe<ChangeStateEvent>(OnStateChangedRequest);
+        _subscriptions = [
+            eventBus.Subscribe<ChangeStateEvent>(OnStateChangedRequest)];
     }
 
     public void OnStateChangedRequest(ChangeStateEvent msg)
@@ -62,6 +63,6 @@ internal sealed class StateManager : IDisposable
 
     public void Dispose()
     {
-        _eventBus.Unsubscribe<ChangeStateEvent>(OnStateChangedRequest);
+        _subscriptions.ForEach(s => s.Dispose());
     }
 }
