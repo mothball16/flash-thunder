@@ -11,16 +11,16 @@ post-nuclear war. Somewhat arcadey and based off of Noobs in Combat on ROBLOX.
   (water, air, land)
 - Units can be spawned from world buildings
 
-## Post-MVP
+## Post-MVP (high - low prio.)
 - UI expansion to show game state
 - Most/all development capable of data-driven addition
 - Enemy AI based off utility system
 
 - Pixel art to go with units
 - Full storyline + implementation of a campaign
+- UI animations and transitions
 
-# 3) Tasks
-- Unit selection
+# 3) Active Tasks
 - Unit movement
 
 # 4) Scheduling
@@ -48,6 +48,9 @@ https://bevy-cheatbook.github.io
   every time we want to do something with it.
 	- Will avoid service locators for now though. Looking into services as their own resource
 	  or abandoning resources altogether for services.
+- Very highly considering using Tiled for tilemap building. This seems very conventional and better
+  than putting characters in an array x_x
+
 ## Architecture
 - Using MonoGame framework to get more experience building stuff
 - Using fennecs for game ECS
