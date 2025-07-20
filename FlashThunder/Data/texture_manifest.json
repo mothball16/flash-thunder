@@ -1,11 +1,19 @@
 [
   {
     "textureAlias": "tile_hovering_tile",
-    "textureName": "Textures/Elements/hovering-on-tile"
+    "textureName": "Textures/Elements/hovering_on_tile"
   },
   {
-    "textureAlias": "element_controlled_tile",
-    "textureName": "Textures/Elements/controlled-tile"
+    "textureAlias": "controlled_tile",
+    "textureName": "Textures/Elements/controlled_tile"
+  },
+  {
+    "textureAlias": "can_attack_tile",
+    "textureName": "Textures/Elements/can_attack_tile"
+  },
+  {
+    "textureAlias": "can_move_tile",
+    "textureName": "Textures/Elements/can_move_tile"
   },
   {
     "textureAlias": "tile_asteroid",

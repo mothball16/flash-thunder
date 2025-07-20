@@ -12,19 +12,9 @@ internal class TileDef
 {
     public string TextureName { get; set; }
     /// <summary>
-    /// Can land-travelling units pass?
+    /// What type of traversal method can access this tile?
     /// </summary>
-    public bool ByLand { get; set; } = true;
-
-    /// <summary>
-    /// Can air-travelling units pass?
-    /// </summary>
-    public bool ByAir { get; set; } = true;
-
-    /// <summary>
-    /// Can sea-travelling units pass?
-    /// </summary>
-    public bool BySea { get; set; } = false;
+    public string[] Traverse { get; set; }
 
     /// <summary>
     /// How many moves does it take to traverse this tile?

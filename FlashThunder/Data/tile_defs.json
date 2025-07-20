@@ -11,6 +11,6 @@
   },
   ".": {
     "textureName": "tile_fumo",
-    "traverse": [ "land", "air" ]
+    "traverse": [ "air" ]
   }
 }

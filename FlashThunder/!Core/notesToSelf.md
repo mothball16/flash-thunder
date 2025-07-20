@@ -1,4 +1,6 @@
-﻿# Model-View-Presenter pattern
+﻿(Notepad for learning and stuff)
+
+# Model-View-Presenter pattern
 - the model is the ECS world
 - the presenter can be the state itself in simple cases (assign it as the interface)
   or a distinct presenter in complex cases
@@ -22,4 +24,13 @@
 - ECS should be used for manipulation of world entities/data
 - OOP should be used for high-level state management / operations on single instances
 
-# Roadmap
+# How archetype-based ECS (like fennecs) works
+- Every entity with a unique combination of components is stored in a separate archetype
+- An archetype is a collection of entities that share the same set of components
+- Queries filter over the collection of archetypes, not entities
+- Queries store the archetypes that match the query, and lazy update when a new archetype is added
+- A complex query is not significantly more expensive than a simple one for this reason ^^
+
+# Why OOP is less performant than ECS for data-heavy operations
+- TBA: need to look into this more. something abt irrelevant and scattered lookups, but i don't 
+  understand this yet

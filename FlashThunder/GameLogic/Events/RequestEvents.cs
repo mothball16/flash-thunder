@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace FlashThunder.GameLogic.Events;
 
+internal readonly record struct MovableTilesUpdateRequest;
 internal readonly record struct NextTurnRequest;
-
 internal readonly record struct SpawnPrefabRequest(
     string Name,
     Action<Entity> Callback = null,
@@ -17,12 +17,12 @@ internal readonly record struct SpawnPrefabRequest(
     string Team = null
     );
 
+#region - - - [ Camera Requests ] - - -
 public enum CamOperationType
 {
     Smooth,
     Immediate,
 }
-
 public enum CamOffsetType
 {
     Absolute,
@@ -35,3 +35,4 @@ internal readonly record struct CamTranslationRequest(
     CamOperationType CamOp = CamOperationType.Smooth,
     CamOffsetType OffsetType = CamOffsetType.Relative
     );
+#endregion

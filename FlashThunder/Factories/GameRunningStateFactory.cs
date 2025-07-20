@@ -22,6 +22,8 @@ using FlashThunder.GameLogic.Components.Relations;
 using FlashThunder.GameLogic.Services;
 using FlashThunder.GameLogic.Handlers;
 using FlashThunder.GameLogic.Systems.OnUpdate.SelectionActions;
+using Microsoft.Xna.Framework;
+using System.Linq;
 
 namespace FlashThunder.Factories;
 
@@ -66,8 +68,9 @@ internal class GameRunningStateFactory : IGameStateFactory
         var mapResource = new MapResource
         {
             Tiles = [
-                ['#', '.', '#', '#', '#'],
-                ['.', '#', '.', '#', '#']
+                ['#', '#', '#', '.', '#', '#'],
+                ['#', '.', '#', '.', '#', '#'],
+                ['#', '.', '#', '.', '#', '#']
             ],
         };
         world.SetResource(mouseResource);
@@ -79,7 +82,32 @@ internal class GameRunningStateFactory : IGameStateFactory
     private void InitServices(World world, EntityFactory factory)
     {
         var teamService = new TeamService(world, factory);
+        var pathfindingService = new PathfindingService(
+            map: world.GetResource<MapResource>(),
+            isPassable: (Point pos, string[] canTraverse, int size) =>
+            {
+                var tileDef = _tileManager
+                .GetTileDefinition(world.GetResource<MapResource>().Tiles[pos.Y][pos.X]);
+                
+                foreach(var traverse in canTraverse)
+                {
+                    if (tileDef.Traverse.Contains(traverse))
+                        return true;
+                }
+                return false;
+            },
+            pathfindingHeuristic: (Point a, Point b) =>
+            {
+                // for now, use Manhattan distance
+                return Math.Abs(a.X - b.X) + Math.Abs(a.Y - b.Y);
+            },
+            getNodeWeight: (Point pos) =>
+            {
+                // for now, all tiles are equal
+                return 1;
+            });
         world.SetResource(teamService);
+        world.SetResource(pathfindingService);
     }
 
     /// <summary>
@@ -142,10 +170,14 @@ internal class GameRunningStateFactory : IGameStateFactory
         // - - - [ system initialization ] - - -
 
         // [!] update
+        // core
         var mousePolling = new MousePollingSystem(world, camera);
+        var movableTilesCalculator = new MovableTilesCalculatorSystem(world);
+
+        // game logic
         var unitSelection = new UnitSelectionSystem(world);
 
-        // pre-render
+        // pre-render (post-update)
         var worldMoveToGridPos = new WorldToGridMoverSystem(world);
         var cameraSystems = new CameraSystems(world, camera);
 
@@ -153,17 +185,15 @@ internal class GameRunningStateFactory : IGameStateFactory
         var sbInit = new RenderInitSystem(camera);
         var tileRender = new TileRenderSystem(world, _tileManager);
         var entityRender = new EntityRenderSystems(world);
-        var decorators = new DecoratorSystems(
-            world: world,
-            selectedTexture: _texManager.Get("element_controlled_tile"),
-            hoveringTileTexture: _texManager.Get("tile_hovering_tile")
-            );
+        var decorators = new DecoratorSystems(world, _texManager);
 
         // [!] post-cycle
         var janitor = new JanitorSystems(world);
 
         updateSystems.AddRange([
             mousePolling,
+            movableTilesCalculator,
+
             unitSelection,
             worldMoveToGridPos,
             cameraSystems,

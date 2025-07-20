@@ -28,8 +28,8 @@
         "value": 2
       },
       "moveCapable": {
-        "range": 2,
-        "traverse": [ "land", "water", "air" ]
+        "range": 4,
+        "traverse": [ "land" ]
       },
       "attacks": [
         {
