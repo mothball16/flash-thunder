@@ -68,9 +68,12 @@ internal class GameRunningStateFactory : IGameStateFactory
         var mapResource = new MapResource
         {
             Tiles = [
-                ['#', '#', '#', '.', '#', '#'],
-                ['#', '.', '#', '.', '#', '#'],
-                ['#', '.', '#', '.', '#', '#']
+                ['.', '#', '.', '#', '.', '#'],
+                ['.', '#', '.', '#', '.', '#'],
+                ['.', '#', '#', '#', '.', '.'],
+                ['.', '.', '.', '#', '#', '#'],
+                ['.', '#', '.', '.', '#', '.'],
+                ['.', '#', '#', '#', '#', '#']
             ],
         };
         world.SetResource(mouseResource);
@@ -82,14 +85,15 @@ internal class GameRunningStateFactory : IGameStateFactory
     private void InitServices(World world, EntityFactory factory)
     {
         var teamService = new TeamService(world, factory);
+        #region - - - [pathfinding service ] - - -
         var pathfindingService = new PathfindingService(
             map: world.GetResource<MapResource>(),
             isPassable: (Point pos, string[] canTraverse, int size) =>
             {
                 var tileDef = _tileManager
                 .GetTileDefinition(world.GetResource<MapResource>().Tiles[pos.Y][pos.X]);
-                
-                foreach(var traverse in canTraverse)
+
+                foreach (var traverse in canTraverse)
                 {
                     if (tileDef.Traverse.Contains(traverse))
                         return true;
@@ -98,14 +102,14 @@ internal class GameRunningStateFactory : IGameStateFactory
             },
             pathfindingHeuristic: (Point a, Point b) =>
             {
-                // for now, use Manhattan distance
                 return Math.Abs(a.X - b.X) + Math.Abs(a.Y - b.Y);
             },
             getNodeWeight: (Point pos) =>
             {
-                // for now, all tiles are equal
                 return 1;
             });
+        #endregion
+
         world.SetResource(teamService);
         world.SetResource(pathfindingService);
     }
@@ -151,7 +155,7 @@ internal class GameRunningStateFactory : IGameStateFactory
             .LoadTemplates("unit_templates.json")
             .Map<Health>(new HealthComponentLoader())
             .Map<SpriteData>(new SpriteDataComponentLoader(_texManager))
-            .Map<MoveCapable>().Map<MoveIntent>()
+            .Map<MoveCapable>(new MoveCapableLoader())
             .Map<Vision>().Map<MaxRange>()
             .Map<GridPosition>().Map<WorldPosition>()
             .Map<Armor>()
@@ -172,13 +176,13 @@ internal class GameRunningStateFactory : IGameStateFactory
         // [!] update
         // core
         var mousePolling = new MousePollingSystem(world, camera);
-        var movableTilesCalculator = new MovableTilesCalculatorSystem(world);
+        var entityMover = new EntityMoverSystems(world);
 
         // game logic
         var unitSelection = new UnitSelectionSystem(world);
-
+        var unitMove = new UnitMoveSystem(world);
         // pre-render (post-update)
-        var worldMoveToGridPos = new WorldToGridMoverSystem(world);
+        var worldMoveToGridPos = new WorldToGridLerpSystem(world);
         var cameraSystems = new CameraSystems(world, camera);
 
         // [!] rendering
@@ -192,9 +196,11 @@ internal class GameRunningStateFactory : IGameStateFactory
 
         updateSystems.AddRange([
             mousePolling,
-            movableTilesCalculator,
+            entityMover,
 
             unitSelection,
+            unitMove,
+
             worldMoveToGridPos,
             cameraSystems,
         ]);
@@ -202,8 +208,8 @@ internal class GameRunningStateFactory : IGameStateFactory
         drawSystems.AddRange([
             sbInit,
             tileRender,
+            decorators,
             entityRender,
-            decorators
         ]);
 
         postCycleSystems.AddRange([
@@ -226,10 +232,15 @@ internal class GameRunningStateFactory : IGameStateFactory
         world.Publish<SpawnPrefabRequest>(new()
         {
             Name = "infantry_scout",
-            Position = new(0, 0),
+            Position = new(1, 0),
             Team = "Section 4"
         });
-
+        world.Publish<SpawnPrefabRequest>(new()
+        {
+            Name = "infantry_scout",
+            Position = new(1, 1),
+            Team = "Section 4"
+        });
         return new GameRunningState(world, _eventBus, updateSystems, drawSystems, postCycleSystems, disposables);
     }
 }

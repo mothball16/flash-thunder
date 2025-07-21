@@ -5,6 +5,7 @@ using FlashThunder.Extensions;
 using FlashThunder.GameLogic;
 using FlashThunder.GameLogic.Resources;
 using FlashThunder.Managers;
+using FlashThunder.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -21,11 +22,16 @@ namespace FlashThunder.GameLogic.Systems.OnDraw;
 /// resources.
 /// </summary>
 /// <param name="world"></param>
-internal sealed class JanitorSystems(World world) : IUpdateSystem<float>
+internal sealed class JanitorSystems: IUpdateSystem<float>
 {
-    private readonly World _world = world;
-    
-    public void Update(float _)
+    private readonly World _world;
+
+    public JanitorSystems(World world)
+    {
+        _world = world;
+    }
+
+    public void Update(float dt)
     {
         InputRefreshSystem();
     }
@@ -35,5 +41,7 @@ internal sealed class JanitorSystems(World world) : IUpdateSystem<float>
         var input = _world.GetResource<InputResource>();
         input.ConsumedInputs.Clear();
     }
+
+
     public void Dispose() { }
 }

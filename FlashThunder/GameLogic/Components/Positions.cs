@@ -16,10 +16,10 @@ internal struct WorldPosition
         Y = y;
     }
 }
-internal readonly struct GridPosition
+internal struct GridPosition
 {
-    public int X { get; }
-    public int Y { get; }
+    public int X { get; set; }
+    public int Y { get; set; }
 
     public static implicit operator GridPosition(Point p) => new(p.X, p.Y);
     public GridPosition(int x, int y)

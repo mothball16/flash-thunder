@@ -29,7 +29,8 @@
       },
       "moveCapable": {
         "range": 4,
-        "traverse": [ "land" ]
+        "traverse": [ "land" ],
+        "processWaypointCD": 0.5
       },
       "attacks": [
         {

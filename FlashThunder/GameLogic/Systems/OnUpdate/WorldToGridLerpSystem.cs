@@ -11,7 +11,11 @@ using System.Threading.Tasks;
 
 namespace FlashThunder.GameLogic.Systems.OnUpdate
 {
-    internal sealed class WorldToGridMoverSystem(World world) : IUpdateSystem<float>
+    /// <summary>
+    /// WorldPosAutoAdderSystem -> automatically adds a WorldPosition component to entities with a WorldToGridMover
+    /// WorldToGridLerpSystem -> handles the lerping of WorldPosition to GridPosition for entities with a WorldToGridMover
+    /// </summary>
+    internal sealed class WorldToGridLerpSystem(World world) : IUpdateSystem<float>
     {
         private const int t = GameConstants.TileSize;
         private readonly Stream<WorldPosition, GridPosition, WorldToGridMover> _query

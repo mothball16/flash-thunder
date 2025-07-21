@@ -4,6 +4,7 @@ using FlashThunder.ECSGameLogic.Components;
 using FlashThunder.GameLogic;
 using FlashThunder.GameLogic.Components;
 using FlashThunder.Managers;
+using FlashThunder.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -56,6 +57,7 @@ internal sealed class EntityRenderSystems : IUpdateSystem<SpriteBatch>
     {
         _worldDrawableQuery.For((ref SpriteData sprite, ref WorldPosition pos) =>
         {
+            Logger.Print($"Drawing entity at world position: {pos.X}, {pos.Y}");
             foreach (var layer in sprite.Layers.Values)
             {
                 sb.Draw(
