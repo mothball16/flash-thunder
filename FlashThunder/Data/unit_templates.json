@@ -1,7 +1,7 @@
 {
   "infantry_scout": {
     "components": {
-      "worldToGridMover": {
+      "worldToGridAnimator": {
         "response": 5
       },
       "selectableTag": {},
@@ -21,9 +21,6 @@
         "hard": 0,
         "soft": 0
       },
-      "range": {
-        "value": 1
-      },
       "vision": {
         "value": 2
       },
@@ -32,10 +29,17 @@
         "traverse": [ "land" ],
         "processWaypointCD": 0.5
       },
-      "attacks": [
+      "skills": [
         {
-          "type": "unit_pistol_shoot",
-          "cooldown": 1
+          "name": "Hit and Run",
+          "description": "Mildly inconvenience your enemies with this one simple trick!",
+          "attackBehavior": "BasicAttackBehavior",
+          "attackParams": {
+            "type": "DefaultAttackParams",
+            "damage": 10,
+            "randomRange": 2,
+            "AP": 0
+          }
         }
       ]
 

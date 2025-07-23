@@ -1,4 +1,4 @@
-﻿using FlashThunder.GameLogic.Resources;
+﻿using FlashThunder.GameLogic.Input.Resources;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;

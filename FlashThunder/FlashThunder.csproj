@@ -55,6 +55,7 @@
     <Folder Include="Content\Audio\" />
     <Folder Include="Content\Textures\Elements\" />
     <Folder Include="Content\UI\" />
+    <Folder Include="GameLogic\Attacks\Systems\" />
   </ItemGroup>
     <ItemGroup>
 	    <None Update="Content\GumProject\**\*.*">

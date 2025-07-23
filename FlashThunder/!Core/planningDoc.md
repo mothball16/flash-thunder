@@ -21,7 +21,10 @@ post-nuclear war. Somewhat arcadey and based off of Noobs in Combat on ROBLOX.
 - UI animations and transitions
 
 # 3) Active Tasks
-- Unit movement
+- Turn limited actions + turn system
+
+
+- Unit collisions
 
 # 4) Scheduling
 - About 15-20hrs per week this summer. Expecting MVP to be completed by the end of July
@@ -51,6 +54,20 @@ https://bevy-cheatbook.github.io
 - Very highly considering using Tiled for tilemap building. This seems very conventional and better
   than putting characters in an array x_x
 
+
+### On Attacks
+- UnitSkill: The deserialized result of an entity attack. The info is used to stage attacks and update the UI.
+- AttackBehavior: The strategy used to perform an attack. should not be specific, rather encompassing
+  of a category of attacks
+- AttackParams: the information about an attack SPECIFIC to the attackbehavior
+- AttackData: the container created through the ECS world to signal that an attack is to be executed
+
+Entity has a Skills component that contains a list of UnitSkills
+Entity can add a AttackRequest component to itself for AttackSystem to process.
+
+
+
+
 ## Architecture
 - Using MonoGame framework to get more experience building stuff
 - Using fennecs for game ECS
@@ -65,3 +82,5 @@ https://bevy-cheatbook.github.io
   retrieval that would otherwise be awkward in pure ECS.
 - RESOURCE: A singleton entity that can be retrieved anywhere from the world. Generally
   should not NEED to be touched by services (otherwise, they would just be inside that service)
+
+- Handling attacks with 

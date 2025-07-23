@@ -9,5 +9,4 @@
 /// </summary>
 internal readonly record struct Armor(int Hard, int Soft);
 internal readonly record struct Health(int CurHealth, int MaxHealth);
-internal readonly record struct MaxRange(int Value);
 internal readonly record struct Vision(int Value);

@@ -24,6 +24,12 @@ using FlashThunder.GameLogic.Handlers;
 using FlashThunder.GameLogic.Systems.OnUpdate.SelectionActions;
 using Microsoft.Xna.Framework;
 using System.Linq;
+using FlashThunder.GameLogic.Containers;
+using FlashThunder.GameLogic.AttackLogic;
+using FlashThunder.GameLogic.CameraLogic.Components;
+using FlashThunder.GameLogic.TeamLogic.Services;
+using FlashThunder.GameLogic.Movement;
+using FlashThunder.GameLogic.Movement.Components;
 
 namespace FlashThunder.Factories;
 
@@ -85,13 +91,14 @@ internal class GameRunningStateFactory : IGameStateFactory
     private void InitServices(World world, EntityFactory factory)
     {
         var teamService = new TeamService(world, factory);
+        var mapResource = world.GetResource<MapResource>();
         #region - - - [pathfinding service ] - - -
         var pathfindingService = new PathfindingService(
-            map: world.GetResource<MapResource>(),
+            map: mapResource,
             isPassable: (Point pos, string[] canTraverse, int size) =>
             {
                 var tileDef = _tileManager
-                .GetTileDefinition(world.GetResource<MapResource>().Tiles[pos.Y][pos.X]);
+                .GetTileDefinition(mapResource.Tiles[pos.Y][pos.X]);
 
                 foreach (var traverse in canTraverse)
                 {
@@ -106,7 +113,8 @@ internal class GameRunningStateFactory : IGameStateFactory
             },
             getNodeWeight: (Point pos) =>
             {
-                return 1;
+                var tile = mapResource.Tiles[pos.Y][pos.X];
+                return _tileManager.GetTileDefinition(tile).Cost;
             });
         #endregion
 
@@ -156,14 +164,13 @@ internal class GameRunningStateFactory : IGameStateFactory
             .Map<Health>(new HealthComponentLoader())
             .Map<SpriteData>(new SpriteDataComponentLoader(_texManager))
             .Map<MoveCapable>(new MoveCapableLoader())
-            .Map<Vision>().Map<MaxRange>()
+            .Map<Vision>()
             .Map<GridPosition>().Map<WorldPosition>()
             .Map<Armor>()
             .Map<SelectedTag>().Map<SelectableTag>()
             .Map<ActiveCamera>().Map<WorldCamera>()
-            .Map<Range>()
-            .Map<WorldToGridMover>()
             .Map<SmoothScalable>()
+            .Map<WorldToGridAnimator>()
             .Map<IsPlayerControllable>();
 
         // set up the environment
@@ -182,7 +189,7 @@ internal class GameRunningStateFactory : IGameStateFactory
         var unitSelection = new UnitSelectionSystem(world);
         var unitMove = new UnitMoveSystem(world);
         // pre-render (post-update)
-        var worldMoveToGridPos = new WorldToGridLerpSystem(world);
+        var worldMoveToGridPos = new WorldToGridAnimatorSystem(world);
         var cameraSystems = new CameraSystems(world, camera);
 
         // [!] rendering
@@ -239,7 +246,22 @@ internal class GameRunningStateFactory : IGameStateFactory
         {
             Name = "infantry_scout",
             Position = new(1, 1),
-            Team = "Section 4"
+            Team = "Section 4",
+            Callback = (Entity e) =>
+            {
+                e.Add(new UnitSkillSet()
+                {
+                    Skills = [
+                        new UnitSkill
+                        {
+                            Name = "Hit and Run",
+                            Description = "Mildly inconvenience your enemies with this one simple trick!",
+                            AttackBehavior = "BasicAttackBehavior",
+                            AttackParams = new DefaultAttackParams(10, 2, 0)
+                        }
+                    ]
+                });
+            }
         });
         return new GameRunningState(world, _eventBus, updateSystems, drawSystems, postCycleSystems, disposables);
     }

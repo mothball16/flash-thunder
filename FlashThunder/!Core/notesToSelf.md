@@ -34,3 +34,7 @@
 # Why OOP is less performant than ECS for data-heavy operations
 - TBA: need to look into this more. something abt irrelevant and scattered lookups, but i don't 
   understand this yet
+
+
+# JSON ser/deser techniques
+- Use converters for DTO to object?? (unsure)

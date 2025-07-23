@@ -2,20 +2,6 @@
   "UserEvents": {
     "888413c47df890004d569337004294e8834cbcfc9b7d80220a830a125a33f3e7": [
       {
-        "NewName": "GameScreen.UnitCount1",
-        "OldName": null,
-        "ElementType": "Screens",
-        "EventType": 5,
-        "TimestampUtc": "2025-07-07T05:23:03.3934539Z"
-      },
-      {
-        "NewName": "GameScreen.TurnOrder",
-        "OldName": "GameScreen.UnitCount1",
-        "ElementType": "Screens",
-        "EventType": 7,
-        "TimestampUtc": "2025-07-07T05:23:08.3455435Z"
-      },
-      {
         "NewName": "GameScreen.ContainerInstance",
         "OldName": null,
         "ElementType": "Screens",
