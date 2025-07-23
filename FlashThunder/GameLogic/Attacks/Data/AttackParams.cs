@@ -1,11 +1,6 @@
-﻿using FlashThunder.GameLogic.AttackLogic.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FlashThunder.GameLogic.Attacks.Interfaces;
 
-namespace FlashThunder.GameLogic.AttackLogic.Data;
+namespace FlashThunder.GameLogic.Attacks.Data;
 
 internal record DefaultAttackParams(int Damage, int RandomRange, int AP) : IAttackParams;
 

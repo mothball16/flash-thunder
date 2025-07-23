@@ -1,17 +1,9 @@
 ﻿using fennecs;
-using FlashThunder.ECSGameLogic.Components;
-using FlashThunder.Extensions;
-using FlashThunder.GameLogic.Components;
 using FlashThunder.GameLogic.Movement.Components;
 using FlashThunder.GameLogic.Movement.Services;
+using FlashThunder.GameLogic.Selection.Components;
 using FlashThunder.Utilities;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FlashThunder.GameLogic.Movement.Systems
 {

@@ -1,16 +1,5 @@
 ﻿using Dcrew.MonoGame._2D_Camera;
-using fennecs;
-using FlashThunder.Core;
-using FlashThunder.ECSGameLogic.Components;
-using FlashThunder.Managers;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace FlashThunder.GameLogic.Rendering.Systems;
 

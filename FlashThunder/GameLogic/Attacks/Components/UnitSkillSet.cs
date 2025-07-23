@@ -1,11 +1,7 @@
-﻿using FlashThunder.GameLogic.AttackLogic.Data;
-using System;
+﻿using FlashThunder.GameLogic.Attacks.Data;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace FlashThunder.GameLogic.AttackLogic.Components;
+namespace FlashThunder.GameLogic.Attacks.Components;
 
 public struct UnitSkillSet
 {

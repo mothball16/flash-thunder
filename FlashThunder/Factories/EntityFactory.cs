@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using fennecs;
 using FlashThunder.GameLogic;
-using FlashThunder._ECSGameLogic.Components.TeamStats;
+using FlashThunder.GameLogic.Team.Components;
 
 namespace FlashThunder.Factories;
 

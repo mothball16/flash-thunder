@@ -1,13 +1,9 @@
 ﻿using fennecs;
-using FlashThunder._ECSGameLogic.Components.TeamStats;
 using FlashThunder.Factories;
 using FlashThunder.GameLogic.Team;
+using FlashThunder.GameLogic.Team.Components;
 using FlashThunder.Utilities;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FlashThunder.GameLogic.TeamLogic.Services
 {

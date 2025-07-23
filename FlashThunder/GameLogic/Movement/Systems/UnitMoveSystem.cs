@@ -1,23 +1,10 @@
 ﻿using fennecs;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dcrew.MonoGame._2D_Camera;
-using static System.Formats.Asn1.AsnWriter;
-using FlashThunder.ECSGameLogic.Components;
-using FlashThunder.Utilities;
-using FlashThunder.Extensions;
 using FlashThunder.Enums;
-using FlashThunder.GameLogic.Components;
-using FlashThunder.Core;
-using Microsoft.Xna.Framework.Input;
-using FlashThunder.GameLogic.Events;
-using FlashThunder._ECSGameLogic.Components.TeamStats;
 using FlashThunder.GameLogic.Input.Resources;
 using FlashThunder.GameLogic.Movement.Components;
+using FlashThunder.GameLogic.Team.Components;
+using FlashThunder.GameLogic.Selection.Components;
 
 namespace FlashThunder.GameLogic.Movement.Systems
 {
@@ -29,7 +16,6 @@ namespace FlashThunder.GameLogic.Movement.Systems
         public UnitMoveSystem(World world)
         {
             _selectedAndMovableEntities = world.Query<MovableTiles, MoveIntent>()
-                .Has<IsPlayerControllable>()
                 .Has<SelectedTag>()
                 .Stream();
 

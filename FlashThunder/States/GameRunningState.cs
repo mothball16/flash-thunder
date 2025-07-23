@@ -1,10 +1,7 @@
 ﻿
 using fennecs;
-using FlashThunder.Core;
 using FlashThunder.Enums;
 using FlashThunder.Events;
-using FlashThunder.Extensions;
-using FlashThunder.Factories;
 using FlashThunder.GameLogic;
 using FlashThunder.Managers;
 using FlashThunder.Screens;

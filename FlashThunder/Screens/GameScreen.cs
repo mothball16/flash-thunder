@@ -1,18 +1,12 @@
 using fennecs;
-using FlashThunder._ECSGameLogic.Components.TeamStats;
-using FlashThunder.ECSGameLogic.Components;
-using FlashThunder.Events;
+using FlashThunder.Events.GameEvents;
 using FlashThunder.GameLogic.Components;
+using FlashThunder.GameLogic.Selection.Components;
+using FlashThunder.GameLogic.Team.Components;
 using FlashThunder.Managers;
-using Gum.Converters;
-using Gum.DataTypes;
-using Gum.Managers;
-using Gum.Wireframe;
 using Microsoft.Xna.Framework;
-using RenderingLibrary.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace FlashThunder.Screens;
 

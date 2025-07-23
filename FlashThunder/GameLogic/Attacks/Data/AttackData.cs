@@ -1,12 +1,8 @@
 ﻿using fennecs;
-using FlashThunder.GameLogic.AttackLogic.Interfaces;
-using System;
+using FlashThunder.GameLogic.Attacks.Interfaces;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace FlashThunder.GameLogic.AttackLogic.Data;
+namespace FlashThunder.GameLogic.Attacks.Data;
 
 /// <summary>
 /// Represents the data required for the AttackExecutionSystem to process an attack.

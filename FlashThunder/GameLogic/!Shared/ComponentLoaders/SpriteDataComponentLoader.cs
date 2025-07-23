@@ -1,17 +1,10 @@
 ﻿using fennecs;
-using FlashThunder.Defs;
-using FlashThunder.ECSGameLogic.Components;
 using FlashThunder.GameLogic;
-using FlashThunder.GameLogic.Components;
+using FlashThunder.GameLogic.Rendering.Components;
 using FlashThunder.Managers;
 using FlashThunder.Utilities;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace FlashThunder.ECSGameLogic.ComponentLoaders;
 

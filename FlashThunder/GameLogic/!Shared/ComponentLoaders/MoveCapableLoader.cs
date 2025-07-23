@@ -1,16 +1,8 @@
 ﻿using fennecs;
-using FlashThunder.Defs;
 using FlashThunder.GameLogic;
-using FlashThunder.GameLogic.Components;
 using FlashThunder.GameLogic.Movement.Components;
 using FlashThunder.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace FlashThunder.ECSGameLogic.ComponentLoaders;
 

@@ -1,21 +1,7 @@
 ﻿using fennecs;
-using FlashThunder.Core;
-using FlashThunder.ECSGameLogic.Components;
-using FlashThunder.Extensions;
-using FlashThunder.GameLogic;
 using FlashThunder.GameLogic.Input.Resources;
-using FlashThunder.Managers;
-using FlashThunder.Utilities;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
-namespace FlashThunder.GameLogic.Systems.OnDraw;
+namespace FlashThunder.GameLogic.Cleanup.Systems;
 
 /// <summary>
 /// Systems that are run after the main cycle to reset/refresh anything we may need, usually

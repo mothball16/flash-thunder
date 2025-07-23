@@ -1,7 +1,4 @@
 ﻿using FlashThunder.Defs;
-using FlashThunder.Enums;
-using FlashThunder.Managers;
-using Microsoft.Xna.Framework.Input;
 using System;
 using System.IO;
 using System.Text.Json;

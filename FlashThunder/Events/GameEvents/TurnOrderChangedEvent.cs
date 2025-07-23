@@ -1,7 +1,6 @@
 ﻿using fennecs;
-using System;
 
-namespace FlashThunder.Events;
+namespace FlashThunder.Events.GameEvents;
 
 /// <summary>
 /// An event used to notify listeners that the turn has changed.

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace FlashThunder.Events;
+﻿namespace FlashThunder.Events.GameEvents;
 
 /// <summary>
 /// An event used to notify listeners that a state change is requested.

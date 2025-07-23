@@ -1,27 +1,12 @@
 ﻿using fennecs;
-using FlashThunder._ECSGameLogic.Components.TeamStats;
-using FlashThunder.Core;
-using FlashThunder.ECSGameLogic.Components;
-using FlashThunder.Events;
-using FlashThunder.Extensions;
-using FlashThunder.GameLogic;
+using FlashThunder.Events.GameEvents;
 using FlashThunder.GameLogic.Components;
-using FlashThunder.GameLogic.Components.Relations;
-using FlashThunder.GameLogic.Components.Turn;
 using FlashThunder.GameLogic.Events;
-using FlashThunder.GameLogic.Services;
+using FlashThunder.GameLogic.Team.Components;
 using FlashThunder.Managers;
 using FlashThunder.Utilities;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using System.Xml.Linq;
 
 namespace FlashThunder.GameLogic.Commands;
 

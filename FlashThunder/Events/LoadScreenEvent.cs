@@ -1,7 +1,5 @@
 ﻿using FlashThunder.Enums;
-using FlashThunder.Managers;
 using Gum.Wireframe;
-using System;
 
 namespace FlashThunder.Events;
 

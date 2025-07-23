@@ -1,21 +1,11 @@
 ﻿using fennecs;
 using FlashThunder.Core;
-using FlashThunder.ECSGameLogic.Components;
-using FlashThunder.Extensions;
-using FlashThunder.GameLogic.Components;
 using FlashThunder.GameLogic.Input.Resources;
 using FlashThunder.GameLogic.Movement.Components;
+using FlashThunder.GameLogic.Selection.Components;
 using FlashThunder.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using RenderingLibrary.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace FlashThunder.GameLogic.Rendering.Systems;
 

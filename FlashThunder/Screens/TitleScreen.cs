@@ -2,7 +2,6 @@ using FlashThunder.Events;
 using FlashThunder.Managers;
 using FlashThunder.States;
 using Microsoft.Xna.Framework;
-using System;
 
 namespace FlashThunder.Screens;
 
