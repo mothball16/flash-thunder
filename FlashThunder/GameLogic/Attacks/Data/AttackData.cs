@@ -1,5 +1,6 @@
 ﻿using fennecs;
 using FlashThunder.GameLogic.Attacks.Interfaces;
+using System;
 using System.Collections.Generic;
 
 namespace FlashThunder.GameLogic.Attacks.Data;
@@ -15,8 +16,17 @@ public readonly record struct AttackData(
 );
 
 /// <summary>
+/// Represents an instance of an attack that is currently in progress. AttackManager ticks this.
+/// </summary>
+public class AttackInstance
+{
+    public Action<float> Update { get; set; }
+    public bool IsOver { get; set; }
+}
+
+/// <summary>
 /// Represents the data required for a unit's skill for execution and display.
-/// This is deserialized from the entity JSON.
+/// This is deserialized from the entity JSON and typically placed inside the SkillSet component.
 /// </summary>
 public struct UnitSkill
 {

@@ -15,8 +15,8 @@ namespace FlashThunder.GameLogic._Shared.ComponentLoaders
 {
     internal class SkillSetLoader : IComponentLoader
     {
-        private readonly AttackFactory _attackManager;
-        public SkillSetLoader(AttackFactory attackManager)
+        private readonly AttackManager _attackManager;
+        public SkillSetLoader(AttackManager attackManager)
         {
             _attackManager = attackManager;
         }

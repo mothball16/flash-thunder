@@ -13,16 +13,25 @@ namespace FlashThunder.GameLogic.Attacks.Behaviors
 {
     internal class BasicAttackBehavior : IAttackBehavior
     {
-        public void Execute(World world, AttackData data)
+        private static void DealDamage(AttackData data)
         {
-            foreach(Entity opp in data.Opps)
-            {
-                if (data.Params is not DefaultAttackParams attackParams) return;
+            if (data.Params is not DefaultAttackParams attackParams) return;
 
+            foreach (Entity opp in data.Opps)
+            {
                 var dmgVary = Random.Shared.Next(-attackParams.RandomRange, attackParams.RandomRange);
                 var dmgFinal = attackParams.Damage + dmgVary;
                 opp.Ref<TakeDamage>().Inflicts.Add(new(data.Attacker, dmgFinal));
             }
+        }
+        public AttackInstance Execute(World world, AttackData data)
+        {
+            // this is a one-frame attack without a lifetime, so IsOver is immediately true
+            return new AttackInstance()
+            {
+                Update = (_) => DealDamage(data),
+                IsOver = true
+            };
         }
 
     }

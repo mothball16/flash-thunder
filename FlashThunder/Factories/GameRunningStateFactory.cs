@@ -14,7 +14,6 @@ using FlashThunder.GameLogic.Commands;
 using FlashThunder.GameLogic.Events;
 using Microsoft.Xna.Framework;
 using System.Linq;
-using FlashThunder.GameLogic.TeamLogic.Services;
 using FlashThunder.GameLogic.Movement.Components;
 using FlashThunder.GameLogic.Input.Resources;
 using FlashThunder.GameLogic.Movement.Systems;
@@ -31,6 +30,10 @@ using FlashThunder.GameLogic.Attacks.Components;
 using FlashThunder.GameLogic.Attacks.Data;
 using FlashThunder.GameLogic.Selection.Components;
 using FlashThunder.GameLogic.Rendering.Components;
+using FlashThunder.GameLogic.Attacks;
+using FlashThunder.GameLogic.Attacks.Behaviors;
+using FlashThunder.GameLogic.Team.Services;
+using FlashThunder.GameLogic.Attacks.Systems;
 
 namespace FlashThunder.Factories;
 
@@ -174,6 +177,9 @@ internal class GameRunningStateFactory : IGameStateFactory
             .Map<WorldToGridAnimator>()
             .Map<IsPlayerControllable>();
 
+        var attackManager = new AttackManager()
+            .RegisterAttackBehavior(new BasicAttackBehavior());
+
         // set up the environment
         InitResources(world);
         InitServices(world, factory);
@@ -189,6 +195,10 @@ internal class GameRunningStateFactory : IGameStateFactory
         // game logic
         var unitSelection = new UnitSelectionSystem(world);
         var unitMove = new UnitMoveSystem(world);
+
+        var attackExecution
+        var takeDamageProcessing = new TakeDamageProcessingSystem(world);
+
         // pre-render (post-update)
         var worldMoveToGridPos = new WorldToGridAnimatorSystem(world);
         var cameraSystems = new CameraSystems(world, camera);
@@ -208,6 +218,8 @@ internal class GameRunningStateFactory : IGameStateFactory
 
             unitSelection,
             unitMove,
+
+            takeDamageProcessing,
 
             worldMoveToGridPos,
             cameraSystems,

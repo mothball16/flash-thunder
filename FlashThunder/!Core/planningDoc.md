@@ -60,11 +60,17 @@ https://bevy-cheatbook.github.io
 - UnitSkill: The deserialized result of an entity attack. The info is used to stage attacks and update the UI.
 - AttackBehavior: The strategy used to perform an attack. should not be specific, rather encompassing
   of a category of attacks
+- AttackInstance: the instance of an attack with a lifetime, which is ticked by the AttackManager.
 - AttackParams: the information about an attack SPECIFIC to the attackbehavior
 - AttackData: the container created through the ECS world to signal that an attack is to be executed
 
 Entity has a Skills component that contains a list of UnitSkills
 Entity can add a AttackRequest component to itself for AttackSystem to process.
+
+### AttackBehavior rules
+- AttackBehavior's Execute method should return an AttackInstance, where update methods and such would be
+  injected from the behavior. Any stateful information should be contained within the Execute method and used
+  in the lambda Update.
 
 
 
