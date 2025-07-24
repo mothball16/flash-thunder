@@ -13,7 +13,7 @@ using FlashThunder.GameLogic.CameraControl.Requests;
 
 namespace FlashThunder.GameLogic.CameraControl.Systems
 {
-    internal sealed class CameraSystems : IUpdateSystem<float>
+    internal sealed class CameraSystems : AUpdateSystem<float>
     {
         private readonly World _world;
         private readonly Camera _physicalCamera;
@@ -43,7 +43,7 @@ namespace FlashThunder.GameLogic.CameraControl.Systems
         }
         private static float NumLerp(float a, float b, float t)
             => a + (b - a) * t;
-        public void Update(float dt)
+        public override void Update(float dt)
         {
             CameraInputSystem(dt);
             CameraZoomSystem(dt);
@@ -119,6 +119,5 @@ namespace FlashThunder.GameLogic.CameraControl.Systems
             });
         }
 
-        public void Dispose() { }
     }
 }

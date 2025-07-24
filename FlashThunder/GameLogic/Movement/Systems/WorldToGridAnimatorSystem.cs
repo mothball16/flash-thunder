@@ -9,7 +9,7 @@ namespace FlashThunder.GameLogic.Movement.Systems
     /// WorldPosAutoAdderSystem -> automatically adds a WorldPosition component to entities with a WorldToGridMover
     /// WorldToGridLerpSystem -> handles the lerping of WorldPosition to GridPosition for entities with a WorldToGridMover
     /// </summary>
-    internal sealed class WorldToGridAnimatorSystem(World world) : IUpdateSystem<float>
+    internal sealed class WorldToGridAnimatorSystem(World world) : AUpdateSystem<float>
     {
         private const int t = GameConstants.TileSize;
         private readonly Stream<WorldPosition, GridPosition, WorldToGridAnimator> _WTGanimatedEntities
@@ -46,15 +46,10 @@ namespace FlashThunder.GameLogic.Movement.Systems
                 });
         }
 
-        public void Update(float dt)
+        public override void Update(float dt)
         {
             WorldPosAutoAdderSystem();
             WorldMoveToGridPosSystem(dt);
-        }
-
-        public void Dispose()
-        {
-
         }
     }
 }

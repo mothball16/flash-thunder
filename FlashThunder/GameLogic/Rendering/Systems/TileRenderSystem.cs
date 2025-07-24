@@ -10,7 +10,7 @@ namespace FlashThunder.GameLogic.Rendering.Systems
     internal sealed class TileRenderSystem(
         World world,
         TileManager tileManager)
-        : IUpdateSystem<SpriteBatch>
+        : AUpdateSystem<SpriteBatch>
     {
         private const int t = GameConstants.TileSize;
 
@@ -20,7 +20,7 @@ namespace FlashThunder.GameLogic.Rendering.Systems
         // queries
         private readonly MapResource _mapResource = world.GetResource<MapResource>();
 
-        public void Update(SpriteBatch sb)
+        public override void Update(SpriteBatch sb)
         {
             var tileMap = _mapResource.Tiles;
             for (int row = 0; row < tileMap.Length; row++)
@@ -36,6 +36,5 @@ namespace FlashThunder.GameLogic.Rendering.Systems
             }
         }
 
-        public void Dispose() { }
     }
 }

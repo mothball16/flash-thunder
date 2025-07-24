@@ -8,7 +8,7 @@ using FlashThunder.GameLogic.Selection.Components;
 
 namespace FlashThunder.GameLogic.Movement.Systems
 {
-    internal sealed class UnitMoveSystem : IUpdateSystem<float>
+    internal sealed class UnitMoveSystem : AUpdateSystem<float>
     {
         private readonly Stream<MovableTiles, MoveIntent> _selectedAndMovableEntities;
         private readonly World _world;
@@ -22,7 +22,7 @@ namespace FlashThunder.GameLogic.Movement.Systems
             _world = world;
         }
 
-        public void Update(float upd)
+        public override void Update(float upd)
         {
             var input = _world.GetResource<InputResource>();
             // if select action didn't happen, don't do anything
@@ -42,7 +42,5 @@ namespace FlashThunder.GameLogic.Movement.Systems
                     }
                 });
         }
-
-        public void Dispose() { }
     }
 }

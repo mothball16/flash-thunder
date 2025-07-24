@@ -8,18 +8,14 @@ using System;
 
 namespace FlashThunder.GameLogic.Input.Systems
 {
-    internal sealed class MousePollingSystem(World world, Camera camera) : IUpdateSystem<float>
+    internal sealed class MousePollingSystem(World world, Camera camera) : AUpdateSystem<float>
     {
         private const int TileSize = GameConstants.TileSize;
         private readonly World _world = world;
         private readonly Camera _camera = camera;
         private MouseState _lastMouseState = Mouse.GetState();
-        public void Dispose()
-        {
-            
-        }
 
-        public void Update(float upd)
+        public override void Update(float upd)
         {
             var mouseState = Mouse.GetState();
             var position = mouseState.Position;

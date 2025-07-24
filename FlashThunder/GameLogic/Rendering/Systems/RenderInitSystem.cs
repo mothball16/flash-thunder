@@ -8,10 +8,10 @@ namespace FlashThunder.GameLogic.Rendering.Systems;
 /// </summary>
 /// <param name="camera"></param>
 internal sealed class RenderInitSystem(Camera camera)
-    : IUpdateSystem<SpriteBatch>
+    : AUpdateSystem<SpriteBatch>
 {
     private readonly Camera _camera = camera;
-    public void Update(SpriteBatch sb)
+    public override void Update(SpriteBatch sb)
     {
         sb.Begin(SpriteSortMode.Deferred,
              BlendState.AlphaBlend,
@@ -19,5 +19,4 @@ internal sealed class RenderInitSystem(Camera camera)
              null, null, null,
              transformMatrix: _camera.View(0));
     }
-    public void Dispose() { }
 }

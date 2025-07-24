@@ -7,8 +7,7 @@ namespace FlashThunder.GameLogic.Cleanup.Systems;
 /// Systems that are run after the main cycle to reset/refresh anything we may need, usually
 /// resources.
 /// </summary>
-/// <param name="world"></param>
-internal sealed class JanitorSystems: IUpdateSystem<float>
+internal sealed class JanitorSystems: AUpdateSystem<float>
 {
     private readonly World _world;
 
@@ -17,7 +16,7 @@ internal sealed class JanitorSystems: IUpdateSystem<float>
         _world = world;
     }
 
-    public void Update(float dt)
+    public override void Update(float dt)
     {
         InputRefreshSystem();
     }
@@ -27,7 +26,4 @@ internal sealed class JanitorSystems: IUpdateSystem<float>
         var input = _world.GetResource<InputResource>();
         input.ConsumedInputs.Clear();
     }
-
-
-    public void Dispose() { }
 }

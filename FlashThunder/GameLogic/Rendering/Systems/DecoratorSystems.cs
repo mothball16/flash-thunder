@@ -10,8 +10,9 @@ using Microsoft.Xna.Framework.Graphics;
 namespace FlashThunder.GameLogic.Rendering.Systems;
 
 internal sealed class DecoratorSystems
-    : IUpdateSystem<SpriteBatch>
+    : AUpdateSystem<SpriteBatch>
 {
+    // TODO: These constants should be moved elsewhere after game is better fleshed-out.
     private const string TileHoveringTexture = "tile_hovering_tile";
     private const string ControlledTileTexture = "controlled_tile";
     private const string CanMoveToTileTexture = "can_move_tile"; 
@@ -36,7 +37,7 @@ internal sealed class DecoratorSystems
             .Stream();
     }
 
-    public void Update(SpriteBatch sb)
+    public override void Update(SpriteBatch sb)
     {
         SelectedDecoratorSystem(sb);
         HoveringTileDecoratorSystem(sb);
@@ -91,5 +92,4 @@ internal sealed class DecoratorSystems
             }
         });
     }
-    public void Dispose() { }
 }

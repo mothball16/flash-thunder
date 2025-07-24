@@ -18,16 +18,16 @@ namespace FlashThunder.States;
 internal sealed class GameRunningState(
     World world,
     EventBus eventBus,
-    List<IUpdateSystem<float>> updateSystems,
-    List<IUpdateSystem<SpriteBatch>> drawSystems,
-    List<IUpdateSystem<float>> postCycleSystems,
+    List<AUpdateSystem<float>> updateSystems,
+    List<AUpdateSystem<SpriteBatch>> drawSystems,
+    List<AUpdateSystem<float>> postCycleSystems,
     List<IDisposable> disposables)
     : IGameState
 {
     private readonly EventBus _eventBus = eventBus;
-    private readonly List<IUpdateSystem<float>> _updateSystems = updateSystems;
-    private readonly List<IUpdateSystem<SpriteBatch>> _drawSystems = drawSystems;
-    private readonly List<IUpdateSystem<float>> _postCycleSystems = postCycleSystems;
+    private readonly List<AUpdateSystem<float>> _updateSystems = updateSystems;
+    private readonly List<AUpdateSystem<SpriteBatch>> _drawSystems = drawSystems;
+    private readonly List<AUpdateSystem<float>> _postCycleSystems = postCycleSystems;
     private readonly List<IDisposable> _disposables = disposables;
     public void Enter()
     {

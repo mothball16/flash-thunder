@@ -21,6 +21,7 @@ post-nuclear war. Somewhat arcadey and based off of Noobs in Combat on ROBLOX.
 - UI animations and transitions
 
 # 3) Active Tasks
+- Attacks and health reductions
 - Turn limited actions + turn system
 
 
@@ -53,7 +54,7 @@ https://bevy-cheatbook.github.io
 	  or abandoning resources altogether for services.
 - Very highly considering using Tiled for tilemap building. This seems very conventional and better
   than putting characters in an array x_x
-
+	- Leaning towards alternative of a map editor from scratch for learning purposes.
 
 ### On Attacks
 - UnitSkill: The deserialized result of an entity attack. The info is used to stage attacks and update the UI.

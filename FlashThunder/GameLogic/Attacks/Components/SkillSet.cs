@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace FlashThunder.GameLogic.Attacks.Components;
 
-public struct UnitSkillSet
+public struct SkillSet
 {
     public List<UnitSkill> Skills { get; set; }
 }

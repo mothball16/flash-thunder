@@ -11,7 +11,7 @@ using FlashThunder.GameLogic.Components;
 
 namespace FlashThunder.GameLogic.Unit.Systems
 {
-    internal sealed class UnitSelectionSystem : IUpdateSystem<float>
+    internal sealed class UnitSelectionSystem : AUpdateSystem<float>
     {
         private const int TileSize = GameConstants.TileSize;
         private readonly Stream<GridPosition> _isSelectable;
@@ -48,7 +48,7 @@ namespace FlashThunder.GameLogic.Unit.Systems
                 OffsetType: CamOffsetType.Absolute));
         }
 
-        public void Update(float upd)
+        public override void Update(float upd)
         {
             // - - - [ edge handling ] - - -
 
@@ -82,6 +82,5 @@ namespace FlashThunder.GameLogic.Unit.Systems
             });
         }
 
-        public void Dispose() { }
     }
 }

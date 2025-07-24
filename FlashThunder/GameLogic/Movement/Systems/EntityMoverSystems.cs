@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace FlashThunder.GameLogic.Movement.Systems
 {
-    internal sealed class EntityMoverSystems : IUpdateSystem<float>
+    internal sealed class EntityMoverSystems : AUpdateSystem<float>
     {
         private readonly PathfindingService _pathfindingService;
         private readonly Stream<MoveCapable, MoveIntent, GridPosition>
@@ -114,7 +114,7 @@ namespace FlashThunder.GameLogic.Movement.Systems
             });
         }
 
-        public void Update(float dt)
+        public override void Update(float dt)
         {
             ProcessMoveIntentSystem();
             MovableTilesRefreshSystem();
@@ -123,6 +123,5 @@ namespace FlashThunder.GameLogic.Movement.Systems
             EndMoveSystem();
         }
 
-        public void Dispose() { }
     }
 }

@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace FlashThunder.GameLogic.Rendering.Systems;
 
-internal sealed class EntityRenderSystems : IUpdateSystem<SpriteBatch>
+internal sealed class EntityRenderSystems : AUpdateSystem<SpriteBatch>
 {
     private const int t = GameConstants.TileSize;
     private readonly Stream<SpriteData, GridPosition> _gridOnlyDrawableQuery;
@@ -62,10 +62,9 @@ internal sealed class EntityRenderSystems : IUpdateSystem<SpriteBatch>
             }
         });
     }
-    public void Update(SpriteBatch sb)
+    public override void Update(SpriteBatch sb)
     {
         GridPosOnlyEntityDrawSystem(sb);
         WorldPosEntityDrawSystem(sb);
     }
-    public void Dispose() { }
 }

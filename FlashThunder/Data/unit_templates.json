@@ -29,13 +29,14 @@
         "traverse": [ "land" ],
         "processWaypointCD": 0.3
       },
-      "skills": [
+      "skillSet": [
         {
           "name": "Hit and Run",
           "description": "Mildly inconvenience your enemies with this one simple trick!",
           "attackBehavior": "BasicAttackBehavior",
+          "cooldown": 0,
           "attackParams": {
-            "type": "DefaultAttackParams",
+            "$type": "DefaultAttackParams",
             "damage": 10,
             "randomRange": 2,
             "AP": 0

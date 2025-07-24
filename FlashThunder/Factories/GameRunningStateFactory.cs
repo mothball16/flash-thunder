@@ -146,9 +146,9 @@ internal class GameRunningStateFactory : IGameStateFactory
 
     public IGameState Create()
     {
-        List<IUpdateSystem<float>> updateSystems = [];
-        List<IUpdateSystem<SpriteBatch>> drawSystems = [];
-        List<IUpdateSystem<float>> postCycleSystems = [];
+        List<AUpdateSystem<float>> updateSystems = [];
+        List<AUpdateSystem<SpriteBatch>> drawSystems = [];
+        List<AUpdateSystem<float>> postCycleSystems = [];
         List<IDisposable> disposables = [];
 
         // initialize the physical camera
@@ -250,7 +250,7 @@ internal class GameRunningStateFactory : IGameStateFactory
             Team = "Section 4",
             Callback = (Entity e) =>
             {
-                e.Add(new UnitSkillSet()
+                e.Add(new SkillSet()
                 {
                     Skills = [
                         new UnitSkill
