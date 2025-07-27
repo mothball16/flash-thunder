@@ -61,7 +61,8 @@ internal sealed class NextTurnHandler : IDisposable
         if(_turnOrder.CurrentTeamIndex >= order.Count)
         {
             Logger.Print("Cycling team order.");
-           _turnOrder.CurrentTeamIndex = 0;
+            _turnOrder.CurrentTeamIndex = 0;
+            _turnOrder.RoundNumber++;
         }
 
         var newTeam = _turnOrder.CurTeam;

@@ -43,7 +43,11 @@ internal sealed class GameRunningState(
         _drawSystems.ForEach(s => s.Update(sb));
         _postCycleSystems.ForEach(s => s.Update(0f));
     }
-
+    
+    public void Exit()
+    {
+        // Clean up when exiting the game state
+    }
 
     public void Dispose()
     {

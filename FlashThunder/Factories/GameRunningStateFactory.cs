@@ -34,6 +34,8 @@ using FlashThunder.GameLogic.Attacks;
 using FlashThunder.GameLogic.Attacks.Behaviors;
 using FlashThunder.GameLogic.Team.Services;
 using FlashThunder.GameLogic.Attacks.Systems;
+using FlashThunder.GameLogic.Turn.Systems;
+using FlashThunder.GameLogic.Components.Turn;
 using FlashThunder.Screens.Management;
 
 namespace FlashThunder.Factories;
@@ -178,7 +180,8 @@ internal class GameRunningStateFactory : IGameStateFactory
             .Map<ActiveCamera>().Map<WorldCamera>()
             .Map<SmoothScalable>()
             .Map<WorldToGridAnimator>()
-            .Map<IsPlayerControllable>();
+            .Map<IsPlayerControllable>()
+            .Map<TurnRange>();
 
         var attackManager = new AttackManager()
             .RegisterAttackBehavior(new BasicAttackBehavior());
@@ -194,6 +197,13 @@ internal class GameRunningStateFactory : IGameStateFactory
         // core
         var mousePolling = new MousePollingSystem(world, camera);
         var entityMover = new EntityMoverSystems(world);
+
+        // turn-based logic
+        var endTurnInput = new EndTurnInputSystem(world);
+        var turnActionReset = new TurnActionResetSystem(world);
+        var turnBasedMovement = new TurnBasedMovementSystem(world);
+        var turnBasedAttack = new TurnBasedAttackSystem(world);
+        var turnDisplayUpdate = new TurnDisplayUpdateSystem(world);
 
         // game logic
         var unitSelection = new UnitSelectionSystem(world);
@@ -218,6 +228,12 @@ internal class GameRunningStateFactory : IGameStateFactory
         updateSystems.AddRange([
             mousePolling,
             entityMover,
+
+            endTurnInput,
+            turnActionReset,
+            turnBasedMovement,
+            turnBasedAttack,
+            turnDisplayUpdate,
 
             unitSelection,
             unitMove,
@@ -275,6 +291,9 @@ internal class GameRunningStateFactory : IGameStateFactory
                         }
                     ]
                 });
+                
+                // Add turn-based action tracking
+                e.Add(new TurnRange(maxMoves: 1, maxActions: 1));
             }
         });
         return new GameRunningState(world, _screenManager, updateSystems, drawSystems, postCycleSystems, disposables);
