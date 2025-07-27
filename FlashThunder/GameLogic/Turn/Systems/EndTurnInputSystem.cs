@@ -25,7 +25,7 @@ internal sealed class EndTurnInputSystem : AUpdateSystem<float>
         var inputResource = _world.GetResource<InputResource>();
         
         // Check if the player pressed the EndTurn action
-        if (inputResource.Input.IsActivated(GameAction.EndTurn))
+        if (inputResource.Input.JustActivated.Contains(GameAction.EndTurn))
         {
             // Publish a NextTurnRequest event to trigger turn transition
             _world.Send(new NextTurnRequest());
