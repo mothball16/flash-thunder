@@ -196,7 +196,7 @@ internal class GameRunningStateFactory : IGameStateFactory
         var unitSelection = new UnitSelectionSystem(world);
         var unitMove = new UnitMoveSystem(world);
 
-        var attackExecution
+        var attackExecutionSystem = new AttackExecutionSystem(world, attackManager);
         var takeDamageProcessing = new TakeDamageProcessingSystem(world);
 
         // pre-render (post-update)
@@ -219,6 +219,7 @@ internal class GameRunningStateFactory : IGameStateFactory
             unitSelection,
             unitMove,
 
+            attackExecutionSystem,
             takeDamageProcessing,
 
             worldMoveToGridPos,
@@ -249,12 +250,7 @@ internal class GameRunningStateFactory : IGameStateFactory
         // - - - [ final world setup ] - - -
         
         world.Publish<SpawnPrefabRequest>(new("internal_init_camera"));
-        world.Publish<SpawnPrefabRequest>(new()
-        {
-            Name = "infantry_scout",
-            Position = new(1, 0),
-            Team = "Section 4"
-        });
+
         world.Publish<SpawnPrefabRequest>(new()
         {
             Name = "infantry_scout",

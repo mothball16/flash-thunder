@@ -17,6 +17,8 @@ namespace FlashThunder.GameLogic.Attacks.Systems
         private readonly Stream<AttackQueued> _requestingAttack;
         public AttackExecutionSystem(World world, AttackManager manager) : base()
         {
+            _manager = manager;
+            _world = world;
             _requestingAttack = world.Query<AttackQueued>()
                 .Not<ExecutingAttackTag>()
                 .Stream();
@@ -38,7 +40,8 @@ namespace FlashThunder.GameLogic.Attacks.Systems
                 }
             });
 
-
+            // TODO: this should not be in AttackExecutionSystem. change this later
+            _manager.Update(upd);
         }
     }
 }

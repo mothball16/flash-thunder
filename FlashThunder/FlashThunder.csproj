@@ -61,6 +61,20 @@
 	    <None Update="Content\GumProject\**\*.*">
 		    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	    </None>
+		<Content Include="Content\Textures\Shared\**\*.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+    </ItemGroup>
+    <ItemGroup>
+      <None Update="Content\Textures\Elements\Actions\unit_action_charge_frame.png">
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      </None>
+      <None Update="Content\Textures\Elements\Actions\unit_action_move_unit_frame.png">
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      </None>
+      <None Update="Content\Textures\Elements\Actions\unit_action_selected_frame.png">
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
     <Message Text="Restoring dotnet tools" Importance="High" />

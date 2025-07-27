@@ -62,6 +62,42 @@
 /processorParam:TextureFormat=Color
 /build:Textures/Elements/hovering_on_tile.png
 
+#begin Textures/Shared/Actions/unit_action_charge_frame.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Shared/Actions/unit_action_charge_frame.png
+
+#begin Textures/Shared/Actions/unit_action_move_unit_frame.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Shared/Actions/unit_action_move_unit_frame.png
+
+#begin Textures/Shared/Actions/unit_action_selected_frame.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Shared/Actions/unit_action_selected_frame.png
+
 #begin Textures/Tiles/clearTile.png
 /importer:TextureImporter
 /processor:TextureProcessor

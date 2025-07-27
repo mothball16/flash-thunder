@@ -53,13 +53,36 @@ internal sealed class GameScreenPresenter : IDisposable
         ];
     }
 
-    private void DisplaySelectedUnitInformation(Entity e)
+    #region - - - [ Unit Information ] - - -
+    private void CheckUnitSelectionState()
     {
-        _view.UnitInformation.Visible = true;
-        UpdateHealthBar(e.Ref<Health>());
+        // check here: do we need to display/undisplay the unit info?
+        var somethingIsSelected = _selected.Count > 0;
+        if (somethingIsSelected)
+        {
+            if (!_showingSelectedUnitScreen)
+            {
+                _showingSelectedUnitScreen = true;
+                ReloadSelectedUnitInformation(_selected[0]);
+            }
+        }
+        else
+        {
+            if (_showingSelectedUnitScreen)
+            {
+                _showingSelectedUnitScreen = false;
+                HideSelectedUnitInformation();
+            }
+        }
     }
 
-    private void UpdateHealthBar(Health health)
+    private void ReloadSelectedUnitInformation(Entity e)
+    {
+        _view.UnitInformation.Visible = true;
+        UpdateUnitHealthBar(e.Ref<Health>());
+    }
+
+    private void UpdateUnitHealthBar(Health health)
     {
         var hpPercent = (float) health.CurHealth / health.MaxHealth;
         _view.HealthText.Text = $"HP: {health.CurHealth} / {health.MaxHealth}";
@@ -71,25 +94,11 @@ internal sealed class GameScreenPresenter : IDisposable
         _view.UnitInformation.Visible = false;
     }
 
+    #endregion
+
     public void Update()
     {
-        var somethingIsSelected = _selected.Count > 0;
-        if (somethingIsSelected)
-        {
-            if (!_showingSelectedUnitScreen)
-            {
-                _showingSelectedUnitScreen = true;
-                DisplaySelectedUnitInformation(_selected[0]);
-            }
-        } else
-        {
-            if (_showingSelectedUnitScreen)
-            {
-                _showingSelectedUnitScreen = false;
-                HideSelectedUnitInformation();
-            }
-
-        }
+        CheckUnitSelectionState();
     }
 
     public void Dispose()

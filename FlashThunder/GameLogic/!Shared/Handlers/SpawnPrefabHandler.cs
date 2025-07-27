@@ -2,7 +2,7 @@
 using FlashThunder.Factories;
 using FlashThunder.GameLogic.Events;
 using FlashThunder.GameLogic.Movement.Components;
-using FlashThunder.GameLogic.TeamLogic.Services;
+using FlashThunder.GameLogic.Team.Services;
 using System;
 using System.Collections.Generic;
 

@@ -11,7 +11,7 @@ namespace FlashThunder.GameLogic.Attacks
     /// </summary>
     internal class AttackManager
     {
-        private readonly Dictionary<string, IAttackBehavior> _attacks;
+        private readonly Dictionary<string, AAttackBehavior> _attacks;
         private readonly List<AttackInstance> _instances;
         public AttackManager()
         {
@@ -19,14 +19,14 @@ namespace FlashThunder.GameLogic.Attacks
             _instances = [];
         }
 
-        public AttackManager RegisterAttackBehavior(string name, IAttackBehavior behavior)
+        public AttackManager RegisterAttackBehavior(string name, AAttackBehavior behavior)
         {
             _attacks[name] = behavior;
             Logger.Print($"Registered {name} to the attack manager.");
             return this;
         }
 
-        public AttackManager RegisterAttackBehavior(IAttackBehavior behavior)
+        public AttackManager RegisterAttackBehavior(AAttackBehavior behavior)
             => RegisterAttackBehavior(behavior.GetType().Name, behavior);
 
         public void ExecuteAttack(World world, AttackData data)

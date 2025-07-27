@@ -43,6 +43,15 @@ partial class GameScreen : MonoGameGum.Forms.Controls.FrameworkElement
     public ColoredRectangleRuntime BaseBar { get; protected set; }
     public ColoredRectangleRuntime HealthBar { get; protected set; }
     public TextRuntime HealthText { get; protected set; }
+    public ContainerRuntime InfoContainer { get; protected set; }
+    public ContainerRuntime UnitContainer { get; protected set; }
+    public ContainerRuntime ActionsContainer { get; protected set; }
+    public SpriteRuntime ActionChargeFrame { get; protected set; }
+    public SpriteRuntime ActionSelectedFrame { get; protected set; }
+    public SpriteRuntime ActionIcon { get; protected set; }
+    public ContainerRuntime ActionTemplate { get; protected set; }
+    public TextRuntime HotkeyLabel { get; protected set; }
+    public TextRuntime HotkeyLabel1 { get; protected set; }
 
     public GameScreen(InteractiveGue visual) : base(visual) { }
     public GameScreen()
@@ -62,6 +71,15 @@ partial class GameScreen : MonoGameGum.Forms.Controls.FrameworkElement
         BaseBar = this.Visual?.GetGraphicalUiElementByName("BaseBar") as ColoredRectangleRuntime;
         HealthBar = this.Visual?.GetGraphicalUiElementByName("HealthBar") as ColoredRectangleRuntime;
         HealthText = this.Visual?.GetGraphicalUiElementByName("HealthText") as TextRuntime;
+        InfoContainer = this.Visual?.GetGraphicalUiElementByName("InfoContainer") as ContainerRuntime;
+        UnitContainer = this.Visual?.GetGraphicalUiElementByName("UnitContainer") as ContainerRuntime;
+        ActionsContainer = this.Visual?.GetGraphicalUiElementByName("ActionsContainer") as ContainerRuntime;
+        ActionChargeFrame = this.Visual?.GetGraphicalUiElementByName("ActionChargeFrame") as SpriteRuntime;
+        ActionSelectedFrame = this.Visual?.GetGraphicalUiElementByName("ActionSelectedFrame") as SpriteRuntime;
+        ActionIcon = this.Visual?.GetGraphicalUiElementByName("ActionIcon") as SpriteRuntime;
+        ActionTemplate = this.Visual?.GetGraphicalUiElementByName("ActionTemplate") as ContainerRuntime;
+        HotkeyLabel = this.Visual?.GetGraphicalUiElementByName("HotkeyLabel") as TextRuntime;
+        HotkeyLabel1 = this.Visual?.GetGraphicalUiElementByName("HotkeyLabel1") as TextRuntime;
         CustomInitialize();
     }
     //Not assigning variables because Object Instantiation Type is set to By Name rather than Fully In Code

@@ -56,6 +56,11 @@ https://bevy-cheatbook.github.io
   than putting characters in an array x_x
 	- Leaning towards alternative of a map editor from scratch for learning purposes.
 
+- (TODO) Attacks should be integrated into the ECS architecture
+	- SkillSet should be a component of the entity holding UnitSkills
+	- WantsToAttack should prompt the AttackSystem to create an entity holding the attack data
+		- The attack entity should also have information about the attack they cast attached
+
 ### On Attacks
 - UnitSkill: The deserialized result of an entity attack. The info is used to stage attacks and update the UI.
 - AttackBehavior: The strategy used to perform an attack. should not be specific, rather encompassing
@@ -71,7 +76,6 @@ Entity can add a AttackRequest component to itself for AttackSystem to process.
 - AttackBehavior's Execute method should return an AttackInstance, where update methods and such would be
   injected from the behavior. Any stateful information should be contained within the Execute method and used
   in the lambda Update.
-
 
 
 

@@ -34,6 +34,11 @@
     <LinkType>ReferenceOriginal</LinkType>
   </ScreenReference>
   <ComponentReference>
+    <Name>Action</Name>
+    <ElementType>Component</ElementType>
+    <LinkType>ReferenceOriginal</LinkType>
+  </ComponentReference>
+  <ComponentReference>
     <Name>Button</Name>
     <ElementType>Component</ElementType>
     <LinkType>ReferenceOriginal</LinkType>

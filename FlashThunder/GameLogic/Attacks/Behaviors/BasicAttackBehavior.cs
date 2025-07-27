@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace FlashThunder.GameLogic.Attacks.Behaviors
 {
-    internal class BasicAttackBehavior : IAttackBehavior
+    internal class BasicAttackBehavior : AAttackBehavior
     {
         private static void DealDamage(AttackData data)
         {
@@ -23,9 +23,12 @@ namespace FlashThunder.GameLogic.Attacks.Behaviors
                 var dmgFinal = attackParams.Damage + dmgVary;
                 opp.Ref<TakeDamage>().Inflicts.Add(new(data.Attacker, dmgFinal));
             }
+            ReleaseAttackTag(data);
         }
-        public AttackInstance Execute(World world, AttackData data)
+        public override AttackInstance Execute(World world, AttackData data)
         {
+            
+            
             // this is a one-frame attack without a lifetime, so IsOver is immediately true
             return new AttackInstance()
             {
