@@ -1,7 +1,9 @@
 ﻿using fennecs;
 using FlashThunder.GameLogic.Attacks.Interfaces;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace FlashThunder.GameLogic.Attacks.Data;
 
@@ -36,4 +38,7 @@ public struct UnitSkill
     public int Cooldown { get; set; }
     public string AttackBehavior { get; set; }
     public IAttackParams AttackParams { get; set; }
+    [JsonIgnore]
+    public Texture2D IconTexture { get; set; }
+
 }

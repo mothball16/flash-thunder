@@ -1,12 +1,17 @@
 using fennecs;
+using FlashThunder.Components;
 using FlashThunder.Events.GameEvents;
+using FlashThunder.GameLogic.Attacks.Components;
 using FlashThunder.GameLogic.Components;
 using FlashThunder.GameLogic.Selection.Components;
 using FlashThunder.GameLogic.Team.Components;
 using FlashThunder.Managers;
+using Gum.Wireframe;
 using Microsoft.Xna.Framework;
+using MonoGameGum;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FlashThunder.Screens;
 
@@ -25,7 +30,9 @@ internal partial class GameScreen : IUpdateScreen
     }
     partial void CustomInitialize()
     {
-        //nothing yet..
+        // make tabs invisible so that i dont have to toggle visibility every time i finish
+        // an edit in Gum
+        UnitInformation.Visible = false;
     }
 
     public void Update(GameTime gameTime)
@@ -39,13 +46,12 @@ internal sealed class GameScreenPresenter : IDisposable
     private readonly GameScreen _view;
     private readonly List<IDisposable> _disposables;
     private readonly Query _selected;
-
+    
     private bool _showingSelectedUnitScreen;
 
     public GameScreenPresenter(World model, GameScreen view, IEventSubscriber subscriber)
     {
         _view = view;
-        
         _selected = model.Query<SelectedTag>().Compile();
         _disposables = [
             subscriber.Subscribe<EntityCountChangedEvent>(view.OnEntityCountChanged),
@@ -80,6 +86,7 @@ internal sealed class GameScreenPresenter : IDisposable
     {
         _view.UnitInformation.Visible = true;
         UpdateUnitHealthBar(e.Ref<Health>());
+        UpdateUnitAbilities(e.Ref<SkillSet>());
     }
 
     private void UpdateUnitHealthBar(Health health)
@@ -88,6 +95,21 @@ internal sealed class GameScreenPresenter : IDisposable
         _view.HealthText.Text = $"HP: {health.CurHealth} / {health.MaxHealth}";
         _view.HealthBar.Width = Math.Clamp(hpPercent * 100,0,100);
     }
+
+    private void UpdateUnitAbilities(SkillSet skillSet)
+    {
+        // clear previously displayed abilities
+        for (int i = _view.AbilitiesContainer.Children.Count - 1; i >= 0; i--)
+            (_view.AbilitiesContainer.Children[i] as InteractiveGue).RemoveFromRoot();
+
+        foreach (var skill in skillSet.Skills)
+        {
+            var abilityInstance = new AbilityLabelComponent();
+            abilityInstance.Icon.Texture = skill.IconTexture;
+            _view.AbilitiesContainer.AddChild(abilityInstance.Visual);
+        }
+    }
+
 
     private void HideSelectedUnitInformation()
     {

@@ -38,6 +38,11 @@
     </Variable>
     <Variable>
       <Type>string</Type>
+      <Name>TextInstance.Parent</Name>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>string</Type>
       <Name>TextInstance.Text</Name>
       <Value xsi:type="xsd:string">1</Value>
       <SetsValue>true</SetsValue>
@@ -80,7 +85,8 @@
     </Variable>
     <Variable>
       <Type>string</Type>
-      <Name>TextInstance.Parent</Name>
+      <Name>TextInstance1.Parent</Name>
+      <Value xsi:type="xsd:string">TextInstance</Value>
       <SetsValue>true</SetsValue>
     </Variable>
   </State>
@@ -91,6 +97,11 @@
   </Instance>
   <Instance>
     <Name>TextInstance</Name>
+    <BaseType>Text</BaseType>
+    <DefinedByBase>false</DefinedByBase>
+  </Instance>
+  <Instance>
+    <Name>TextInstance1</Name>
     <BaseType>Text</BaseType>
     <DefinedByBase>false</DefinedByBase>
   </Instance>

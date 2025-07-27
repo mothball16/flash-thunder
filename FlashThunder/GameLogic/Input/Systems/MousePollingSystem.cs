@@ -2,6 +2,7 @@
 using fennecs;
 using FlashThunder.Core;
 using FlashThunder.GameLogic.Input.Resources;
+using FlashThunder.GameLogic.Resources;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -17,6 +18,7 @@ namespace FlashThunder.GameLogic.Input.Systems
 
         public override void Update(float upd)
         {
+            var mapResource = _world.GetResource<MapResource>();
             var mouseState = Mouse.GetState();
             var position = mouseState.Position;
 
@@ -27,7 +29,11 @@ namespace FlashThunder.GameLogic.Input.Systems
             float scrollDelta = mouseState.ScrollWheelValue - _lastMouseState.ScrollWheelValue;
 
             var worldPosition = _camera.ScreenToWorld(position);
-            var tilePosition = new Point(worldPosition.X / TileSize, worldPosition.Y / TileSize);
+
+            // TODO: "int.MaxValue" should be replaced with the map bounds in the future.
+            var tilePosition = new Point(
+                Math.Clamp(worldPosition.X / TileSize, 0, mapResource.Width - 1),
+                Math.Clamp(worldPosition.Y / TileSize, 0, mapResource.Height - 1));
             _world.SetResource<MouseResource>(new(
                 mouseDiff,
                 mouseDelta,

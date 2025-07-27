@@ -3,6 +3,7 @@ using FlashThunder.GameLogic.Attacks;
 using FlashThunder.GameLogic.Attacks.Components;
 using FlashThunder.GameLogic.Attacks.Data;
 using FlashThunder.GameLogic.Attacks.Interfaces;
+using FlashThunder.Managers;
 using FlashThunder.Utilities;
 using System;
 using System.Collections.Generic;
@@ -16,13 +17,16 @@ namespace FlashThunder.GameLogic._Shared.ComponentLoaders
     internal class SkillSetLoader : IComponentLoader
     {
         private readonly AttackManager _attackManager;
-        public SkillSetLoader(AttackManager attackManager)
+        private readonly TextureManager _textureManager;
+        public SkillSetLoader(AttackManager attackManager, TextureManager textureManager)
         {
             _attackManager = attackManager;
+            _textureManager = textureManager;
         }
         public void LoadComponent(Entity e, JsonElement rawData)
         {
             var skillSet = new SkillSet();
+
             foreach(JsonElement skill in rawData.EnumerateArray())
             {
                 var name = skill.TryGetProperty("Name", out var nameProp) ? nameProp.GetString() : "Attack of Unknown Origin";
@@ -40,7 +44,7 @@ namespace FlashThunder.GameLogic._Shared.ComponentLoaders
                 {
                     Name = name,
                     Description = desc,
-                    Icon = icon,
+                    IconTexture = _textureManager.Get(icon),
                     Cooldown = cooldown,
                     AttackBehavior = behavior,
                     AttackParams = default

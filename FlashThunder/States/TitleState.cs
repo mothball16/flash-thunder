@@ -2,29 +2,21 @@
 using FlashThunder.Events;
 using FlashThunder.Managers;
 using FlashThunder.Screens;
+using FlashThunder.Screens.Management;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace FlashThunder.States;
 
 internal sealed class TitleState : IGameState
 {
-    private readonly EventBus _eventBus;
-    public TitleState(EventBus eventBus)
+    private readonly ScreenManager _screenManager;
+    public TitleState(ScreenManager screenManager)
     {
-        _eventBus = eventBus;
+        _screenManager = screenManager;
     }
     public void Enter()
     {
-        // call the UImanager to load the view with its dependencies
-        _eventBus.Publish<LoadScreenEvent>(new()
-        {
-            ScreenFactory = () => {
-                var view = new TitleScreen();
-                view.Presenter = new TitleScreenPresenter(view, _eventBus);
-                return view.Visual;
-            },
-            Layer = ScreenLayer.Primary
-        });
+        _screenManager.LoadTitleScreen();
     }
     public void Exit()
     {

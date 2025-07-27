@@ -34,6 +34,7 @@ using FlashThunder.GameLogic.Attacks;
 using FlashThunder.GameLogic.Attacks.Behaviors;
 using FlashThunder.GameLogic.Team.Services;
 using FlashThunder.GameLogic.Attacks.Systems;
+using FlashThunder.Screens.Management;
 
 namespace FlashThunder.Factories;
 
@@ -47,7 +48,7 @@ internal class GameRunningStateFactory : IGameStateFactory
     private readonly EventBus _eventBus;
     private readonly InputManager<GameAction> _gameInputManager;
     private readonly TextureManager _texManager;
-
+    private readonly ScreenManager _screenManager;
     //TODO: when JSON map loading is up, make the tile manager session-specific
     private readonly TileManager _tileManager;
 
@@ -55,10 +56,12 @@ internal class GameRunningStateFactory : IGameStateFactory
         EventBus eventBus,
         InputManager<GameAction> gameInputManager,
         TextureManager texManager,
+        ScreenManager screenManager,
         TileManager tileManager)
     {
         _gameInputManager = gameInputManager;
         _texManager = texManager;
+        _screenManager = screenManager;
         _tileManager = tileManager;
         _eventBus = eventBus;
     }
@@ -264,14 +267,16 @@ internal class GameRunningStateFactory : IGameStateFactory
                         new UnitSkill
                         {
                             Name = "Hit and Run",
+                            Icon = "unit_action_attack_placeholder_frame",
                             Description = "Mildly inconvenience your enemies with this one simple trick!",
                             AttackBehavior = "BasicAttackBehavior",
-                            AttackParams = new DefaultAttackParams(10, 2, 0)
+                            AttackParams = new DefaultAttackParams(10, 2, 0),
+                            IconTexture = _texManager.Get("unit_action_attack_placeholder_frame")
                         }
                     ]
                 });
             }
         });
-        return new GameRunningState(world, _eventBus, updateSystems, drawSystems, postCycleSystems, disposables);
+        return new GameRunningState(world, _screenManager, updateSystems, drawSystems, postCycleSystems, disposables);
     }
 }

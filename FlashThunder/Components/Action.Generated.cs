@@ -33,6 +33,7 @@ partial class Action : MonoGameGum.Forms.Controls.FrameworkElement
     }
     public SpriteRuntime SpriteInstance { get; protected set; }
     public TextRuntime TextInstance { get; protected set; }
+    public TextRuntime TextInstance1 { get; protected set; }
 
     public Action(InteractiveGue visual) : base(visual) { }
     public Action()
@@ -46,6 +47,7 @@ partial class Action : MonoGameGum.Forms.Controls.FrameworkElement
         base.ReactToVisualChanged();
         SpriteInstance = this.Visual?.GetGraphicalUiElementByName("SpriteInstance") as SpriteRuntime;
         TextInstance = this.Visual?.GetGraphicalUiElementByName("TextInstance") as TextRuntime;
+        TextInstance1 = this.Visual?.GetGraphicalUiElementByName("TextInstance1") as TextRuntime;
         CustomInitialize();
     }
     //Not assigning variables because Object Instantiation Type is set to By Name rather than Fully In Code

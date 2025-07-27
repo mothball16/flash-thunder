@@ -10,6 +10,8 @@ using FlashThunder.Factories;
 using FlashThunder.Utilities;
 using System.Collections.Generic;
 using System;
+using FlashThunder.Screens.Management;
+using FlashThunder.Screens.Handlers;
 
 namespace FlashThunder.Core;
 /// <summary>
@@ -29,7 +31,7 @@ internal class CoreGame : Game
     // Actually think about this abit because we don't want to reload textures all the time
     private TextureManager _texMngr;
     private TileManager _tileMngr;
-    private UIManager _uiMngr;
+    private ScreenManager _screenMngr;
     private StateManager _stateMngr;
     private EventBus _higherEventBus;
 
@@ -45,7 +47,6 @@ internal class CoreGame : Game
     protected override void Initialize()
     {
         // - - - [ Initialize higher systems ] - - -
-        GumService.Default.Initialize(this, AssetPaths.UIProj);
         _higherEventBus = new EventBus();
 
         _gameInputMngr = BuildInputManager(new InputManager<GameAction>(), AssetPaths.Keybinds);
@@ -54,7 +55,7 @@ internal class CoreGame : Game
         _stateMngr = new StateManager(_higherEventBus);
         _tileMngr = new TileManager();
 
-        _uiMngr = new UIManager(_higherEventBus)
+        _screenMngr = new ScreenManager(this, new ScreenFactory(_higherEventBus))
             .SetupListeners(Window)
             .RescaleUIToResolution(Window);
 
@@ -96,14 +97,15 @@ internal class CoreGame : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         _texMngr
+            .LoadDefinitions("action_texture_manifest.json")
             .LoadDefinitions("texture_manifest.json");
         _tileMngr
             .LoadDefinitions(_texMngr, "tile_defs.json");
 
         // tell the state manager how to create each registered game state
         _stateMngr
-            .Register(typeof(GameRunningState), new GameRunningStateFactory(_higherEventBus, _gameInputMngr, _texMngr, _tileMngr).Create)
-            .Register(typeof(TitleState), () => new TitleState(_higherEventBus))
+            .Register(typeof(GameRunningState), new GameRunningStateFactory(_higherEventBus, _gameInputMngr, _texMngr, _screenMngr, _tileMngr).Create)
+            .Register(typeof(TitleState), () => new TitleState(_screenMngr))
             .SwitchTo(typeof(TitleState));
 
     }
@@ -115,7 +117,7 @@ internal class CoreGame : Game
         // - - - [ Higher system updates ] - - -
         _gameInputMngr.Update();
         _stateMngr.Update(dt);
-        _uiMngr.Update(gameTime);
+        _screenMngr.Update(gameTime);
         base.Update(gameTime);
     }
 
@@ -129,7 +131,7 @@ internal class CoreGame : Game
         // -- [ Spritebatch ends here ] - - -
         _spriteBatch.End();
 
-        _uiMngr.Draw();
+        _screenMngr.Draw();
         base.Draw(gameTime);
     }
 }

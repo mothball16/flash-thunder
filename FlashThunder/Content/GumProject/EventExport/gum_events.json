@@ -546,6 +546,328 @@
         "ElementType": "Screens",
         "EventType": 6,
         "TimestampUtc": "2025-07-27T01:38:34.1014741Z"
+      },
+      {
+        "NewName": "GameScreen.ActionChargeFrame1",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-27T01:42:46.9870713Z"
+      },
+      {
+        "NewName": "GameScreen.ActionSelectedFrame1",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-27T01:42:47.1134025Z"
+      },
+      {
+        "NewName": "GameScreen.ActionIcon1",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-27T01:42:47.2439661Z"
+      },
+      {
+        "NewName": "GameScreen.ActionTemplate1",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-27T01:42:47.3821923Z"
+      },
+      {
+        "NewName": "GameScreen.HotkeyLabel2",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-27T01:42:47.5073007Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "GameScreen.Container ActionTemplate1 in GameScreen",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-27T01:42:57.4443306Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "GameScreen.Sprite ActionChargeFrame1 in GameScreen",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-27T01:42:57.5405007Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "GameScreen.Sprite ActionIcon1 in GameScreen",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-27T01:42:57.5473303Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "GameScreen.Sprite ActionSelectedFrame1 in GameScreen",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-27T01:42:57.5610855Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "GameScreen.Text HotkeyLabel2 in GameScreen",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-27T01:42:57.5727235Z"
+      },
+      {
+        "NewName": "ActionLabelComponent",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 0,
+        "TimestampUtc": "2025-07-27T02:01:29.5911672Z"
+      },
+      {
+        "NewName": "ActionLabelComponent (Container).ActionChargeFrame",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-27T02:01:37.8642691Z"
+      },
+      {
+        "NewName": "ActionLabelComponent (Container).ActionSelectedFrame",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-27T02:01:38.0033506Z"
+      },
+      {
+        "NewName": "ActionLabelComponent (Container).ActionIcon",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-27T02:01:38.1791861Z"
+      },
+      {
+        "NewName": "ActionLabelComponent (Container).HotkeyLabel",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-27T02:01:38.3319353Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "ActionLabelComponent (Container).Container ActionTemplate in ActionLabelComponent (Container)",
+        "ElementType": "Components",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-27T02:01:58.2419785Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "GameScreen.Container ActionTemplate in GameScreen",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-27T02:02:12.1144399Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "GameScreen.Sprite ActionIcon in GameScreen",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-27T02:02:24.1397559Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "GameScreen.Sprite ActionChargeFrame in GameScreen",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-27T02:02:32.2029896Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "GameScreen.Sprite ActionSelectedFrame in GameScreen",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-27T02:02:32.2039916Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "GameScreen.Sprite ActionIcon in GameScreen",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-27T02:02:32.2140854Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "GameScreen.Text HotkeyLabel in GameScreen",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-27T02:02:32.222031Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "GameScreen.Text HotkeyLabel1 in GameScreen",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-27T02:02:32.2304525Z"
+      },
+      {
+        "NewName": "GameScreen.ActionLabelComponentInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-27T02:02:37.5410221Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "GameScreen.ActionLabelComponent ActionLabelComponentInstance in GameScreen",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-27T02:02:43.2638988Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "ActionLabelComponent",
+        "ElementType": "Components",
+        "EventType": 1,
+        "TimestampUtc": "2025-07-27T02:16:57.4473136Z"
+      },
+      {
+        "NewName": "ActionLabelComponent",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 0,
+        "TimestampUtc": "2025-07-27T02:17:05.9317294Z"
+      },
+      {
+        "NewName": "ActionLabelComponent (Container).SpriteInstance",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-27T02:17:26.6672517Z"
+      },
+      {
+        "NewName": "ActionLabelComponent (Container).Charge",
+        "OldName": "ActionLabelComponent (Container).SpriteInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-27T02:17:58.8040651Z"
+      },
+      {
+        "NewName": "ActionLabelComponent (Container).Charge1",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-27T02:18:00.5482078Z"
+      },
+      {
+        "NewName": "ActionLabelComponent (Container).Selected",
+        "OldName": "ActionLabelComponent (Container).Charge1",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-27T02:18:05.1746405Z"
+      },
+      {
+        "NewName": "ActionLabelComponent (Container).Selected1",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-27T02:18:07.4090153Z"
+      },
+      {
+        "NewName": "ActionLabelComponent (Container).Icon",
+        "OldName": "ActionLabelComponent (Container).Selected1",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-27T02:18:09.4805409Z"
+      },
+      {
+        "NewName": "Action (Container).TextInstance1",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-27T02:18:46.7598213Z"
+      },
+      {
+        "NewName": "ActionLabelComponent (Container).TextInstance1",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-27T02:18:48.3111675Z"
+      },
+      {
+        "NewName": "ActionLabelComponent (Container).HotkeyText",
+        "OldName": "ActionLabelComponent (Container).TextInstance1",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-27T02:22:41.285501Z"
+      },
+      {
+        "NewName": "ActionLabelComponent (Container).s",
+        "OldName": "ActionLabelComponent (Container).Charge",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-27T02:24:06.8971485Z"
+      },
+      {
+        "NewName": "ActionLabelComponent (Container).Selected",
+        "OldName": "ActionLabelComponent (Container).Selected",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-27T04:35:05.1034794Z"
+      },
+      {
+        "NewName": "ActionLabelComponent (Container).Charge",
+        "OldName": "ActionLabelComponent (Container).s",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-27T04:35:40.5217778Z"
+      },
+      {
+        "NewName": "GameScreen.ActionLabelComponentInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-27T18:44:27.1373196Z"
+      },
+      {
+        "NewName": "GameScreen.ActionLabelComponentInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-27T18:47:27.0424642Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "GameScreen.ActionLabelComponent ActionLabelComponentInstance in GameScreen",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-27T18:47:54.1570204Z"
+      },
+      {
+        "NewName": "GameScreen.ActionLabelComponentInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-27T18:48:38.6299124Z"
+      },
+      {
+        "NewName": "AbilityLabelComponent",
+        "OldName": "ActionLabelComponent",
+        "ElementType": "Components",
+        "EventType": 2,
+        "TimestampUtc": "2025-07-27T18:56:27.0746806Z"
+      },
+      {
+        "NewName": "GameScreen.AbilitiesContainer",
+        "OldName": "GameScreen.ActionsContainer",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-27T18:56:35.3764435Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "GameScreen.AbilityLabelComponent ActionLabelComponentInstance in GameScreen",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-27T18:56:37.7266762Z"
       }
     ]
   }

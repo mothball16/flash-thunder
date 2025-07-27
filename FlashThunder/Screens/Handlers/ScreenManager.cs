@@ -1,30 +1,43 @@
-﻿using FlashThunder.Enums;
+﻿using fennecs;
+using FlashThunder.Defs;
+using FlashThunder.Enums;
 using FlashThunder.Events;
-using FlashThunder.Screens;
+using FlashThunder.Managers;
+using FlashThunder.Screens.Handlers;
+using FlashThunder.Utilities;
+using Gum.DataTypes;
 using Gum.Wireframe;
 using Microsoft.Xna.Framework;
 using MonoGameGum;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
-namespace FlashThunder.Managers;
+namespace FlashThunder.Screens.Management;
 
-internal sealed class UIManager : IDisposable
+internal sealed class ScreenManager : IDisposable
 {
     private static Point OriginalUIDimensions = new(1920, 1080);
-    
     private static GumService Gum => GumService.Default;
+
+    private readonly GumProjectSave _project;
+
     private readonly Dictionary<ScreenLayer, GraphicalUiElement> _layers;
-    private readonly EventBus _eventBus;
-    public UIManager(EventBus eventBus)
+    private readonly List<IDisposable> _disposables;
+    private readonly ScreenFactory _factory;
+
+    public ScreenManager(Game game, ScreenFactory factory)
     {
+        _project = Gum.Initialize(game, AssetPaths.UIProj);
         _layers = [];
-        _eventBus = eventBus;
-        _eventBus.Subscribe<LoadScreenEvent>(OnLoadRequest);
+        _factory = factory;
+        _disposables = [];
     }
 
 
-    public UIManager RescaleUIToResolution(GameWindow window)
+
+    public ScreenManager RescaleUIToResolution(GameWindow window)
     {
         window.AllowUserResizing = true;
         var zoom = window.ClientBounds.Height / (float)OriginalUIDimensions.Y;
@@ -34,23 +47,11 @@ internal sealed class UIManager : IDisposable
         return this;
     }
 
-
-    public UIManager SetupListeners(GameWindow window)
+    public ScreenManager SetupListeners(GameWindow window)
     {
-        window.ClientSizeChanged += (s,a) => RescaleUIToResolution(window);
+        window.ClientSizeChanged += (s, a) => RescaleUIToResolution(window);
         return this;
     }
-
-    public void OnLoadRequest(LoadScreenEvent msg)
-    {
-        // perform cleanup before checking if a screen was passed
-        CleanupLayer(msg.Layer);
-        if (msg.ScreenFactory == null) return;
-
-        // we have a screen to load (load it)
-        LoadScreen(msg.ScreenFactory, msg.Layer);
-    }
-
 
     public void CleanupLayer(ScreenLayer layer)
     {
@@ -62,16 +63,12 @@ internal sealed class UIManager : IDisposable
         }
     }
 
-    public void LoadScreen(UIElementFactory factory, ScreenLayer layer, Action<GraphicalUiElement> callback = null)
+    public void TransitionScreen(GraphicalUiElement newScreen, ScreenLayer layer)
     {
         CleanupLayer(layer);
-        var newScreen = factory();
         newScreen.AddToRoot();
-        newScreen.Z = (int) layer;
-
-        // create new element and add to stuff
+        newScreen.Z = (int)layer;
         _layers.Add(layer, newScreen);
-        callback?.Invoke(newScreen);
     }
 
     public void Update(GameTime gameTime)
@@ -95,7 +92,17 @@ internal sealed class UIManager : IDisposable
 
     public void Dispose()
     {
-        _eventBus.Unsubscribe<LoadScreenEvent>(OnLoadRequest);
+        _disposables.ForEach(d => d.Dispose());
         GC.SuppressFinalize(this);
     }
+
+
+
+    #region - - - [ screen loading ] - - -
+    public void LoadTitleScreen()
+        => TransitionScreen(_factory.CreateTitleScreen(),ScreenLayer.Primary);
+
+    public void LoadGameScreen(World world)
+        => TransitionScreen(_factory.CreateGameScreen(world), ScreenLayer.Primary);
+    #endregion
 }

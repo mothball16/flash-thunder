@@ -43,5 +43,59 @@
     "InputType": "Keyboard",
     "Identifier": "M",
     "Action": "EndTurn"
+  },
+
+
+
+
+  {
+    "InputType": "Keyboard",
+    "Identifier": "1",
+    "Action": "Ability1"
+  },
+  {
+    "InputType": "Keyboard",
+    "Identifier": "2",
+    "Action": "Ability2"
+  },
+  {
+    "InputType": "Keyboard",
+    "Identifier": "3",
+    "Action": "Ability3"
+  },
+  {
+    "InputType": "Keyboard",
+    "Identifier": "4",
+    "Action": "Ability4"
+  },
+  {
+    "InputType": "Keyboard",
+    "Identifier": "5",
+    "Action": "Ability5"
+  },
+  {
+    "InputType": "Keyboard",
+    "Identifier": "6",
+    "Action": "Ability6"
+  },
+  {
+    "InputType": "Keyboard",
+    "Identifier": "7",
+    "Action": "Ability7"
+  },
+  {
+    "InputType": "Keyboard",
+    "Identifier": "8",
+    "Action": "Ability8"
+  },
+  {
+    "InputType": "Keyboard",
+    "Identifier": "9",
+    "Action": "Ability9"
+  },
+  {
+    "InputType": "Keyboard",
+    "Identifier": "10",
+    "Action": "Ability10"
   }
 ]

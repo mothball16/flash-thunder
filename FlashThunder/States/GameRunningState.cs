@@ -5,6 +5,7 @@ using FlashThunder.Events;
 using FlashThunder.GameLogic;
 using FlashThunder.Managers;
 using FlashThunder.Screens;
+using FlashThunder.Screens.Management;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -17,30 +18,21 @@ namespace FlashThunder.States;
 /// </summary>
 internal sealed class GameRunningState(
     World world,
-    EventBus eventBus,
+    ScreenManager screenManager,
     List<AUpdateSystem<float>> updateSystems,
     List<AUpdateSystem<SpriteBatch>> drawSystems,
     List<AUpdateSystem<float>> postCycleSystems,
     List<IDisposable> disposables)
     : IGameState
 {
-    private readonly EventBus _eventBus = eventBus;
+    private readonly ScreenManager _screenManager = screenManager;
     private readonly List<AUpdateSystem<float>> _updateSystems = updateSystems;
     private readonly List<AUpdateSystem<SpriteBatch>> _drawSystems = drawSystems;
     private readonly List<AUpdateSystem<float>> _postCycleSystems = postCycleSystems;
     private readonly List<IDisposable> _disposables = disposables;
     public void Enter()
     {
-        _eventBus.Publish<LoadScreenEvent>(new()
-        {
-            ScreenFactory = () =>
-            {
-                var view = new GameScreen();
-                view.Presenter = new GameScreenPresenter(world, view, _eventBus);
-                return view.Visual;
-            },
-            Layer = ScreenLayer.Primary
-        });
+        _screenManager.LoadGameScreen(world);
     }
     public void Update(float dt)
     {

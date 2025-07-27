@@ -7,4 +7,9 @@
 internal struct MapResource
 {
     public char[][] Tiles { get; set; }
+
+    public readonly int Width
+        => Tiles.Length > 0 ? Tiles[0].Length : 0;
+    public readonly int Height
+        => Tiles.Length;
 }
