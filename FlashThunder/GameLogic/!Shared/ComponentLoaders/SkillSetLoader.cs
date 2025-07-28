@@ -1,8 +1,11 @@
 ﻿using fennecs;
+using FlashThunder.Components;
 using FlashThunder.GameLogic.Attacks;
 using FlashThunder.GameLogic.Attacks.Components;
 using FlashThunder.GameLogic.Attacks.Data;
 using FlashThunder.GameLogic.Attacks.Interfaces;
+using FlashThunder.GameLogic.Components;
+using FlashThunder.GameLogic.Movement.Components;
 using FlashThunder.Managers;
 using FlashThunder.Utilities;
 using System;
@@ -26,6 +29,19 @@ namespace FlashThunder.GameLogic._Shared.ComponentLoaders
         public void LoadComponent(Entity e, JsonElement rawData)
         {
             var skillSet = new SkillSet();
+
+            if (e.Has<MoveCapable>())
+            {
+                skillSet.Skills.Add(new UnitSkill
+                {
+                    Name = "Movement",
+                    Description = "Move to an accessible tile within range.",
+                    IconTexture = _textureManager.Get("unit_action_move_unit_frame"),
+                    Cooldown = 0,
+                    AttackBehavior = default,
+                    AttackParams = default
+                });
+            }
 
             foreach(JsonElement skill in rawData.EnumerateArray())
             {

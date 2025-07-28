@@ -35,6 +35,9 @@ using FlashThunder.GameLogic.Attacks.Behaviors;
 using FlashThunder.GameLogic.Team.Services;
 using FlashThunder.GameLogic.Attacks.Systems;
 using FlashThunder.Screens.Management;
+using FontStashSharp;
+using FlashThunder.GameLogic.Selection.Systems;
+using Microsoft.Xna.Framework.Input;
 
 namespace FlashThunder.Factories;
 
@@ -197,9 +200,11 @@ internal class GameRunningStateFactory : IGameStateFactory
 
         // game logic
         var unitSelection = new UnitSelectionSystem(world);
+        var abilitySelection = new SelectedUnitAbilitySelectionSystem(world, _eventBus);
+
         var unitMove = new UnitMoveSystem(world);
 
-        var attackExecutionSystem = new AttackExecutionSystem(world, attackManager);
+        var attackExecution = new AttackExecutionSystem(world, attackManager);
         var takeDamageProcessing = new TakeDamageProcessingSystem(world);
 
         // pre-render (post-update)
@@ -211,7 +216,7 @@ internal class GameRunningStateFactory : IGameStateFactory
         var tileRender = new TileRenderSystem(world, _tileManager);
         var entityRender = new EntityRenderSystems(world);
         var decorators = new DecoratorSystems(world, _texManager);
-
+        
         // [!] post-cycle
         var janitor = new JanitorSystems(world);
 
@@ -220,9 +225,11 @@ internal class GameRunningStateFactory : IGameStateFactory
             entityMover,
 
             unitSelection,
+            abilitySelection,
+
             unitMove,
 
-            attackExecutionSystem,
+            attackExecution,
             takeDamageProcessing,
 
             worldMoveToGridPos,
@@ -264,7 +271,7 @@ internal class GameRunningStateFactory : IGameStateFactory
                 e.Add(new SkillSet()
                 {
                     Skills = [
-                        new UnitSkill
+                    new UnitSkill
                         {
                             Name = "Hit and Run",
                             Icon = "unit_action_attack_placeholder_frame",

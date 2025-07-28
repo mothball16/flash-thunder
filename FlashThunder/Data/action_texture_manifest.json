@@ -2,5 +2,9 @@
   {
     "textureAlias": "unit_action_attack_placeholder_frame",
     "textureName": "Textures/Shared/Actions/unit_action_attack_placeholder_frame"
+  },
+  {
+    "textureAlias": "unit_action_move_unit_frame",
+    "textureName": "Textures/Shared/Actions/unit_action_move_unit_frame"
   }
 ]

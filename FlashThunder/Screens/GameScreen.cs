@@ -4,6 +4,7 @@ using FlashThunder.Events.GameEvents;
 using FlashThunder.GameLogic.Attacks.Components;
 using FlashThunder.GameLogic.Components;
 using FlashThunder.GameLogic.Selection.Components;
+using FlashThunder.GameLogic.Selection.Events;
 using FlashThunder.GameLogic.Team.Components;
 using FlashThunder.Managers;
 using Gum.Wireframe;
@@ -55,7 +56,8 @@ internal sealed class GameScreenPresenter : IDisposable
         _selected = model.Query<SelectedTag>().Compile();
         _disposables = [
             subscriber.Subscribe<EntityCountChangedEvent>(view.OnEntityCountChanged),
-            subscriber.Subscribe<TurnOrderChangedEvent>(view.OnTurnOrderChanged)
+            subscriber.Subscribe<TurnOrderChangedEvent>(view.OnTurnOrderChanged),
+            subscriber.Subscribe<SelectedUnitAbilityChangedEvent>(msg => UpdateUnitAbilities(msg.SkillSet,msg.AbilityIndex))
         ];
     }
 
@@ -86,7 +88,10 @@ internal sealed class GameScreenPresenter : IDisposable
     {
         _view.UnitInformation.Visible = true;
         UpdateUnitHealthBar(e.Ref<Health>());
-        UpdateUnitAbilities(e.Ref<SkillSet>());
+        UpdateUnitAbilities(e.Ref<SkillSet>(),
+            e.Has<AbilitySelected>()
+            ? e.Ref<AbilitySelected>().AbilityIndex
+            : -1);
     }
 
     private void UpdateUnitHealthBar(Health health)
@@ -96,16 +101,21 @@ internal sealed class GameScreenPresenter : IDisposable
         _view.HealthBar.Width = Math.Clamp(hpPercent * 100,0,100);
     }
 
-    private void UpdateUnitAbilities(SkillSet skillSet)
+    private void UpdateUnitAbilities(SkillSet skillSet, int selectedAbility)
     {
         // clear previously displayed abilities
         for (int i = _view.AbilitiesContainer.Children.Count - 1; i >= 0; i--)
             (_view.AbilitiesContainer.Children[i] as InteractiveGue).RemoveFromRoot();
 
-        foreach (var skill in skillSet.Skills)
+        for (int i = 0; i < skillSet.Skills.Count; i++)
         {
+            var skill = skillSet.Skills[i];
             var abilityInstance = new AbilityLabelComponent();
             abilityInstance.Icon.Texture = skill.IconTexture;
+            abilityInstance.HotkeyText.Text = $"{i + 1}";
+
+            abilityInstance.Charge.Visible = (selectedAbility == i);
+
             _view.AbilitiesContainer.AddChild(abilityInstance.Visual);
         }
     }

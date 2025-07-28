@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FlashThunder.Utilities;
+using System;
 using System.Collections.Generic;
 
 namespace FlashThunder.Managers;
@@ -89,6 +90,8 @@ public class EventBus : IEventPublisher, IEventSubscriber
         {
             if(!_subscribers.TryGetValue(typeof(T), out var mySubs))
                 return;
+
+            Logger.Print($"Publishing event of type {typeof(T).Name} with data: {data}");
             // we need a new list to avoid concurrent modification
             actions = [.. mySubs];
         }

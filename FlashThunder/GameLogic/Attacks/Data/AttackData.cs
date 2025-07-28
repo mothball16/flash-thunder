@@ -1,4 +1,5 @@
 ﻿using fennecs;
+using FlashThunder.Enums;
 using FlashThunder.GameLogic.Attacks.Interfaces;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -40,5 +41,4 @@ public struct UnitSkill
     public IAttackParams AttackParams { get; set; }
     [JsonIgnore]
     public Texture2D IconTexture { get; set; }
-
 }
