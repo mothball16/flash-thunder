@@ -1,19 +1,11 @@
 ﻿using fennecs;
-using FlashThunder.Components;
 using FlashThunder.GameLogic.Attacks;
 using FlashThunder.GameLogic.Attacks.Components;
 using FlashThunder.GameLogic.Attacks.Data;
-using FlashThunder.GameLogic.Attacks.Interfaces;
-using FlashThunder.GameLogic.Components;
 using FlashThunder.GameLogic.Movement.Components;
 using FlashThunder.Managers;
 using FlashThunder.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace FlashThunder.GameLogic._Shared.ComponentLoaders
 {

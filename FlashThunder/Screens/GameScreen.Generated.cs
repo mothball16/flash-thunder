@@ -1,6 +1,7 @@
 //Code for GameScreen
 using GumRuntime;
 using MonoGameGum.GueDeriving;
+using FlashThunder.Components;
 using Gum.Converters;
 using Gum.DataTypes;
 using Gum.Managers;
@@ -44,8 +45,10 @@ partial class GameScreen : MonoGameGum.Forms.Controls.FrameworkElement
     public ColoredRectangleRuntime HealthBar { get; protected set; }
     public TextRuntime HealthText { get; protected set; }
     public ContainerRuntime InfoContainer { get; protected set; }
+    public ContainerRuntime TurnContainer { get; protected set; }
     public ContainerRuntime UnitContainer { get; protected set; }
     public ContainerRuntime AbilitiesContainer { get; protected set; }
+    public ButtonStandard NextTurnButton { get; protected set; }
 
     public GameScreen(InteractiveGue visual) : base(visual) { }
     public GameScreen()
@@ -66,8 +69,10 @@ partial class GameScreen : MonoGameGum.Forms.Controls.FrameworkElement
         HealthBar = this.Visual?.GetGraphicalUiElementByName("HealthBar") as ColoredRectangleRuntime;
         HealthText = this.Visual?.GetGraphicalUiElementByName("HealthText") as TextRuntime;
         InfoContainer = this.Visual?.GetGraphicalUiElementByName("InfoContainer") as ContainerRuntime;
+        TurnContainer = this.Visual?.GetGraphicalUiElementByName("TurnContainer") as ContainerRuntime;
         UnitContainer = this.Visual?.GetGraphicalUiElementByName("UnitContainer") as ContainerRuntime;
         AbilitiesContainer = this.Visual?.GetGraphicalUiElementByName("AbilitiesContainer") as ContainerRuntime;
+        NextTurnButton = MonoGameGum.Forms.GraphicalUiElementFormsExtensions.GetFrameworkElementByName<ButtonStandard>(this.Visual,"NextTurnButton");
         CustomInitialize();
     }
     //Not assigning variables because Object Instantiation Type is set to By Name rather than Fully In Code

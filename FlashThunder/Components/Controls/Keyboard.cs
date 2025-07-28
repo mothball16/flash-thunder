@@ -1,6 +1,6 @@
 namespace FlashThunder.Components
 {
-    partial class AbilityLabelComponent
+    partial class Keyboard
     {
         partial void CustomInitialize()
         {

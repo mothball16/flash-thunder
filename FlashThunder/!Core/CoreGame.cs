@@ -3,14 +3,12 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using FlashThunder.Enums;
 using FlashThunder.Managers;
-using MonoGameGum;
 using FlashThunder.States;
 using FlashThunder.Defs;
 using FlashThunder.Factories;
 using FlashThunder.Utilities;
 using System.Collections.Generic;
 using System;
-using FlashThunder.Screens.Management;
 using FlashThunder.Screens.Handlers;
 
 namespace FlashThunder.Core;

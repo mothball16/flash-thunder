@@ -1,2 +1,2 @@
-﻿namespace FlashThunder.GameLogic.Components;
+﻿namespace FlashThunder.GameLogic.Selection.Components;
 internal readonly record struct SelectableTag;

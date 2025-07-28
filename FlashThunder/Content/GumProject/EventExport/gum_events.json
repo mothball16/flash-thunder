@@ -868,6 +868,174 @@
         "ElementType": "Screens",
         "EventType": 6,
         "TimestampUtc": "2025-07-27T18:56:37.7266762Z"
+      },
+      {
+        "NewName": "GameScreen.ButtonInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-28T18:24:50.2688874Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "GameScreen.Button ButtonInstance in GameScreen",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-28T18:25:12.9233309Z"
+      },
+      {
+        "NewName": "GameScreen.ButtonConfirmInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-28T18:25:17.2238007Z"
+      },
+      {
+        "NewName": "GameScreen.EndTurn",
+        "OldName": "GameScreen.ButtonConfirmInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-28T18:26:09.8089666Z"
+      },
+      {
+        "NewName": "GameScreen.UnitCount1",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-28T18:26:16.1877786Z"
+      },
+      {
+        "NewName": "GameScreen.TurnOrder1",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-28T18:26:16.3310127Z"
+      },
+      {
+        "NewName": "GameScreen.InfoContainer1",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-28T18:26:16.4393251Z"
+      },
+      {
+        "NewName": "GameScreen.EndTurn1",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-28T18:26:16.5817609Z"
+      },
+      {
+        "NewName": "GameScreen.TurnContainer",
+        "OldName": "GameScreen.InfoContainer1",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-28T18:26:23.4239529Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "GameScreen.Text UnitCount1 in GameScreen",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-28T18:26:25.6428833Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "GameScreen.Text TurnOrder1 in GameScreen",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-28T18:26:26.858048Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "GameScreen.Controls/ButtonConfirm EndTurn in GameScreen",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-28T18:26:29.454925Z"
+      },
+      {
+        "NewName": "GameScreen.EndTurn",
+        "OldName": "GameScreen.EndTurn1",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-28T18:26:32.3757645Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "GameScreen.Controls/ButtonConfirm EndTurn in GameScreen",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-28T18:27:51.912558Z"
+      },
+      {
+        "NewName": "GameScreen.ButtonStandardIconInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-28T18:28:02.5534056Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "GameScreen.Controls/ButtonStandardIcon ButtonStandardIconInstance in GameScreen",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-07-28T18:28:28.8666938Z"
+      },
+      {
+        "NewName": "GameScreen.ButtonStandardIconInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-28T18:28:36.9799735Z"
+      },
+      {
+        "NewName": "GameScreen.FocusedIndicator",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-28T18:28:37.122831Z"
+      },
+      {
+        "NewName": "GameScreen.Icon",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-28T18:28:37.2814437Z"
+      },
+      {
+        "NewName": "GameScreen.TextInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-28T18:28:37.4091648Z"
+      },
+      {
+        "NewName": "GameScreen.Background",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-28T18:28:37.5852668Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Button",
+        "ElementType": "Components",
+        "EventType": 1,
+        "TimestampUtc": "2025-07-28T18:39:23.7471079Z"
+      },
+      {
+        "NewName": "GameScreen.ButtonStandardInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-07-28T18:39:33.1600071Z"
+      },
+      {
+        "NewName": "GameScreen.NextTurnButton",
+        "OldName": "GameScreen.ButtonStandardInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-07-28T20:50:36.4844787Z"
       }
     ]
   }

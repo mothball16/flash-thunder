@@ -1,20 +1,14 @@
 ﻿using fennecs;
 using FlashThunder.Defs;
 using FlashThunder.Enums;
-using FlashThunder.Events;
-using FlashThunder.Managers;
-using FlashThunder.Screens.Handlers;
-using FlashThunder.Utilities;
 using Gum.DataTypes;
 using Gum.Wireframe;
 using Microsoft.Xna.Framework;
 using MonoGameGum;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 
-namespace FlashThunder.Screens.Management;
+namespace FlashThunder.Screens.Handlers;
 
 internal sealed class ScreenManager : IDisposable
 {

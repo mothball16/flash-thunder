@@ -1,6 +1,6 @@
 namespace FlashThunder.Components
 {
-    partial class AbilityLabelComponent
+    partial class PasswordBox
     {
         partial void CustomInitialize()
         {

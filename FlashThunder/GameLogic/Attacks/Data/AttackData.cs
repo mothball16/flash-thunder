@@ -1,5 +1,4 @@
 ﻿using fennecs;
-using FlashThunder.Enums;
 using FlashThunder.GameLogic.Attacks.Interfaces;
 using Microsoft.Xna.Framework.Graphics;
 using System;

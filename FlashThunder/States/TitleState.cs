@@ -1,8 +1,4 @@
-﻿using FlashThunder.Enums;
-using FlashThunder.Events;
-using FlashThunder.Managers;
-using FlashThunder.Screens;
-using FlashThunder.Screens.Management;
+﻿using FlashThunder.Screens.Handlers;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace FlashThunder.States;

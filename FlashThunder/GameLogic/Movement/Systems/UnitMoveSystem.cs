@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using FlashThunder.Enums;
 using FlashThunder.GameLogic.Input.Resources;
 using FlashThunder.GameLogic.Movement.Components;
-using FlashThunder.GameLogic.Team.Components;
 using FlashThunder.GameLogic.Selection.Components;
 
 namespace FlashThunder.GameLogic.Movement.Systems

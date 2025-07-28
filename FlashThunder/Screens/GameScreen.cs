@@ -1,8 +1,10 @@
 using fennecs;
 using FlashThunder.Components;
 using FlashThunder.Events.GameEvents;
+using FlashThunder.GameLogic;
 using FlashThunder.GameLogic.Attacks.Components;
 using FlashThunder.GameLogic.Components;
+using FlashThunder.GameLogic.Events;
 using FlashThunder.GameLogic.Selection.Components;
 using FlashThunder.GameLogic.Selection.Events;
 using FlashThunder.GameLogic.Team.Components;
@@ -12,7 +14,6 @@ using Microsoft.Xna.Framework;
 using MonoGameGum;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace FlashThunder.Screens;
 
@@ -34,6 +35,7 @@ internal partial class GameScreen : IUpdateScreen
         // make tabs invisible so that i dont have to toggle visibility every time i finish
         // an edit in Gum
         UnitInformation.Visible = false;
+        NextTurnButton.Click += (s,a) => Presenter.NextTurnRequest();
     }
 
     public void Update(GameTime gameTime)
@@ -44,6 +46,7 @@ internal partial class GameScreen : IUpdateScreen
 
 internal sealed class GameScreenPresenter : IDisposable
 {
+    private readonly World _model;
     private readonly GameScreen _view;
     private readonly List<IDisposable> _disposables;
     private readonly Query _selected;
@@ -52,6 +55,7 @@ internal sealed class GameScreenPresenter : IDisposable
 
     public GameScreenPresenter(World model, GameScreen view, IEventSubscriber subscriber)
     {
+        _model = model;
         _view = view;
         _selected = model.Query<SelectedTag>().Compile();
         _disposables = [
@@ -124,6 +128,14 @@ internal sealed class GameScreenPresenter : IDisposable
     private void HideSelectedUnitInformation()
     {
         _view.UnitInformation.Visible = false;
+    }
+
+    #endregion
+
+    #region - - - [ Turn Requests ] - - -
+    public void NextTurnRequest()
+    {
+        _model.Publish(new NextTurnRequest());
     }
 
     #endregion

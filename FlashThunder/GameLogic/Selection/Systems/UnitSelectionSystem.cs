@@ -3,13 +3,10 @@ using FlashThunder.Enums;
 using FlashThunder.Core;
 using FlashThunder.GameLogic.Input.Resources;
 using FlashThunder.GameLogic.Movement.Components;
-using FlashThunder.GameLogic;
-using FlashThunder.GameLogic.Team.Components;
 using FlashThunder.GameLogic.CameraControl.Requests;
 using FlashThunder.GameLogic.Selection.Components;
-using FlashThunder.GameLogic.Components;
 
-namespace FlashThunder.GameLogic.Unit.Systems
+namespace FlashThunder.GameLogic.Selection.Systems
 {
     internal sealed class UnitSelectionSystem : AUpdateSystem<float>
     {

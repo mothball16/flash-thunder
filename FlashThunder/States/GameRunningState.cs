@@ -1,11 +1,7 @@
 ﻿
 using fennecs;
-using FlashThunder.Enums;
-using FlashThunder.Events;
 using FlashThunder.GameLogic;
-using FlashThunder.Managers;
-using FlashThunder.Screens;
-using FlashThunder.Screens.Management;
+using FlashThunder.Screens.Handlers;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;

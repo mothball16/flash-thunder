@@ -1,7 +1,6 @@
 ﻿using fennecs;
 using FlashThunder.GameLogic.Movement.Components;
 using FlashThunder.GameLogic.Movement.Services;
-using FlashThunder.GameLogic.Selection.Components;
 using FlashThunder.Utilities;
 using Microsoft.Xna.Framework;
 

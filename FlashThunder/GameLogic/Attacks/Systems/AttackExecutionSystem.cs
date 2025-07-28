@@ -1,12 +1,5 @@
 ﻿using fennecs;
 using FlashThunder.GameLogic.Attacks.Components;
-using FlashThunder.GameLogic.Components;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FlashThunder.GameLogic.Attacks.Systems
 {

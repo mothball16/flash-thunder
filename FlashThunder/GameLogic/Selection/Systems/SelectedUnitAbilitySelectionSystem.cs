@@ -5,12 +5,8 @@ using FlashThunder.GameLogic.Input.Resources;
 using FlashThunder.GameLogic.Selection.Components;
 using FlashThunder.GameLogic.Selection.Events;
 using FlashThunder.Managers;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FlashThunder.GameLogic.Selection.Systems
 {
