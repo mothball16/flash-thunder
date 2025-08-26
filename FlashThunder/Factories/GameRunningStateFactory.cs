@@ -197,6 +197,7 @@ internal class GameRunningStateFactory : IGameStateFactory
         var entityMover = new EntityMoverSystems(world);
 
         // game logic
+        var actionCalc = new ActionTileCalcSystem(world);
         var unitSelection = new UnitSelectionSystem(world);
         var abilitySelection = new SelectedUnitAbilitySelectionSystem(world, _eventBus);
 
@@ -214,7 +215,7 @@ internal class GameRunningStateFactory : IGameStateFactory
         var tileRender = new TileRenderSystem(world, _tileManager);
         var entityRender = new EntityRenderSystems(world);
         var decorators = new DecoratorSystems(world, _texManager);
-        
+
         // [!] post-cycle
         var janitor = new JanitorSystems(world);
 
@@ -222,6 +223,7 @@ internal class GameRunningStateFactory : IGameStateFactory
             mousePolling,
             entityMover,
 
+            actionCalc,
             unitSelection,
             abilitySelection,
 
@@ -258,41 +260,41 @@ internal class GameRunningStateFactory : IGameStateFactory
         // - - - [ final world setup ] - - -
         
         world.Publish<SpawnPrefabRequest>(new("internal_init_camera"));
-
-        world.Publish<SpawnPrefabRequest>(new()
-        {
-            Name = "infantry_scout",
-            Position = new(1, 1),
-            Team = "Section 4",
-            Callback = (Entity e) =>
+        for(int i = 0; i < 2; i++)
+            world.Publish<SpawnPrefabRequest>(new()
             {
-                e.Add(new SkillSet()
+                Name = "infantry_scout",
+                Position = new(1+i, 1),
+                Team = "Section 4",
+                Callback = (Entity e) =>
                 {
-                    Skills = [
-                    new UnitSkill
+                    e.Add(new SkillSet()
                     {
-                        Name = "Movement",
-                        Description = "Move to an accessible tile within range.",
-                        IconTexture = _texManager.Get("unit_action_move_unit_frame"),
-                        Cooldown = 0,
-                        SelectionType = SelectionType.Pathfinding,
-                        AttackBehavior = "MoveToBehavior",
-                        AttackParams = new EmptyParams()
-                    },
-                    new UnitSkill
+                        Skills = [
+                        new UnitSkill
                         {
-                            Name = "Hit and Run",
-                            Icon = "unit_action_attack_placeholder_frame",
-                            Description = "Mildly inconvenience your enemies with this one simple trick!",
-                            IconTexture = _texManager.Get("unit_action_attack_placeholder_frame"),
-                            SelectionType = SelectionType.Enemies,
-                            AttackBehavior = "BasicAttackBehavior",
-                            AttackParams = new DefaultAttackParams(10, 2, 0),
-                        }
-                    ]
-                });
-            }
-        });
+                            Name = "Movement",
+                            Description = "Move to an accessible tile within range.",
+                            IconTexture = _texManager.Get("unit_action_move_unit_frame"),
+                            Cooldown = 0,
+                            SelectionType = SelectionType.Pathfinding,
+                            AttackBehavior = "MoveToBehavior",
+                            AttackParams = new EmptyParams()
+                        },
+                        new UnitSkill
+                            {
+                                Name = "Hit and Run",
+                                Icon = "unit_action_attack_placeholder_frame",
+                                Description = "Mildly inconvenience your enemies with this one simple trick!",
+                                IconTexture = _texManager.Get("unit_action_attack_placeholder_frame"),
+                                SelectionType = SelectionType.Enemies,
+                                AttackBehavior = "BasicAttackBehavior",
+                                AttackParams = new DefaultAttackParams(10, 2, 0),
+                            }
+                        ]
+                    });
+                }
+            });
         return new GameRunningState(world, _screenManager, updateSystems, drawSystems, postCycleSystems, disposables);
     }
 }

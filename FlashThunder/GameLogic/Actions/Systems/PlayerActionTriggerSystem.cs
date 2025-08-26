@@ -48,7 +48,7 @@ internal sealed class PlayerActionTriggerSystem : AUpdateSystem<float>
         _selectedActionReadyEntities.For(
             (in Entity e, ref SkillSet skillSet, ref AbilitySelected abilitySelected, ref ActionTiles tiles) =>
             {
-                var skill = skillSet.Skills[abilitySelected.AbilityIndex];
+                var skill = skillSet[abilitySelected.AbilityIndex];
                 if (tiles.Tiles.TryGetValue(mousePos, out var waypoints))
                 {
                     AttackQueued queuedActions;

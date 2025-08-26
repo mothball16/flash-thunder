@@ -28,6 +28,8 @@ public readonly record struct ActionData(
 /// </summary>
 public class ActionInstance
 {
+    public Action<ActionInstance> OnStart { get; set; }
     public Action<ActionInstance, float> Update { get; set; }
+    public Action<ActionInstance> OnEnd { get; set; }
     public bool IsOver { get; set; }
 }

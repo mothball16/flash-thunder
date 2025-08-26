@@ -1,4 +1,5 @@
 ﻿using fennecs;
+using FlashThunder.GameLogic._Shared;
 using FlashThunder.GameLogic.Movement.Components;
 using FlashThunder.GameLogic.Movement.Services;
 using FlashThunder.Utilities;
@@ -8,15 +9,12 @@ namespace FlashThunder.GameLogic.Movement.Systems
 {
     internal sealed class EntityMoverSystems : AUpdateSystem<float>
     {
-        private readonly PathfindingService _pathfindingService;
         private readonly Stream<MoveCapable, MoveIntent, GridPosition>
-            _readyToFollowEntities,
-            _needsRangeRefresh;
+            _readyToFollowEntities;
         private readonly Stream<WaypointDebounce> _moveCooldowns;
         private readonly Stream<MoveIntent> _currentlyMovingEntities;
         public EntityMoverSystems(World world)
         {
-            _pathfindingService = world.GetResource<PathfindingService>();
 
             // the systems interacting with movement should not interact with entities that are
             // currently moving
@@ -26,38 +24,12 @@ namespace FlashThunder.GameLogic.Movement.Systems
                 .Not<WaypointDebounce>()
                 .Stream();
 
-            _needsRangeRefresh = baseMovable
-                .Not<ActionTiles>()
-                .Not<MoveInProgressTag>()
-                .Stream();
-
             _moveCooldowns = world.Query<WaypointDebounce>()
                 .Stream();
 
             _currentlyMovingEntities = world.Query<MoveIntent>()
                 .Has<MoveInProgressTag>()
                 .Stream();
-        }
-        /*
-        this will set the MovableTiles component of the entity to the calculated path map
-        (should just be one, but this "could" handle multiple entities
-        */
-        private void MovableTilesRefreshSystem()
-        {
-            _needsRangeRefresh.For(
-                (in Entity e, ref MoveCapable moveStats, ref MoveIntent _, ref GridPosition pos) =>
-                {
-                    Logger.Print($"re-calculating movable tiles for entity {e.GetHashCode()}");
-                    var pathMap = _pathfindingService.GetPathMap(
-                        from: new Point(pos.X, pos.Y),
-                        range: moveStats.Range,
-                        canTraverse: moveStats.Traverse);
-
-                    // remove the entity's own tile
-                    pathMap.Remove(new Point(pos.X, pos.Y));
-                    
-                    e.Add(new ActionTiles { Tiles = pathMap });
-                });
         }
 
         private void ProcessMoveIntentSystem()
@@ -82,10 +54,9 @@ namespace FlashThunder.GameLogic.Movement.Systems
 
                         // if we haven't checked off as moving, check that off now
                         if (!e.Has<MoveInProgressTag>())
-                        {
-                            e.Remove<ActionTiles>();
                             e.Add<MoveInProgressTag>();
-                        }
+                        
+                        e.TryRemove<ActionTiles>();
                     }
                 });
         }
@@ -116,7 +87,6 @@ namespace FlashThunder.GameLogic.Movement.Systems
         public override void Update(float dt)
         {
             ProcessMoveIntentSystem();
-            MovableTilesRefreshSystem();
 
             MoveCDDisposalSystem(dt);
             EndMoveSystem();

@@ -1,7 +1,9 @@
 ﻿using fennecs;
 using FlashThunder.Enums;
+using FlashThunder.GameLogic._Shared;
 using FlashThunder.GameLogic.Actions.Components;
 using FlashThunder.GameLogic.Input.Resources;
+using FlashThunder.GameLogic.Movement.Components;
 using FlashThunder.GameLogic.Selection.Components;
 using FlashThunder.GameLogic.Selection.Events;
 using FlashThunder.Managers;
@@ -66,6 +68,8 @@ namespace FlashThunder.GameLogic.Selection.Systems
                         e.Remove<AbilitySelected>();
                         _uiNotifier.Publish(new SelectedUnitAbilityChangedEvent(skillSet,-1));
                     }
+
+                    e.TryRemove<ActionTiles>();
                 }
             });
         }
