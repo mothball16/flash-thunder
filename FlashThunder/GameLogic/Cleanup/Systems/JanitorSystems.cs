@@ -1,5 +1,6 @@
 ﻿using fennecs;
 using FlashThunder.GameLogic.Input.Resources;
+using FlashThunder.Utilities;
 
 namespace FlashThunder.GameLogic.Cleanup.Systems;
 
@@ -23,7 +24,7 @@ internal sealed class JanitorSystems: AUpdateSystem<float>
 
     private void InputRefreshSystem()
     {
-        var input = _world.GetResource<InputResource>();
-        input.ConsumedInputs.Clear();
+        ref var input = ref _world.GetResource<InputResource>();
+        input.ResetActions();
     }
 }

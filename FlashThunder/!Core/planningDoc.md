@@ -28,8 +28,7 @@ post-nuclear war. Somewhat arcadey and based off of Noobs in Combat on ROBLOX.
 - Unit collisions
 
 # 4) Scheduling
-- About 15-20hrs per week this summer. Expecting MVP to be completed by the end of July
-  (Will take a break to learn webdev after that)
+- About 15-20hrs per week this summer. Expecting MVP to be completed by the end of October
 - Once i'm back at uni this will probably be my weekend project.
 
 # 5) Extra
@@ -61,24 +60,6 @@ https://bevy-cheatbook.github.io
 	- WantsToAttack should prompt the AttackSystem to create an entity holding the attack data
 		- The attack entity should also have information about the attack they cast attached
 
-### On Attacks
-- UnitSkill: The deserialized result of an entity attack. The info is used to stage attacks and update the UI.
-- AttackBehavior: The strategy used to perform an attack. should not be specific, rather encompassing
-  of a category of attacks
-- AttackInstance: the instance of an attack with a lifetime, which is ticked by the AttackManager.
-- AttackParams: the information about an attack SPECIFIC to the attackbehavior
-- AttackData: the container created through the ECS world to signal that an attack is to be executed
-
-Entity has a Skills component that contains a list of UnitSkills
-Entity can add a AttackRequest component to itself for AttackSystem to process.
-
-### AttackBehavior rules
-- AttackBehavior's Execute method should return an AttackInstance, where update methods and such would be
-  injected from the behavior. Any stateful information should be contained within the Execute method and used
-  in the lambda Update.
-
-
-
 ## Architecture
 - Using MonoGame framework to get more experience building stuff
 - Using fennecs for game ECS
@@ -94,4 +75,9 @@ Entity can add a AttackRequest component to itself for AttackSystem to process.
 - RESOURCE: A singleton entity that can be retrieved anywhere from the world. Generally
   should not NEED to be touched by services (otherwise, they would just be inside that service)
 
-- Handling attacks with 
+## The Attack Pipeline
+- AttackBehavior - the recipe for the AttackInstance - how will the instance be updated?
+- AttackData - the context behind the attack - who's attacking/being attacked, what params of the attack?
+- AttackInstance - the stateful object that updates dumbly through the AttackManager
+
+Behavior/Data is not stateful.

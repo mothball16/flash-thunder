@@ -1,7 +1,7 @@
 ﻿using fennecs;
 using System.Collections.Generic;
 
-namespace FlashThunder.GameLogic.Attacks.Components
+namespace FlashThunder.GameLogic.Actions.Components
 {
     public record TakeDamageEntry(Entity From, int Amount);
     internal struct TakeDamage

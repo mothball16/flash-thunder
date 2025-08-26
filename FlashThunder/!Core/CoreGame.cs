@@ -114,8 +114,8 @@ internal class CoreGame : Game
 
         // - - - [ Higher system updates ] - - -
         _gameInputMngr.Update();
-        _stateMngr.Update(dt);
         _screenMngr.Update(gameTime);
+        _stateMngr.Update(dt);
         base.Update(gameTime);
     }
 
@@ -129,7 +129,9 @@ internal class CoreGame : Game
         // -- [ Spritebatch ends here ] - - -
         _spriteBatch.End();
 
+        // ui should not be overlayed by anything else
         _screenMngr.Draw();
+
         base.Draw(gameTime);
     }
 }

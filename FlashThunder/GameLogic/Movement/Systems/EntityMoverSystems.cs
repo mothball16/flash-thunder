@@ -27,7 +27,7 @@ namespace FlashThunder.GameLogic.Movement.Systems
                 .Stream();
 
             _needsRangeRefresh = baseMovable
-                .Not<MovableTiles>()
+                .Not<ActionTiles>()
                 .Not<MoveInProgressTag>()
                 .Stream();
 
@@ -56,7 +56,7 @@ namespace FlashThunder.GameLogic.Movement.Systems
                     // remove the entity's own tile
                     pathMap.Remove(new Point(pos.X, pos.Y));
                     
-                    e.Add(new MovableTiles { Tiles = pathMap });
+                    e.Add(new ActionTiles { Tiles = pathMap });
                 });
         }
 
@@ -83,7 +83,7 @@ namespace FlashThunder.GameLogic.Movement.Systems
                         // if we haven't checked off as moving, check that off now
                         if (!e.Has<MoveInProgressTag>())
                         {
-                            e.Remove<MovableTiles>();
+                            e.Remove<ActionTiles>();
                             e.Add<MoveInProgressTag>();
                         }
                     }

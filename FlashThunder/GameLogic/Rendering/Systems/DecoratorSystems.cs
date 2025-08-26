@@ -23,7 +23,7 @@ internal sealed class DecoratorSystems
     private readonly TextureManager _texManager;
     // queries
     private readonly Stream<GridPosition> _selectedDrawableQuery;
-    private readonly Stream<MovableTiles> _movableTilesOfSelectedQuery;
+    private readonly Stream<ActionTiles> _canActTilesQuery;
 
     public DecoratorSystems(World world, TextureManager texManager)
     {
@@ -32,7 +32,7 @@ internal sealed class DecoratorSystems
         _selectedDrawableQuery = world.Query<GridPosition>()
             .Has<SelectedTag>()
             .Stream();
-        _movableTilesOfSelectedQuery = world.Query<MovableTiles>()
+        _canActTilesQuery = world.Query<ActionTiles>()
             .Has<SelectedTag>()
             .Stream();
     }
@@ -41,7 +41,7 @@ internal sealed class DecoratorSystems
     {
         SelectedDecoratorSystem(sb);
         HoveringTileDecoratorSystem(sb);
-        MovableTilesDecoratorSystem(sb);
+        ActionTilesDecoratorSystem(sb);
     }
 
     private void SelectedDecoratorSystem(SpriteBatch sb)
@@ -74,11 +74,11 @@ internal sealed class DecoratorSystems
             layerDepth: 0);
     }
 
-    private void MovableTilesDecoratorSystem(SpriteBatch sb)
+    private void ActionTilesDecoratorSystem(SpriteBatch sb)
     {
-        _movableTilesOfSelectedQuery.For((ref MovableTiles movableTiles) =>
+        _canActTilesQuery.For((ref ActionTiles actionTiles) =>
         {
-            foreach (var tile in movableTiles.Tiles)
+            foreach (var tile in actionTiles.Tiles)
             {
                 sb.Draw(
                     texture: _texManager.Get(CanMoveToTileTexture),

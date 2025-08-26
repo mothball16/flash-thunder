@@ -1,19 +1,19 @@
 ﻿using fennecs;
-using FlashThunder.GameLogic.Attacks.Components;
+using FlashThunder.GameLogic.Actions.Components;
 
-namespace FlashThunder.GameLogic.Attacks.Systems
+namespace FlashThunder.GameLogic.Actions.Systems
 {
-    internal sealed class AttackExecutionSystem : AUpdateSystem<float>
+    internal sealed class ActionExecutionSystem : AUpdateSystem<float>
     {
-        private readonly AttackManager _manager;
+        private readonly ActionManager _manager;
         private readonly World _world;
         private readonly Stream<AttackQueued> _requestingAttack;
-        public AttackExecutionSystem(World world, AttackManager manager) : base()
+        public ActionExecutionSystem(World world, ActionManager manager) : base()
         {
             _manager = manager;
             _world = world;
             _requestingAttack = world.Query<AttackQueued>()
-                .Not<ExecutingAttackTag>()
+                .Not<ExecutingActionTag>()
                 .Stream();
         }
 
@@ -25,7 +25,8 @@ namespace FlashThunder.GameLogic.Attacks.Systems
                 {
                     var attack = attackQueued.Queue.Dequeue();
                     //(ExecutingAttackTag should be unassigned by the attack itself)
-                    e.Add<ExecutingAttackTag>();
+                    //TODO: This is bad design. The manager should be doing this instead
+                    e.Add<ExecutingActionTag>();
                     _manager.ExecuteAttack(_world, attack);
                 } else
                 {

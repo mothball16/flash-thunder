@@ -1,35 +1,36 @@
 ﻿using fennecs;
-using FlashThunder.GameLogic.Attacks.Data;
-using FlashThunder.GameLogic.Attacks.Interfaces;
+using FlashThunder.GameLogic.Actions.Data;
+using FlashThunder.GameLogic.Actions.Interfaces;
 using FlashThunder.Utilities;
 using System.Collections.Generic;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace FlashThunder.GameLogic.Attacks
+namespace FlashThunder.GameLogic.Actions
 {
     /// <summary>
     /// Holds attack behavior and handles attack lifetime.
     /// </summary>
-    internal class AttackManager
+    internal class ActionManager
     {
         private readonly Dictionary<string, AAttackBehavior> _attacks;
-        private readonly List<AttackInstance> _instances;
-        public AttackManager()
+        private readonly List<ActionInstance> _instances;
+        public ActionManager()
         {
             _attacks = [];
             _instances = [];
         }
 
-        public AttackManager RegisterAttackBehavior(string name, AAttackBehavior behavior)
+        public ActionManager RegisterAttackBehavior(string name, AAttackBehavior behavior)
         {
             _attacks[name] = behavior;
             Logger.Print($"Registered {name} to the attack manager.");
             return this;
         }
 
-        public AttackManager RegisterAttackBehavior(AAttackBehavior behavior)
+        public ActionManager RegisterAttackBehavior(AAttackBehavior behavior)
             => RegisterAttackBehavior(behavior.GetType().Name, behavior);
 
-        public void ExecuteAttack(World world, AttackData data)
+        public void ExecuteAttack(World world, ActionData data)
         {
             if (!_attacks.TryGetValue(data.Behavior, out var behavior))
             {
@@ -40,12 +41,14 @@ namespace FlashThunder.GameLogic.Attacks
 
         public void Update(float dt)
         {
-            List<AttackInstance> toRemove = [];
+            List<ActionInstance> toRemove = [];
             foreach (var attack in _instances)
             {
-                attack.Update(dt);
+                attack.Update(attack, dt);
                 if (attack.IsOver)
+                {
                     toRemove.Add(attack);
+                }
             }
             foreach (var attack in toRemove)
                 _instances.Remove(attack);

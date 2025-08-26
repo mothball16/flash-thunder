@@ -1,4 +1,4 @@
-﻿using FlashThunder.GameLogic.Attacks.Components;
+﻿using FlashThunder.GameLogic.Actions.Components;
 
 namespace FlashThunder.GameLogic.Selection.Events;
 

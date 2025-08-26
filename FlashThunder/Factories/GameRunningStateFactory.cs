@@ -25,16 +25,16 @@ using FlashThunder.GameLogic.CameraControl.Components;
 using FlashThunder.GameLogic.Cleanup.Systems;
 using FlashThunder.GameLogic.CameraControl.Systems;
 using FlashThunder.GameLogic.CameraControl.Handlers;
-using FlashThunder.GameLogic.Attacks.Components;
-using FlashThunder.GameLogic.Attacks.Data;
 using FlashThunder.GameLogic.Selection.Components;
 using FlashThunder.GameLogic.Rendering.Components;
-using FlashThunder.GameLogic.Attacks;
-using FlashThunder.GameLogic.Attacks.Behaviors;
 using FlashThunder.GameLogic.Team.Services;
-using FlashThunder.GameLogic.Attacks.Systems;
 using FlashThunder.GameLogic.Selection.Systems;
 using FlashThunder.Screens.Handlers;
+using FlashThunder.GameLogic.Actions;
+using FlashThunder.GameLogic.Actions.Behaviors;
+using FlashThunder.GameLogic.Actions.Systems;
+using FlashThunder.GameLogic.Actions.Data;
+using FlashThunder.GameLogic.Actions.Components;
 
 namespace FlashThunder.Factories;
 
@@ -180,7 +180,8 @@ internal class GameRunningStateFactory : IGameStateFactory
             .Map<WorldToGridAnimator>()
             .Map<IsPlayerControllable>();
 
-        var attackManager = new AttackManager()
+        var attackManager = new ActionManager()
+            .RegisterAttackBehavior(new MoveToBehavior())
             .RegisterAttackBehavior(new BasicAttackBehavior());
 
         // set up the environment
@@ -199,9 +200,9 @@ internal class GameRunningStateFactory : IGameStateFactory
         var unitSelection = new UnitSelectionSystem(world);
         var abilitySelection = new SelectedUnitAbilitySelectionSystem(world, _eventBus);
 
-        var unitMove = new UnitMoveSystem(world);
+        var unitMove = new PlayerActionTriggerSystem(world);
 
-        var attackExecution = new AttackExecutionSystem(world, attackManager);
+        var attackExecution = new ActionExecutionSystem(world, attackManager);
         var takeDamageProcessing = new TakeDamageProcessingSystem(world);
 
         // pre-render (post-update)
@@ -269,13 +270,24 @@ internal class GameRunningStateFactory : IGameStateFactory
                 {
                     Skills = [
                     new UnitSkill
+                    {
+                        Name = "Movement",
+                        Description = "Move to an accessible tile within range.",
+                        IconTexture = _texManager.Get("unit_action_move_unit_frame"),
+                        Cooldown = 0,
+                        SelectionType = SelectionType.Pathfinding,
+                        AttackBehavior = "MoveToBehavior",
+                        AttackParams = new EmptyParams()
+                    },
+                    new UnitSkill
                         {
                             Name = "Hit and Run",
                             Icon = "unit_action_attack_placeholder_frame",
                             Description = "Mildly inconvenience your enemies with this one simple trick!",
+                            IconTexture = _texManager.Get("unit_action_attack_placeholder_frame"),
+                            SelectionType = SelectionType.Enemies,
                             AttackBehavior = "BasicAttackBehavior",
                             AttackParams = new DefaultAttackParams(10, 2, 0),
-                            IconTexture = _texManager.Get("unit_action_attack_placeholder_frame")
                         }
                     ]
                 });

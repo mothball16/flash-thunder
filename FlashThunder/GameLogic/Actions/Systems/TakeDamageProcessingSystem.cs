@@ -1,9 +1,9 @@
 ﻿using fennecs;
-using FlashThunder.GameLogic.Attacks.Components;
+using FlashThunder.GameLogic.Actions.Components;
 using FlashThunder.GameLogic.Components;
 using System;
 
-namespace FlashThunder.GameLogic.Attacks.Systems
+namespace FlashThunder.GameLogic.Actions.Systems
 {
     internal sealed class TakeDamageProcessingSystem : AUpdateSystem<float>
     {

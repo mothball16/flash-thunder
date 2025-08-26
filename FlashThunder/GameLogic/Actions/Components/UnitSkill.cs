@@ -1,30 +1,14 @@
-﻿using fennecs;
-using FlashThunder.GameLogic.Attacks.Interfaces;
+﻿using FlashThunder.Enums;
+using FlashThunder.GameLogic.Actions.Interfaces;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 
-namespace FlashThunder.GameLogic.Attacks.Data;
-
-/// <summary>
-/// Represents the data required for the AttackExecutionSystem to process an attack.
-/// </summary>
-public readonly record struct AttackData(
-    Entity Attacker,
-    List<Entity> Opps,
-    string Behavior,
-    IAttackParams Params
-);
-
-/// <summary>
-/// Represents an instance of an attack that is currently in progress. AttackManager ticks this.
-/// </summary>
-public class AttackInstance
-{
-    public Action<float> Update { get; set; }
-    public bool IsOver { get; set; }
-}
+namespace FlashThunder.GameLogic.Actions.Components;
 
 /// <summary>
 /// Represents the data required for a unit's skill for execution and display.
@@ -38,6 +22,7 @@ public struct UnitSkill
     public int Cooldown { get; set; }
     public string AttackBehavior { get; set; }
     public IAttackParams AttackParams { get; set; }
+    public SelectionType SelectionType { get; set; }
     [JsonIgnore]
     public Texture2D IconTexture { get; set; }
 }

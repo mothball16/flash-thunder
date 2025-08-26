@@ -11,11 +11,10 @@ internal struct WaypointDebounce {
 };
 
 /// <summary>
-/// Holds the tiles that an entity can move to, as well as their respective pathing waypoints.
+/// Holds the tiles that an entity can perform an action on, as well as their respective pathing waypoints.
 /// This should not be re-calculated unless necessary (map condition changes, unit position changes)
-/// 
 /// </summary>
-internal struct MovableTiles
+internal struct ActionTiles
 {
     public Dictionary<Point, List<Point>> Tiles { get; set; }
 }

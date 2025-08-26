@@ -1,7 +1,7 @@
 ﻿using fennecs;
-using FlashThunder.GameLogic.Attacks;
-using FlashThunder.GameLogic.Attacks.Components;
-using FlashThunder.GameLogic.Attacks.Data;
+using FlashThunder.Enums;
+using FlashThunder.GameLogic.Actions;
+using FlashThunder.GameLogic.Actions.Components;
 using FlashThunder.GameLogic.Movement.Components;
 using FlashThunder.Managers;
 using FlashThunder.Utilities;
@@ -11,9 +11,9 @@ namespace FlashThunder.GameLogic._Shared.ComponentLoaders
 {
     internal class SkillSetLoader : IComponentLoader
     {
-        private readonly AttackManager _attackManager;
+        private readonly ActionManager _attackManager;
         private readonly TextureManager _textureManager;
-        public SkillSetLoader(AttackManager attackManager, TextureManager textureManager)
+        public SkillSetLoader(ActionManager attackManager, TextureManager textureManager)
         {
             _attackManager = attackManager;
             _textureManager = textureManager;
@@ -30,6 +30,7 @@ namespace FlashThunder.GameLogic._Shared.ComponentLoaders
                     Description = "Move to an accessible tile within range.",
                     IconTexture = _textureManager.Get("unit_action_move_unit_frame"),
                     Cooldown = 0,
+                    SelectionType = SelectionType.Pathfinding,
                     AttackBehavior = default,
                     AttackParams = default
                 });
