@@ -41,36 +41,49 @@ namespace FlashThunder.GameLogic.Selection.Systems
 
         public override void Update(float upd)
         {
+            // we need to know if any ability selection inputs have been activated
             var input = _world.GetResource<InputResource>();
 
-            // for each selected unit with skills where the ability input was pressed...
-            _selectedWithSkills.For((in Entity e, ref SkillSet skillSet) =>
+            int? ability = null;
+            foreach(var a in _abilityMap)
             {
-                foreach (var ability in _abilityMap
-                .Where(ability => input.WasJustActivated(ability.Key))
-                .Select(ability => ability.Value))
+                if (input.WasJustActivated(a.Key))
                 {
-                    // if the unit doesn't have an ability selected, add and set AbilitySelected tag 
-                    if (!e.Has<AbilitySelected>())
-                    {
-                        e.Add(new AbilitySelected { AbilityIndex = ability });
-                        _uiNotifier.Publish(new SelectedUnitAbilityChangedEvent(skillSet, ability));
-                    }
-                    // if the ability selected is different from the one pressed, update AbilitySelected tag
-                    else if (e.Ref<AbilitySelected>().AbilityIndex != ability)
-                    {
-                        e.Ref<AbilitySelected>().AbilityIndex = ability;
-                        _uiNotifier.Publish(new SelectedUnitAbilityChangedEvent(skillSet, ability));
-                    }
-                    // if the ability selected is the same as the one pressed, remove AbilitySelected tag
-                    else
-                    {
-                        e.Remove<AbilitySelected>();
-                        _uiNotifier.Publish(new SelectedUnitAbilityChangedEvent(skillSet,-1));
-                    }
-
-                    e.TryRemove<ActionTiles>();
+                    ability = a.Value;
+                    break;
                 }
+            }
+
+            //no need to run the below logic if we didnt press anything
+            if (ability is null)
+                return;
+
+            // for each selected unit with skills where the ability input was pressed...
+            _selectedWithSkills.For(
+                uniform: (_uiNotifier, upd, ability.Value),
+                action: static ((IEventPublisher notifier, float upd, int ability) uniform,
+                in Entity e, ref SkillSet skillSet) =>
+            {
+                // if the unit doesn't have an ability selected, add and set AbilitySelected tag 
+                if (!e.Has<AbilitySelected>())
+                {
+                    e.Add(new AbilitySelected { AbilityIndex = uniform.ability });
+                    uniform.notifier.Publish(new SelectedUnitAbilityChangedEvent(skillSet, uniform.ability));
+                }
+                // if the ability selected is different from the one pressed, update AbilitySelected tag
+                else if (e.Ref<AbilitySelected>().AbilityIndex != uniform.ability)
+                {
+                    e.Ref<AbilitySelected>().AbilityIndex = uniform.ability;
+                    uniform.notifier.Publish(new SelectedUnitAbilityChangedEvent(skillSet, uniform.ability));
+                }
+                // if the ability selected is the same as the one pressed, remove AbilitySelected tag
+                else
+                {
+                    e.Remove<AbilitySelected>();
+                    uniform.notifier.Publish(new SelectedUnitAbilityChangedEvent(skillSet,-1));
+                }
+
+                e.TryRemove<ActionTiles>();
             });
         }
 
