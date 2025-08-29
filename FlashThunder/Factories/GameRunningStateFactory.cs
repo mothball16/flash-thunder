@@ -161,7 +161,8 @@ internal class GameRunningStateFactory : IGameStateFactory
         var camera = new Camera();
 
         // initialize the ECS world
-        var world = new World().InitializeExtensions();
+        var world = new World()
+            .InitializeExtensions();
 
         // set up the entity factory
         var factory = new EntityFactory(world)
@@ -170,14 +171,13 @@ internal class GameRunningStateFactory : IGameStateFactory
             .LoadTemplates("unit_templates.json")
             .Map<Health>(new HealthComponentLoader())
             .Map<SpriteData>(new SpriteDataComponentLoader(_texManager))
-            .Map<MoveCapable>(new MoveCapableLoader())
+            .Map<GridMover>(new GridMoverLoader())
             .Map<Vision>()
             .Map<GridPosition>().Map<WorldPosition>()
             .Map<Armor>()
             .Map<SelectedTag>().Map<SelectableTag>()
             .Map<ActiveCamera>().Map<WorldCamera>()
             .Map<SmoothScalable>()
-            .Map<WorldToGridAnimator>()
             .Map<IsPlayerControllable>();
 
         var attackManager = new ActionManager()
@@ -207,7 +207,7 @@ internal class GameRunningStateFactory : IGameStateFactory
         var takeDamageProcessing = new TakeDamageProcessingSystem(world);
 
         // pre-render (post-update)
-        var worldMoveToGridPos = new WorldToGridAnimatorSystem(world);
+        var worldMoveToGridPos = new GridMoverSystem(world);
         var cameraSystems = new CameraSystems(world, camera);
 
         // [!] rendering
@@ -258,36 +258,39 @@ internal class GameRunningStateFactory : IGameStateFactory
             ]);
 
         // - - - [ final world setup ] - - -
-        
         world.Publish<SpawnPrefabRequest>(new("internal_init_camera"));
         for(int i = 0; i < 2; i++)
+        {
             world.Publish<SpawnPrefabRequest>(new()
             {
                 Name = "infantry_scout",
-                Position = new(1+i, 1),
+                Position = new(1 + i, 1),
                 Team = "Section 4",
                 Callback = (Entity e) =>
                 {
                     e.Add(new SkillSet()
                     {
                         Skills = [
-                        new UnitSkill
-                        {
-                            Name = "Movement",
-                            Description = "Move to an accessible tile within range.",
-                            IconTexture = _texManager.Get("unit_action_move_unit_frame"),
-                            Cooldown = 0,
-                            SelectionType = SelectionType.Pathfinding,
-                            AttackBehavior = "MoveToBehavior",
-                            AttackParams = new EmptyParams()
-                        },
-                        new UnitSkill
+                            new UnitSkill
+                            {
+                                Name = "Movement",
+                                Icon = "unit_action_move_unit_frame",
+                                Description = "Move to an accessible tile within range.",
+                                Range = 3,
+                                Traverse = ["land"],
+                                Cooldown = 0,
+                                SelectionType = SelectionType.Pathfinding,
+                                AttackBehavior = "MoveToBehavior",
+                                AttackParams = new EmptyParams()
+                            },
+                            new UnitSkill
                             {
                                 Name = "Hit and Run",
                                 Icon = "unit_action_attack_placeholder_frame",
                                 Description = "Mildly inconvenience your enemies with this one simple trick!",
-                                IconTexture = _texManager.Get("unit_action_attack_placeholder_frame"),
-                                SelectionType = SelectionType.Enemies,
+                                Range = 2,
+                                Traverse = ["land"],
+                                SelectionType = SelectionType.Passthrough,
                                 AttackBehavior = "BasicAttackBehavior",
                                 AttackParams = new DefaultAttackParams(10, 2, 0),
                             }
@@ -295,6 +298,8 @@ internal class GameRunningStateFactory : IGameStateFactory
                     });
                 }
             });
+        }
+            
         return new GameRunningState(world, _screenManager, updateSystems, drawSystems, postCycleSystems, disposables);
     }
 }

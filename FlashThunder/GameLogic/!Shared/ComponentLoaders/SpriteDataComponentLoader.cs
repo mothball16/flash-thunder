@@ -30,7 +30,6 @@ internal class SpriteDataComponentLoader : IComponentLoader
                 SizeY = scaleY
             };
         }
-        Logger.Error($"[DEBUG] {rawData.GetProperty("layers").EnumerateObject()}");
         //full initialization
         foreach(var layer in rawData.GetProperty("layers").EnumerateObject())
         {

@@ -53,7 +53,7 @@ internal class CoreGame : Game
         _stateMngr = new StateManager(_higherEventBus);
         _tileMngr = new TileManager();
 
-        _screenMngr = new ScreenManager(this, new ScreenFactory(_higherEventBus))
+        _screenMngr = new ScreenManager(this, new ScreenFactory(_texMngr, _higherEventBus))
             .SetupListeners(Window)
             .RescaleUIToResolution(Window);
 

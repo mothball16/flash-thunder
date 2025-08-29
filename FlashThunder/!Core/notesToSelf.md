@@ -38,3 +38,8 @@
 
 # JSON ser/deser techniques
 - Use converters for DTO to object?? (unsure)
+
+# Unsafe component modification
+- Modifying components within a stream will be safe after leaving the stream, but mid-stream additions
+  do not apply, so adding and then querying for a component will not work
+- Avoid performing operations on a single entity more than once in a stream so this doesn't happen

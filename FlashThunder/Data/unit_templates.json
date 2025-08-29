@@ -1,8 +1,9 @@
 {
   "infantry_scout": {
     "components": {
-      "worldToGridAnimator": {
-        "response": 10
+      "gridMover": {
+        "response": 10,
+        "waypointCD": 0.3
       },
       "selectableTag": {},
       "spriteData": {
@@ -23,11 +24,6 @@
       },
       "vision": {
         "value": 2
-      },
-      "moveCapable": {
-        "range": 4,
-        "traverse": [ "land" ],
-        "processWaypointCD": 0.3
       },
       "skillSet": [
         {

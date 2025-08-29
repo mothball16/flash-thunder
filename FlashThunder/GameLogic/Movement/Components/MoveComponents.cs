@@ -35,5 +35,5 @@ internal readonly record struct MoveCapable(
     float ProcessWaypointCD = 0.5f
     );
 
-internal readonly record struct WorldToGridAnimator(float Response);
+internal readonly record struct GridMover(float Response, float WaypointCD);
 internal readonly record struct MoveInProgressTag;

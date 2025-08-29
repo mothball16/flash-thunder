@@ -48,6 +48,7 @@ internal partial class GameScreen : IUpdateScreen
 
 internal sealed class GameScreenPresenter : IDisposable
 {
+    private readonly TextureManager _textureManager;
     private readonly World _model;
     private readonly GameScreen _view;
     private readonly List<IDisposable> _disposables;
@@ -55,8 +56,9 @@ internal sealed class GameScreenPresenter : IDisposable
     
     private bool _showingSelectedUnitScreen;
 
-    public GameScreenPresenter(World model, GameScreen view, IEventSubscriber subscriber)
+    public GameScreenPresenter(TextureManager textureManager, World model, GameScreen view, IEventSubscriber subscriber)
     {
+        _textureManager = textureManager;
         _model = model;
         _view = view;
         _selected = model.Query<SelectedTag>().Compile();
@@ -117,7 +119,7 @@ internal sealed class GameScreenPresenter : IDisposable
         {
             var skill = skillSet.Skills[i];
             var abilityInstance = new AbilityLabelComponent();
-            abilityInstance.Icon.Texture = skill.IconTexture;
+            abilityInstance.Icon.Texture = _textureManager.Get(skill.Icon);
             abilityInstance.HotkeyText.Text = $"{i + 1}";
 
             abilityInstance.Charge.Visible = (selectedAbility == i);

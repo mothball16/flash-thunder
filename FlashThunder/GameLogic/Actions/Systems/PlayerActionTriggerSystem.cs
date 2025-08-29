@@ -16,10 +16,9 @@ internal sealed class PlayerActionTriggerSystem : AUpdateSystem<float>
 {
     private readonly Stream<SkillSet, AbilitySelected, ActionTiles> _selectedActionReadyEntities;
     private readonly World _world;
-
     public PlayerActionTriggerSystem(World world)
     {
-        _selectedActionReadyEntities = world.Query<SkillSet, AbilitySelected, ActionTiles, MoveIntent>()
+        _selectedActionReadyEntities = world.Query<SkillSet, AbilitySelected, ActionTiles>()
             .Has<SelectedTag>()
             .Not<ExecutingActionTag>()
             .Stream();
@@ -34,7 +33,6 @@ internal sealed class PlayerActionTriggerSystem : AUpdateSystem<float>
 
     private void ManualUnitMoveSystem()
     {
-
         var input = _world.GetResource<InputResource>();
 
         // if select action didn't happen, don't do anything

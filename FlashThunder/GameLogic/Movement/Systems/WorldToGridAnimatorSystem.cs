@@ -9,15 +9,15 @@ namespace FlashThunder.GameLogic.Movement.Systems
     /// WorldPosAutoAdderSystem -> automatically adds a WorldPosition component to entities with a WorldToGridMover
     /// WorldToGridLerpSystem -> handles the lerping of WorldPosition to GridPosition for entities with a WorldToGridMover
     /// </summary>
-    internal sealed class WorldToGridAnimatorSystem(World world) : AUpdateSystem<float>
+    internal sealed class GridMoverSystem(World world) : AUpdateSystem<float>
     {
         private const int t = GameConstants.TileSize;
-        private readonly Stream<WorldPosition, GridPosition, WorldToGridAnimator> _WTGanimatedEntities
-            = world.Query<WorldPosition, GridPosition, WorldToGridAnimator>().Stream();
+        private readonly Stream<WorldPosition, GridPosition, GridMover> _WTGanimated
+            = world.Query<WorldPosition, GridPosition, GridMover>().Stream();
 
         private readonly Stream<GridPosition> _needsAWorldPosition
             = world.Query<GridPosition>()
-            .Has<WorldToGridAnimator>()
+            .Has<GridMover>()
             .Not<WorldPosition>()
             .Stream();
 
@@ -25,7 +25,7 @@ namespace FlashThunder.GameLogic.Movement.Systems
             => a + (b - a) * t;
 
         /// <summary>
-        /// Adds a worldposition component to entities with a WorldToGridAnimator if not already
+        /// Adds a worldposition component to entities with a GridMover if not already
         /// assigned. The worldposition wlil in 99% of cases just be the grid position on
         /// initialization  this is handled here.
         /// </summary>
@@ -37,8 +37,8 @@ namespace FlashThunder.GameLogic.Movement.Systems
 
         private void WorldMoveToGridPosSystem(float dt)
         {
-            _WTGanimatedEntities.For(
-                (ref WorldPosition worldPos, ref GridPosition gridPos, ref WorldToGridAnimator mover) =>
+            _WTGanimated.For(
+                (ref WorldPosition worldPos, ref GridPosition gridPos, ref GridMover mover) =>
                 {
                     float rate = 1 - MathF.Exp(-dt * mover.Response);
                     worldPos.X = NumLerp(worldPos.X, gridPos.X * t, rate);

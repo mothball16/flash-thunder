@@ -9,24 +9,22 @@ namespace FlashThunder.GameLogic.Movement.Systems
 {
     internal sealed class EntityMoverSystems : AUpdateSystem<float>
     {
-        private readonly Stream<MoveCapable, MoveIntent, GridPosition>
+        private readonly Stream<MoveIntent, GridMover, GridPosition>
             _readyToFollowEntities;
         private readonly Stream<WaypointDebounce> _moveCooldowns;
         private readonly Stream<MoveIntent> _currentlyMovingEntities;
         public EntityMoverSystems(World world)
         {
-
-            // the systems interacting with movement should not interact with entities that are
-            // currently moving
-            var baseMovable = world.Query<MoveCapable, MoveIntent, GridPosition>();
-
-            _readyToFollowEntities = baseMovable
+            // entities ready to step to the next waypoint (debounce cleared)
+            _readyToFollowEntities = world.Query<MoveIntent, GridMover, GridPosition>()
                 .Not<WaypointDebounce>()
                 .Stream();
-
+            
+            // entities currently with a move debounce waiting to be cleared
             _moveCooldowns = world.Query<WaypointDebounce>()
                 .Stream();
 
+            // entities that are currently moving (waypoint count > 0)
             _currentlyMovingEntities = world.Query<MoveIntent>()
                 .Has<MoveInProgressTag>()
                 .Stream();
@@ -35,7 +33,7 @@ namespace FlashThunder.GameLogic.Movement.Systems
         private void ProcessMoveIntentSystem()
         {
             _readyToFollowEntities.For(
-                (in Entity e, ref MoveCapable moveStats, ref MoveIntent moveIntent, ref GridPosition pos) =>
+                (in Entity e, ref MoveIntent moveIntent, ref GridMover moveStats, ref GridPosition pos) =>
                 {
                     if (moveIntent.Waypoints.Count > 0)
                     {
@@ -50,7 +48,7 @@ namespace FlashThunder.GameLogic.Movement.Systems
                         pos.X = nextPos.X;
                         pos.Y = nextPos.Y;
 
-                        e.Add(new WaypointDebounce { Value = moveStats.ProcessWaypointCD });
+                        e.Add(new WaypointDebounce { Value = moveStats.WaypointCD});
 
                         // if we haven't checked off as moving, check that off now
                         if (!e.Has<MoveInProgressTag>())

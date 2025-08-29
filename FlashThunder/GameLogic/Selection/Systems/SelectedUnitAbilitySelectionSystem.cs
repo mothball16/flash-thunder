@@ -82,7 +82,9 @@ namespace FlashThunder.GameLogic.Selection.Systems
                     e.Remove<AbilitySelected>();
                     uniform.notifier.Publish(new SelectedUnitAbilityChangedEvent(skillSet,-1));
                 }
-
+                // we should not have action tiles persist upon an ability change because they depend
+                // on the ability -- this will cause actiontiles to recalculate when the tile update
+                // system runs
                 e.TryRemove<ActionTiles>();
             });
         }

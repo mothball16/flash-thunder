@@ -16,13 +16,19 @@ namespace FlashThunder.GameLogic.Actions.Components;
 /// </summary>
 public struct UnitSkill
 {
+    // disp. stats
     public string Name { get; set; }
-    public string Description { get; set; }
     public string Icon { get; set; }
+    public string Description { get; set; }
+    // phys. stats
+    public int Range { get; set; }
+    public string[] Traverse { get; set; }
     public int Cooldown { get; set; }
     public string AttackBehavior { get; set; }
     public IAttackParams AttackParams { get; set; }
     public SelectionType SelectionType { get; set; }
+
+    // deser. data
     [JsonIgnore]
     public Texture2D IconTexture { get; set; }
 }

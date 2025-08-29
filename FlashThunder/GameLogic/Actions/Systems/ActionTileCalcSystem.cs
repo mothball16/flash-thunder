@@ -28,43 +28,80 @@ namespace FlashThunder.GameLogic.Actions.Systems
                 .Stream();
         }
 
+
+        #region Selection Type Methods
+        private Dictionary<Point, List<Point>> CalcPathfindingTiles(GridPosition pos, UnitSkill skill)
+        {
+            Logger.Warn("This should eventually be moved out of MoveCapable and into a regular skill");
+            var from = new Point(pos.X, pos.Y);
+            var range = skill.Range;
+            var traverse = skill.Traverse;
+            /* can drop something here for future overridability -- not right now tho */
+
+            var pathMap = _pathfindingService.GetPathMap(from, range, traverse);
+
+            // remove the entity's own tile
+            pathMap.Remove(new Point(pos.X, pos.Y));
+
+            return pathMap;
+        }
+
+        private static Dictionary<Point, List<Point>> CalcSelfTiles(GridPosition pos)
+        {
+            var tiles = new Dictionary<Point, List<Point>>()
+                {
+                    {new Point(pos.X, pos.Y), default }
+                };
+            return tiles;
+        }
+
+        private static Dictionary<Point, List<Point>> CalcLOSTiles(GridPosition pos, UnitSkill skill)
+        {
+            var tiles = new Dictionary<Point, List<Point>>();
+            throw new NotImplementedException();
+        }
+
+        private static Dictionary<Point, List<Point>> CalcPassthroughTiles(GridPosition pos, UnitSkill skill)
+        {
+            var tiles = new Dictionary<Point, List<Point>>();
+            for (int row = -skill.Range; row <= skill.Range; row++)
+            {
+                for (int col = -skill.Range; col <= skill.Range; col++)
+                {
+                    int dist = Math.Abs(row) + Math.Abs(col);
+                    if(dist <= skill.Range)
+                    {
+                        tiles.Add(new Point(pos.X + col, pos.Y + row), default);
+                    }
+                }
+            }
+            return tiles;
+        }
+
+        #endregion
+
         public override void Update(float upd)
         {
             _needsRangeRefresh.For(
                 (in Entity e, ref GridPosition pos, ref SkillSet skillSet, ref AbilitySelected selected) =>
             {
                 var skill = skillSet[selected.AbilityIndex];
+                Dictionary<Point, List<Point>> tiles;
                 switch (skill.SelectionType)
                 {
                     case Enums.SelectionType.Pathfinding:
-                        var from = new Point(pos.X, pos.Y);
-                        var range = e.Ref<MoveCapable>().Range;
-                        var traverse = e.Ref<MoveCapable>().Traverse;
-                        /* can drop something here for future overridability -- not right now tho */
-
-                        var pathMap = _pathfindingService.GetPathMap(from, range, traverse);
-
-                        // remove the entity's own tile
-                        pathMap.Remove(new Point(pos.X, pos.Y));
-
-                        e.Add(new ActionTiles { Tiles = pathMap });
-                        break;
-
+                        tiles = CalcPathfindingTiles(pos, skill); break;
                     case Enums.SelectionType.Self:
-                        break;
-
-                    case Enums.SelectionType.Friendlies:
-                        break;
-
-                    case Enums.SelectionType.Enemies:
-                        break;
-
+                        tiles = CalcSelfTiles(pos); break;
+                    case Enums.SelectionType.LineOfSight:
+                        tiles = CalcLOSTiles(pos, skill); break;
                     case Enums.SelectionType.Passthrough:
-                        break;
+                        tiles = CalcPassthroughTiles(pos, skill); break;
 
                     default:
                         throw new NotImplementedException();
                 }
+                e.Add(new ActionTiles { Tiles = tiles});
 
                 Logger.Print($"re-calculating movable tiles for entity {e.GetHashCode()}");
             });
