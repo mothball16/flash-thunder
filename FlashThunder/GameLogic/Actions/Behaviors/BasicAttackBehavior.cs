@@ -1,7 +1,6 @@
 ﻿using fennecs;
 using FlashThunder.GameLogic.Actions.Components;
 using FlashThunder.GameLogic.Actions.Data;
-using FlashThunder.GameLogic.Actions.Interfaces;
 using System;
 
 namespace FlashThunder.GameLogic.Actions.Behaviors;

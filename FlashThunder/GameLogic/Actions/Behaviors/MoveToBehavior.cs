@@ -1,6 +1,5 @@
 ﻿using fennecs;
 using FlashThunder.GameLogic.Actions.Data;
-using FlashThunder.GameLogic.Actions.Interfaces;
 using FlashThunder.GameLogic.Movement.Components;
 using System;
 
