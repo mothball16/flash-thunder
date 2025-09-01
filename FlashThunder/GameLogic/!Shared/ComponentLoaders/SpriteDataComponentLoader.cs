@@ -33,7 +33,6 @@ internal class SpriteDataComponentLoader : IComponentLoader
         //full initialization
         foreach(var layer in rawData.GetProperty("layers").EnumerateObject())
         {
-
             initializedLayers.Add(layer.Name, LoadLayer(layer.Value));
         }
         e.Add(new SpriteData(initializedLayers));

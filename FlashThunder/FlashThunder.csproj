@@ -56,7 +56,7 @@
     <Folder Include="Content\Audio\" />
     <Folder Include="Content\Textures\Elements\" />
     <Folder Include="Content\UI\" />
-    <Folder Include="GameLogic\Abilities\" />
+    <Folder Include="GameLogic\GameLoop\Systems\" />
   </ItemGroup>
     <ItemGroup>
 	    <None Update="Content\GumProject\**\*.*">

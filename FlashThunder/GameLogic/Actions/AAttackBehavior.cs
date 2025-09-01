@@ -2,7 +2,7 @@
 using FlashThunder.GameLogic.Actions.Components;
 using FlashThunder.GameLogic.Actions.Data;
 
-namespace FlashThunder.GameLogic.Actions.Interfaces;
+namespace FlashThunder.GameLogic.Actions;
 
 public abstract class AAttackBehavior
 {

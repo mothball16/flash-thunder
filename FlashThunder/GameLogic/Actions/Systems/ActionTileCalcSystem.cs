@@ -2,6 +2,7 @@
 using FlashThunder.GameLogic.Actions.Components;
 using FlashThunder.GameLogic.Movement.Components;
 using FlashThunder.GameLogic.Movement.Services;
+using FlashThunder.GameLogic.Resources;
 using FlashThunder.GameLogic.Selection.Components;
 using FlashThunder.Utilities;
 using Microsoft.Xna.Framework;
@@ -17,7 +18,7 @@ namespace FlashThunder.GameLogic.Actions.Systems
     {
         private readonly PathfindingService _pathfindingService;
         private readonly Stream<GridPosition, SkillSet, AbilitySelected> _needsRangeRefresh;
-
+        private readonly World _world;
         public ActionTileCalcSystem(World world)
         {
             _pathfindingService = world.GetResource<PathfindingService>();
@@ -26,6 +27,7 @@ namespace FlashThunder.GameLogic.Actions.Systems
                 .Not<MoveInProgressTag>() // no need to refresh if we are mid-move (unable to act anyways)
                 .Not<ExecutingActionTag>() // no need to refresh if we are mid-action
                 .Stream();
+            _world = world;
         }
 
 
@@ -61,17 +63,22 @@ namespace FlashThunder.GameLogic.Actions.Systems
             throw new NotImplementedException();
         }
 
-        private static Dictionary<Point, List<Point>> CalcPassthroughTiles(GridPosition pos, UnitSkill skill)
+        private Dictionary<Point, List<Point>> CalcPassthroughTiles(GridPosition pos, UnitSkill skill)
         {
+            var map = _world.GetResource<MapResource>();
             var tiles = new Dictionary<Point, List<Point>>();
             for (int row = -skill.Range; row <= skill.Range; row++)
             {
                 for (int col = -skill.Range; col <= skill.Range; col++)
                 {
                     int dist = Math.Abs(row) + Math.Abs(col);
-                    if(dist <= skill.Range)
+                    var tilePos = new Point(pos.X + col, pos.Y + row);
+                    if (dist <= skill.Range 
+                        && tilePos.X >= 0 && tilePos.X < map.Width 
+                        && tilePos.Y >= 0 && tilePos.Y < map.Height
+                        && _pathfindingService.IsPassable(tilePos, skill.Traverse, 1))
                     {
-                        tiles.Add(new Point(pos.X + col, pos.Y + row), default);
+                        tiles.Add(tilePos, default);
                     }
                 }
             }

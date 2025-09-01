@@ -1,6 +1,5 @@
 ﻿using fennecs;
 using FlashThunder.GameLogic.Actions.Data;
-using FlashThunder.GameLogic.Actions.Interfaces;
 using FlashThunder.Utilities;
 using System.Collections.Generic;
 using static System.Runtime.InteropServices.JavaScript.JSType;
