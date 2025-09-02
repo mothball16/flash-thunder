@@ -22,22 +22,9 @@ namespace FlashThunder.GameLogic._Shared.ComponentLoaders
         {
             var skillSet = new SkillSet();
 
-            if (e.Has<MoveCapable>())
-            {
-                skillSet.Skills.Add(new UnitSkill
-                {
-                    Name = "Movement",
-                    Description = "Move to an accessible tile within range.",
-                    IconTexture = _textureManager.Get("unit_action_move_unit_frame"),
-                    Cooldown = 0,
-                    SelectionType = SelectionType.Pathfinding,
-                    AttackBehavior = default,
-                    AttackParams = default
-                });
-            }
-
             foreach(JsonElement skill in rawData.EnumerateArray())
             {
+                /*
                 var name = skill.TryGetProperty("Name", out var nameProp) ? nameProp.GetString() : "Attack of Unknown Origin";
                 var desc = skill.TryGetProperty("Description", out var descProp) ? descProp.GetString() : "Description of Unknown Origin";
                 var icon = skill.TryGetProperty("Icon", out var iconProp) ? iconProp.GetString() : "default_icon";
@@ -53,11 +40,10 @@ namespace FlashThunder.GameLogic._Shared.ComponentLoaders
                 {
                     Name = name,
                     Description = desc,
-                    IconTexture = _textureManager.Get(icon),
                     Cooldown = cooldown,
                     AttackBehavior = behavior,
                     AttackParams = default
-                });
+                });*/
             }
         }
     }

@@ -92,7 +92,7 @@ namespace FlashThunder.GameLogic.Actions.Systems
             _needsRangeRefresh.For(
                 (in Entity e, ref GridPosition pos, ref SkillSet skillSet, ref AbilitySelected selected) =>
             {
-                var skill = skillSet[selected.AbilityIndex];
+                var skill = skillSet[selected.AbilityIndex].Data;
                 Dictionary<Point, List<Point>> tiles;
                 switch (skill.SelectionType)
                 {

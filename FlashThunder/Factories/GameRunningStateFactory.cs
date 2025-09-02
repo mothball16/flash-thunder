@@ -199,7 +199,7 @@ internal class GameRunningStateFactory : IGameStateFactory
         // game logic
         var actionCalc = new ActionTileCalcSystem(world);
         var unitSelection = new UnitSelectionSystem(world);
-        var abilitySelection = new SelectedUnitAbilitySelectionSystem(world, _eventBus);
+        var abilitySelection = new AbilitySelectSystems(world, _eventBus);
 
         var unitMove = new PlayerActionTriggerSystem(world);
 
@@ -229,6 +229,7 @@ internal class GameRunningStateFactory : IGameStateFactory
 
             unitMove,
 
+            // we've already finished selection and checks to make sure action is valid
             attackExecution,
             takeDamageProcessing,
 
@@ -271,35 +272,43 @@ internal class GameRunningStateFactory : IGameStateFactory
                     e.Add(new SkillSet()
                     {
                         Skills = [
-                            new UnitSkill
-                            {
-                                Name = "Movement",
-                                Icon = "unit_action_move_unit_frame",
-                                Description = "Move to an accessible tile within range.",
-                                Range = 3,
-                                Traverse = ["land"],
-                                Cooldown = 0,
-                                SelectionType = SelectionType.Pathfinding,
-                                AttackBehavior = "MoveToBehavior",
-                                AttackParams = new EmptyParams()
+                            new SkillEntry(){
+                                Data = new() {
+                                    Name = "Movement",
+                                    Icon = "unit_action_move_unit_frame",
+                                    Description = "Move to an accessible tile within range.",
+                                    CooldownBetweenTurns = 0,
+                                    UsesPerTurn = 1,
+                                    Range = 3,
+                                    Traverse = ["land"],
+                                    SelectionType = SelectionType.Pathfinding,
+                                    AttackBehavior = "MoveToBehavior",
+                                    AttackParams = new EmptyParams()
+                                },
+                                State = new() { TurnsSinceLastUse = 0, UsesLeftThisTurn = 1,  CanUse=true}
                             },
-                            new UnitSkill
-                            {
-                                Name = "Hit and Run",
-                                Icon = "unit_action_attack_placeholder_frame",
-                                Description = "Mildly inconvenience your enemies with this one simple trick!",
-                                Range = 2,
-                                Traverse = ["land"],
-                                SelectionType = SelectionType.Passthrough,
-                                AttackBehavior = "BasicAttackBehavior",
-                                AttackParams = new DefaultAttackParams(10, 2, 0),
-                            }
+                            new SkillEntry(){
+                                Data = new()
+                                {
+                                    Name = "Hit and Run",
+                                    Icon = "unit_action_attack_placeholder_frame",
+                                    Description = "Mildly inconvenience your enemies with this one simple trick!",
+                                    CooldownBetweenTurns = 0,
+                                    UsesPerTurn = 2,
+                                    Range = 2,
+                                    Traverse = ["land"],
+                                    SelectionType = SelectionType.Passthrough,
+                                    AttackBehavior = "BasicAttackBehavior",
+                                    AttackParams = new DefaultAttackParams(10, 2, 0) 
+                                },
+                                State = new() { TurnsSinceLastUse = 0, UsesLeftThisTurn = 2, CanUse=true}
+                            },
                         ]
                     });
                 }
             });
         }
-            
+        
         return new GameRunningState(world, _screenManager, updateSystems, drawSystems, postCycleSystems, disposables);
     }
 }

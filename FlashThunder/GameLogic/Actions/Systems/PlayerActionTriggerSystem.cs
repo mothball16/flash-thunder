@@ -58,12 +58,12 @@ internal sealed class PlayerActionTriggerSystem : AUpdateSystem<float>
                     else
                     {
                         queuedActions = e.Ref<AttackQueued>();
-                    }
-
+                    }                 
+                    skill.State.UsesLeftThisTurn--;
                     queuedActions.Queue.Enqueue(new ActionData(
                         e,
-                        skill.AttackBehavior,
-                        skill.AttackParams,
+                        skill.Data.AttackBehavior,
+                        skill.Data.AttackParams,
                         waypoints));
                 }
             });

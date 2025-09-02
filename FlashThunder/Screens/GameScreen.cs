@@ -119,7 +119,7 @@ internal sealed class GameScreenPresenter : IDisposable
         {
             var skill = skillSet.Skills[i];
             var abilityInstance = new AbilityLabelComponent();
-            abilityInstance.Icon.Texture = _textureManager.Get(skill.Icon);
+            abilityInstance.Icon.Texture = _textureManager.Get(skill.Data.Icon);
             abilityInstance.HotkeyText.Text = $"{i + 1}";
 
             abilityInstance.Charge.Visible = (selectedAbility == i);

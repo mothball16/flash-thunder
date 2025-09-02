@@ -1,4 +1,5 @@
 ﻿using FlashThunder.Enums;
+using FlashThunder.GameLogic.Actions.Data;
 using FlashThunder.GameLogic.Actions.Interfaces;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -21,14 +22,12 @@ public struct UnitSkill
     public string Icon { get; set; }
     public string Description { get; set; }
     // phys. stats
+    public int CooldownBetweenTurns { get; set; }
+    public int UsesPerTurn { get; set; }
     public int Range { get; set; }
     public string[] Traverse { get; set; }
-    public int Cooldown { get; set; }
     public string AttackBehavior { get; set; }
     public IAttackParams AttackParams { get; set; }
     public SelectionType SelectionType { get; set; }
 
-    // deser. data
-    [JsonIgnore]
-    public Texture2D IconTexture { get; set; }
 }
