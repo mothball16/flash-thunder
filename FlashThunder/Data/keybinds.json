@@ -1,6 +1,11 @@
 [
   {
     "InputType": "Keyboard",
+    "Identifier": "I",
+    "Action": "TestPopupMessage"
+  },
+  {
+    "InputType": "Keyboard",
     "Identifier": "W",
     "Action": "MoveUp"
   },

@@ -7,7 +7,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace FlashThunder.GameLogic.Actions
 {
     /// <summary>
-    /// Holds attack behavior and handles attack lifetime.
+    /// Holds action behavior and handles attack lifetime.
     /// </summary>
     internal class ActionManager
     {
@@ -19,15 +19,15 @@ namespace FlashThunder.GameLogic.Actions
             _instances = [];
         }
 
-        public ActionManager RegisterAttackBehavior(string name, AAttackBehavior behavior)
+        public ActionManager RegisterActionBehavior(string name, AAttackBehavior behavior)
         {
             _attacks[name] = behavior;
             Logger.Print($"Registered {name} to the attack manager.");
             return this;
         }
 
-        public ActionManager RegisterAttackBehavior(AAttackBehavior behavior)
-            => RegisterAttackBehavior(behavior.GetType().Name, behavior);
+        public ActionManager RegisterActionBehavior(AAttackBehavior behavior)
+            => RegisterActionBehavior(behavior.GetType().Name, behavior);
 
         public void ExecuteAttack(World world, ActionData data)
         {

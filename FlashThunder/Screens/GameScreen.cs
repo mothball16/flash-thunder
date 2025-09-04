@@ -94,12 +94,12 @@ internal sealed class GameScreenPresenter : IDisposable
 
     private void ReloadSelectedUnitInformation(Entity e)
     {
+        var whatsSelected = e.Has<AbilitySelected>()
+            ? e.Ref<AbilitySelected>().AbilityIndex
+            : -1;
         _view.UnitInformation.Visible = true;
         UpdateUnitHealthBar(e.Ref<Health>());
-        UpdateUnitAbilities(e.Ref<SkillSet>(),
-            e.Has<AbilitySelected>()
-            ? e.Ref<AbilitySelected>().AbilityIndex
-            : -1);
+        UpdateUnitAbilities(e.Ref<SkillSet>(), whatsSelected);
     }
 
     private void UpdateUnitHealthBar(Health health)
@@ -119,11 +119,13 @@ internal sealed class GameScreenPresenter : IDisposable
         {
             var skill = skillSet.Skills[i];
             var abilityInstance = new AbilityLabelComponent();
+            abilityInstance.Core.Y = skill.IsValid ? 0 : 20;
             abilityInstance.Icon.Texture = _textureManager.Get(skill.Data.Icon);
             abilityInstance.HotkeyText.Text = $"{i + 1}";
-
-            abilityInstance.Charge.Visible = (selectedAbility == i);
-
+            abilityInstance.Selected.Visible = (selectedAbility == i);
+            abilityInstance.ProgBar.Height = skill.IsValid
+                ? 0
+                : 100 - Math.Clamp((float) skill.State.TurnsSinceLastUse / Math.Max(1,skill.Data.CooldownBetweenTurns), 0, 100);
             _view.AbilitiesContainer.AddChild(abilityInstance.Visual);
         }
     }

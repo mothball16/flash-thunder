@@ -101,17 +101,18 @@ namespace FlashThunder.GameLogic.Selection.Systems
             // we need to know if any ability selection inputs have been activated
             var input = _world.GetResource<InputResource>();
 
-            int? ability = null;
+            int? abilityActivated = null;
             foreach (var a in _abilityMap)
             {
                 if (input.WasJustActivated(a.Key))
                 {
-                    ability = a.Value;
+                    abilityActivated = a.Value;
                     break;
                 }
             }
-            if (ability is not null)
-                SelectOnInputSystem(ability.Value, upd);
+
+            if (abilityActivated is not null)
+                SelectOnInputSystem(abilityActivated.Value, upd);
 
             ValidateActionSystem();
         }

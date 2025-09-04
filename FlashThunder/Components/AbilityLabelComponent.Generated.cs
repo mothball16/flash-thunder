@@ -32,9 +32,11 @@ partial class AbilityLabelComponent : MonoGameGum.Forms.Controls.FrameworkElemen
         });
     }
     public SpriteRuntime Icon { get; protected set; }
-    public SpriteRuntime Selected { get; protected set; }
+    public ColoredRectangleRuntime ProgBar { get; protected set; }
     public SpriteRuntime Charge { get; protected set; }
+    public SpriteRuntime Selected { get; protected set; }
     public TextRuntime HotkeyText { get; protected set; }
+    public ContainerRuntime Core { get; protected set; }
 
     public AbilityLabelComponent(InteractiveGue visual) : base(visual) { }
     public AbilityLabelComponent()
@@ -47,9 +49,11 @@ partial class AbilityLabelComponent : MonoGameGum.Forms.Controls.FrameworkElemen
     {
         base.ReactToVisualChanged();
         Icon = this.Visual?.GetGraphicalUiElementByName("Icon") as SpriteRuntime;
-        Selected = this.Visual?.GetGraphicalUiElementByName("Selected") as SpriteRuntime;
+        ProgBar = this.Visual?.GetGraphicalUiElementByName("ProgBar") as ColoredRectangleRuntime;
         Charge = this.Visual?.GetGraphicalUiElementByName("Charge") as SpriteRuntime;
+        Selected = this.Visual?.GetGraphicalUiElementByName("Selected") as SpriteRuntime;
         HotkeyText = this.Visual?.GetGraphicalUiElementByName("HotkeyText") as TextRuntime;
+        Core = this.Visual?.GetGraphicalUiElementByName("Core") as ContainerRuntime;
         CustomInitialize();
     }
     //Not assigning variables because Object Instantiation Type is set to By Name rather than Fully In Code

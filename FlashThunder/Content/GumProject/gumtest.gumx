@@ -29,6 +29,11 @@
     <LinkType>ReferenceOriginal</LinkType>
   </ScreenReference>
   <ScreenReference>
+    <Name>PopupScreen</Name>
+    <ElementType>Screen</ElementType>
+    <LinkType>ReferenceOriginal</LinkType>
+  </ScreenReference>
+  <ScreenReference>
     <Name>TitleScreen</Name>
     <ElementType>Screen</ElementType>
     <LinkType>ReferenceOriginal</LinkType>
@@ -259,12 +264,12 @@
     <LinkType>ReferenceOriginal</LinkType>
   </ComponentReference>
   <ComponentReference>
-    <Name>Styles</Name>
+    <Name>PopupComponent</Name>
     <ElementType>Component</ElementType>
     <LinkType>ReferenceOriginal</LinkType>
   </ComponentReference>
   <ComponentReference>
-    <Name>TextBoxComponent</Name>
+    <Name>Styles</Name>
     <ElementType>Component</ElementType>
     <LinkType>ReferenceOriginal</LinkType>
   </ComponentReference>

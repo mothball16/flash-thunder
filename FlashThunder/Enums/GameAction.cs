@@ -13,6 +13,8 @@ public enum GameAction
     SpawnTest,
     EndTurn,
 
+    TestPopupMessage,
+
     Ability1,
     Ability2,
     Ability3,

@@ -26,4 +26,11 @@ internal class ScreenFactory
         view.Presenter = new TitleScreenPresenter(view, _eventBus);
         return view.Visual;
     }
+
+    public GraphicalUiElement CreatePopupScreen()
+    {
+        var view = new PopupScreen();
+        view.Presenter = new PopupScreenPresenter(view, _eventBus);
+        return view.Visual;
+    }
 }

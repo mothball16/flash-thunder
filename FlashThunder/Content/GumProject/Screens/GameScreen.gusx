@@ -100,48 +100,6 @@
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
-      <Type>string</Type>
-      <Name>NextTurnButton.Parent</Name>
-      <Value xsi:type="xsd:string">TurnContainer</Value>
-      <SetsValue>true</SetsValue>
-    </Variable>
-    <Variable>
-      <Type>float</Type>
-      <Name>NextTurnButton.X</Name>
-      <Value xsi:type="xsd:float">-50</Value>
-      <SetsValue>true</SetsValue>
-    </Variable>
-    <Variable>
-      <Type>HorizontalAlignment</Type>
-      <Name>NextTurnButton.XOrigin</Name>
-      <Value xsi:type="xsd:int">2</Value>
-      <SetsValue>true</SetsValue>
-    </Variable>
-    <Variable>
-      <Type>PositionUnitType</Type>
-      <Name>NextTurnButton.XUnits</Name>
-      <Value xsi:type="xsd:int">4</Value>
-      <SetsValue>true</SetsValue>
-    </Variable>
-    <Variable>
-      <Type>float</Type>
-      <Name>NextTurnButton.Y</Name>
-      <Value xsi:type="xsd:float">-50</Value>
-      <SetsValue>true</SetsValue>
-    </Variable>
-    <Variable>
-      <Type>VerticalAlignment</Type>
-      <Name>NextTurnButton.YOrigin</Name>
-      <Value xsi:type="xsd:int">2</Value>
-      <SetsValue>true</SetsValue>
-    </Variable>
-    <Variable>
-      <Type>PositionUnitType</Type>
-      <Name>NextTurnButton.YUnits</Name>
-      <Value xsi:type="xsd:int">5</Value>
-      <SetsValue>true</SetsValue>
-    </Variable>
-    <Variable>
       <Type>int</Type>
       <Name>HealthBar.Blue</Name>
       <Value xsi:type="xsd:int">100</Value>
@@ -356,6 +314,48 @@
       <Type>PositionUnitType</Type>
       <Name>InfoContainer.YUnits</Name>
       <Value xsi:type="xsd:int">1</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>string</Type>
+      <Name>NextTurnButton.Parent</Name>
+      <Value xsi:type="xsd:string">TurnContainer</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>float</Type>
+      <Name>NextTurnButton.X</Name>
+      <Value xsi:type="xsd:float">-50</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>HorizontalAlignment</Type>
+      <Name>NextTurnButton.XOrigin</Name>
+      <Value xsi:type="xsd:int">2</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>PositionUnitType</Type>
+      <Name>NextTurnButton.XUnits</Name>
+      <Value xsi:type="xsd:int">4</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>float</Type>
+      <Name>NextTurnButton.Y</Name>
+      <Value xsi:type="xsd:float">-50</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>VerticalAlignment</Type>
+      <Name>NextTurnButton.YOrigin</Name>
+      <Value xsi:type="xsd:int">2</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>PositionUnitType</Type>
+      <Name>NextTurnButton.YUnits</Name>
+      <Value xsi:type="xsd:int">5</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>

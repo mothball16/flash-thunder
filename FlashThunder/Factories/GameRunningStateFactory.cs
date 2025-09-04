@@ -134,7 +134,7 @@ internal class GameRunningStateFactory : IGameStateFactory
     /// a data-oriented loader.
     /// </summary>
     /// <param name="world"></param>
-    public void InitTeams(World world)
+    public static void InitTeams(World world)
     {
         var teamService = world.GetResource<TeamService>();
         ref var turnOrder = ref world.GetResource<TurnOrderResource>();
@@ -181,8 +181,8 @@ internal class GameRunningStateFactory : IGameStateFactory
             .Map<IsPlayerControllable>();
 
         var attackManager = new ActionManager()
-            .RegisterAttackBehavior(new MoveToBehavior())
-            .RegisterAttackBehavior(new BasicAttackBehavior());
+            .RegisterActionBehavior(new MoveToBehavior())
+            .RegisterActionBehavior(new BasicAttackBehavior());
 
         // set up the environment
         InitResources(world);

@@ -1,5 +1,363 @@
 {
   "UserEvents": {
-    "888413c47df890004d569337004294e8834cbcfc9b7d80220a830a125a33f3e7": []
+    "888413c47df890004d569337004294e8834cbcfc9b7d80220a830a125a33f3e7": [
+      {
+        "NewName": "PopupScreen",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 0,
+        "TimestampUtc": "2025-09-03T13:12:57.3867896Z"
+      },
+      {
+        "NewName": "PopupScreen.ContainerInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-09-03T13:13:05.6108219Z"
+      },
+      {
+        "NewName": "PopupScreen.ActionPopupContainr",
+        "OldName": "PopupScreen.ContainerInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-09-03T13:13:13.5407135Z"
+      },
+      {
+        "NewName": "PopupScreen.ActionPopupContainer",
+        "OldName": "PopupScreen.ActionPopupContainr",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-09-03T13:13:17.3802571Z"
+      },
+      {
+        "NewName": "AbilityLabelComponent (Container).ColoredRectangleInstance",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 5,
+        "TimestampUtc": "2025-09-03T13:15:21.0949779Z"
+      },
+      {
+        "NewName": "AbilityLabelComponent (Container).ProgBar",
+        "OldName": "AbilityLabelComponent (Container).ColoredRectangleInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-09-03T13:16:27.5040586Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "AbilityLabelComponent (Container).Sprite Icon in AbilityLabelComponent (Container)",
+        "ElementType": "Components",
+        "EventType": 6,
+        "TimestampUtc": "2025-09-03T13:23:21.5685468Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "AbilityLabelComponent (Container).Sprite Selected in AbilityLabelComponent (Container)",
+        "ElementType": "Components",
+        "EventType": 6,
+        "TimestampUtc": "2025-09-03T13:23:39.8763235Z"
+      },
+      {
+        "NewName": "AbilityLabelComponent (Container).Char",
+        "OldName": "AbilityLabelComponent (Container).Selected",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-09-03T13:29:33.1741176Z"
+      },
+      {
+        "NewName": "AbilityLabelComponent (Container).Selected",
+        "OldName": "AbilityLabelComponent (Container).Charge",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-09-03T13:29:36.1187313Z"
+      },
+      {
+        "NewName": "AbilityLabelComponent (Container).Charge",
+        "OldName": "AbilityLabelComponent (Container).Char",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-09-03T13:29:38.8665657Z"
+      },
+      {
+        "NewName": "AbilityLabelComponent (Container).ContainerInstance",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 5,
+        "TimestampUtc": "2025-09-03T13:31:20.1471371Z"
+      },
+      {
+        "NewName": "AbilityLabelComponent (Container).Core",
+        "OldName": "AbilityLabelComponent (Container).ContainerInstance",
+        "ElementType": "Components",
+        "EventType": 7,
+        "TimestampUtc": "2025-09-03T13:31:22.8919076Z"
+      },
+      {
+        "NewName": "PopupScreen.ContainerInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-09-03T13:44:00.7837746Z"
+      },
+      {
+        "NewName": "PopupScreen.ContainerInstance1",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-09-03T13:44:18.8760303Z"
+      },
+      {
+        "NewName": "PopupScreen.LeftBar",
+        "OldName": "PopupScreen.ContainerInstance1",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-09-03T13:44:24.0834868Z"
+      },
+      {
+        "NewName": "PopupScreen.TextBoxComponentInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-09-03T13:45:39.0852819Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "PopupScreen.TextBoxComponent TextBoxComponentInstance in PopupScreen",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-09-03T13:45:44.0967282Z"
+      },
+      {
+        "NewName": "PopupScreen.HotkeyText",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-09-03T13:45:47.0115758Z"
+      },
+      {
+        "NewName": "PopupScreen.Message",
+        "OldName": "PopupScreen.HotkeyText",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-09-03T13:46:51.5016206Z"
+      },
+      {
+        "NewName": "PopupScreen.Popup",
+        "OldName": "PopupScreen.ContainerInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-09-03T13:48:37.2221699Z"
+      },
+      {
+        "NewName": "PopupScreen.PopupMessage",
+        "OldName": "PopupScreen.Popup",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-09-03T13:48:41.0448492Z"
+      },
+      {
+        "NewName": "PopupLabelComponent",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 0,
+        "TimestampUtc": "2025-09-03T13:48:56.3747101Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "PopupLabelComponent",
+        "ElementType": "Components",
+        "EventType": 1,
+        "TimestampUtc": "2025-09-03T13:49:31.0603321Z"
+      },
+      {
+        "NewName": "PopupScreenComponent",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 0,
+        "TimestampUtc": "2025-09-03T13:49:55.5955767Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "PopupScreen.Container PopupMessage in PopupScreen",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-09-03T13:49:59.7438238Z"
+      },
+      {
+        "NewName": "PopupScreenComponentComponent",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 0,
+        "TimestampUtc": "2025-09-03T13:50:09.9429941Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "PopupScreenComponentComponent",
+        "ElementType": "Components",
+        "EventType": 1,
+        "TimestampUtc": "2025-09-03T13:50:15.4018957Z"
+      },
+      {
+        "NewName": "Popup",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 0,
+        "TimestampUtc": "2025-09-03T13:50:38.2763359Z"
+      },
+      {
+        "NewName": "Popup.ContainerInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-09-03T13:50:40.0469137Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Popup.Container ContainerInstance in Popup",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-09-03T13:50:45.7332174Z"
+      },
+      {
+        "NewName": "Popup.ContainerInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-09-03T13:50:48.7764152Z"
+      },
+      {
+        "NewName": "Popup.LeftBar",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-09-03T13:50:49.0772192Z"
+      },
+      {
+        "NewName": "Popup.Message",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-09-03T13:50:49.204159Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "PopupScreen.Container ContainerInstance in PopupScreen",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-09-03T13:50:51.9875914Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "PopupScreen.ColoredRectangle LeftBar in PopupScreen",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-09-03T13:50:53.6987599Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "PopupScreen.Text Message in PopupScreen",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-09-03T13:50:55.1090585Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "PopupScreenComponent",
+        "ElementType": "Components",
+        "EventType": 1,
+        "TimestampUtc": "2025-09-03T13:51:07.1905469Z"
+      },
+      {
+        "NewName": "PopupComponent",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 0,
+        "TimestampUtc": "2025-09-03T13:51:12.5879209Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "PopupComponent",
+        "ElementType": "Components",
+        "EventType": 1,
+        "TimestampUtc": "2025-09-03T13:51:19.6948115Z"
+      },
+      {
+        "NewName": "PopupComponent",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 0,
+        "TimestampUtc": "2025-09-03T13:51:36.1495499Z"
+      },
+      {
+        "NewName": "PopupComponent (Container).LeftBar",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 5,
+        "TimestampUtc": "2025-09-03T13:51:47.9696208Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "PopupComponent",
+        "ElementType": "Components",
+        "EventType": 1,
+        "TimestampUtc": "2025-09-03T13:51:53.9481369Z"
+      },
+      {
+        "NewName": "PopupComponent",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 0,
+        "TimestampUtc": "2025-09-03T13:51:58.3601348Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "PopupComponent (Container).Container ContainerInstance in PopupComponent (Container)",
+        "ElementType": "Components",
+        "EventType": 6,
+        "TimestampUtc": "2025-09-03T13:52:03.44412Z"
+      },
+      {
+        "NewName": "PopupComponent (Container).LeftBar",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 5,
+        "TimestampUtc": "2025-09-03T13:52:06.0263106Z"
+      },
+      {
+        "NewName": "PopupComponent (Container).Message",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 5,
+        "TimestampUtc": "2025-09-03T13:52:07.2136078Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Popup.Container ContainerInstance in Popup",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-09-03T13:52:09.9991078Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "Popup",
+        "ElementType": "Screens",
+        "EventType": 1,
+        "TimestampUtc": "2025-09-03T13:52:13.9895196Z"
+      },
+      {
+        "NewName": "PopupScreen.MessageContainer",
+        "OldName": "PopupScreen.ActionPopupContainer",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-09-04T13:47:18.0724763Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "TextBoxComponent",
+        "ElementType": "Components",
+        "EventType": 1,
+        "TimestampUtc": "2025-09-04T14:00:33.2697593Z"
+      }
+    ]
   }
 }

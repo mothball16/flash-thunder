@@ -1,6 +1,6 @@
 ﻿namespace FlashThunder.Enums;
 
-public enum ScreenLayer
+public enum ScreenID
 {
     /// <summary>
     /// extra layer in case any are necessary

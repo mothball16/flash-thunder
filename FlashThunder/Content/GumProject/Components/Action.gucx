@@ -78,15 +78,15 @@
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
-      <Type>float</Type>
-      <Name>Width</Name>
-      <Value xsi:type="xsd:float">60</Value>
-      <SetsValue>true</SetsValue>
-    </Variable>
-    <Variable>
       <Type>string</Type>
       <Name>TextInstance1.Parent</Name>
       <Value xsi:type="xsd:string">TextInstance</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>float</Type>
+      <Name>Width</Name>
+      <Value xsi:type="xsd:float">60</Value>
       <SetsValue>true</SetsValue>
     </Variable>
   </State>

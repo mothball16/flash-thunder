@@ -10,6 +10,7 @@ using FlashThunder.Utilities;
 using System.Collections.Generic;
 using System;
 using FlashThunder.Screens.Handlers;
+using FlashThunder.Events.GameEvents;
 
 namespace FlashThunder.Core;
 /// <summary>
@@ -56,6 +57,13 @@ internal class CoreGame : Game
         _screenMngr = new ScreenManager(this, new ScreenFactory(_texMngr, _higherEventBus))
             .SetupListeners(Window)
             .RescaleUIToResolution(Window);
+
+        // TODO: Move this out of CoreGame (the popupscreen should always exist but there are better places to put this)
+        _screenMngr.LoadPopupScreen();
+        _gameInputMngr.OnActivated += (action) => {
+            if (action == GameAction.TestPopupMessage)
+                _higherEventBus.Publish(new MakePopupEvent("fuck you"));
+        };
 
         _graphics.IsFullScreen = true;
         _graphics.HardwareModeSwitch = false;

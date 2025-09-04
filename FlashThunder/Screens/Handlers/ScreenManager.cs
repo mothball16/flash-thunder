@@ -17,7 +17,7 @@ internal sealed class ScreenManager : IDisposable
 
     private readonly GumProjectSave _project;
 
-    private readonly Dictionary<ScreenLayer, GraphicalUiElement> _layers;
+    private readonly Dictionary<ScreenID, GraphicalUiElement> _layers;
     private readonly List<IDisposable> _disposables;
     private readonly ScreenFactory _factory;
 
@@ -47,7 +47,7 @@ internal sealed class ScreenManager : IDisposable
         return this;
     }
 
-    public void CleanupLayer(ScreenLayer layer)
+    public void CleanupLayer(ScreenID layer)
     {
         // cleanup old element of layer if already occupied
         if (_layers.TryGetValue(layer, out var oldScreen))
@@ -57,7 +57,7 @@ internal sealed class ScreenManager : IDisposable
         }
     }
 
-    public void TransitionScreen(GraphicalUiElement newScreen, ScreenLayer layer)
+    public void TransitionScreen(GraphicalUiElement newScreen, ScreenID layer)
     {
         CleanupLayer(layer);
         newScreen.AddToRoot();
@@ -94,9 +94,12 @@ internal sealed class ScreenManager : IDisposable
 
     #region - - - [ screen loading ] - - -
     public void LoadTitleScreen()
-        => TransitionScreen(_factory.CreateTitleScreen(),ScreenLayer.Primary);
+        => TransitionScreen(_factory.CreateTitleScreen(),ScreenID.Primary);
 
     public void LoadGameScreen(World world)
-        => TransitionScreen(_factory.CreateGameScreen(world), ScreenLayer.Primary);
+        => TransitionScreen(_factory.CreateGameScreen(world), ScreenID.Primary);
+
+    public void LoadPopupScreen()
+        => TransitionScreen(_factory.CreatePopupScreen(), ScreenID.Popup);
     #endregion
 }

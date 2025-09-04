@@ -7,20 +7,26 @@
     <Variable>
       <Type>float</Type>
       <Name>Charge.Height</Name>
-      <Value xsi:type="xsd:float">60</Value>
+      <Value xsi:type="xsd:float">100</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>DimensionUnitType</Type>
       <Name>Charge.HeightUnits</Name>
-      <Value xsi:type="xsd:int">0</Value>
+      <Value xsi:type="xsd:int">1</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>string</Type>
+      <Name>Charge.Parent</Name>
+      <Value xsi:type="xsd:string">Core</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <IsFile>true</IsFile>
       <Type>string</Type>
       <Name>Charge.SourceFile</Name>
-      <Value xsi:type="xsd:string">..\Textures\Shared\Actions\unit_action_selected_frame.png</Value>
+      <Value xsi:type="xsd:string">..\Textures\Shared\Actions\unit_action_charge_frame.png</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -32,13 +38,13 @@
     <Variable>
       <Type>float</Type>
       <Name>Charge.Width</Name>
-      <Value xsi:type="xsd:float">60</Value>
+      <Value xsi:type="xsd:float">100</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>DimensionUnitType</Type>
       <Name>Charge.WidthUnits</Name>
-      <Value xsi:type="xsd:int">0</Value>
+      <Value xsi:type="xsd:int">1</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -51,6 +57,24 @@
       <Type>float</Type>
       <Name>Charge.Y</Name>
       <Value xsi:type="xsd:float">0</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>PositionUnitType</Type>
+      <Name>Charge.YUnits</Name>
+      <Value xsi:type="xsd:int">3</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>float</Type>
+      <Name>Core.Height</Name>
+      <Value xsi:type="xsd:float">60</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>float</Type>
+      <Name>Core.Width</Name>
+      <Value xsi:type="xsd:float">60</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -135,18 +159,19 @@
     <Variable>
       <Type>float</Type>
       <Name>Icon.Height</Name>
-      <Value xsi:type="xsd:float">60</Value>
+      <Value xsi:type="xsd:float">100</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>DimensionUnitType</Type>
       <Name>Icon.HeightUnits</Name>
-      <Value xsi:type="xsd:int">0</Value>
+      <Value xsi:type="xsd:int">1</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>string</Type>
       <Name>Icon.Parent</Name>
+      <Value xsi:type="xsd:string">Core</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -154,7 +179,6 @@
       <Type>string</Type>
       <Name>Icon.SourceFile</Name>
       <Value xsi:type="xsd:string">..\Textures\Shared\Actions\unit_action_move_unit_frame.png</Value>
-      <ExposedAsName>IconSourceFile</ExposedAsName>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -166,13 +190,13 @@
     <Variable>
       <Type>float</Type>
       <Name>Icon.Width</Name>
-      <Value xsi:type="xsd:float">60</Value>
+      <Value xsi:type="xsd:float">100</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>DimensionUnitType</Type>
       <Name>Icon.WidthUnits</Name>
-      <Value xsi:type="xsd:int">0</Value>
+      <Value xsi:type="xsd:int">1</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -188,39 +212,136 @@
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
+      <Type>PositionUnitType</Type>
+      <Name>Icon.YUnits</Name>
+      <Value xsi:type="xsd:int">3</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>int</Type>
+      <Name>ProgBar.Alpha</Name>
+      <Value xsi:type="xsd:int">92</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>int</Type>
+      <Name>ProgBar.Blue</Name>
+      <Value xsi:type="xsd:int">100</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>int</Type>
+      <Name>ProgBar.Green</Name>
+      <Value xsi:type="xsd:int">100</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>float</Type>
+      <Name>ProgBar.Height</Name>
+      <Value xsi:type="xsd:float">100</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>DimensionUnitType</Type>
+      <Name>ProgBar.HeightUnits</Name>
+      <Value xsi:type="xsd:int">5</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>string</Type>
+      <Name>ProgBar.Parent</Name>
+      <Value xsi:type="xsd:string">Core</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>float</Type>
+      <Name>ProgBar.Width</Name>
+      <Value xsi:type="xsd:float">100</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>DimensionUnitType</Type>
+      <Name>ProgBar.WidthUnits</Name>
+      <Value xsi:type="xsd:int">1</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>float</Type>
+      <Name>ProgBar.X</Name>
+      <Value xsi:type="xsd:float">0</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>HorizontalAlignment</Type>
+      <Name>ProgBar.XOrigin</Name>
+      <Value xsi:type="xsd:int">0</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>PositionUnitType</Type>
+      <Name>ProgBar.XUnits</Name>
+      <Value xsi:type="xsd:int">0</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>float</Type>
+      <Name>ProgBar.Y</Name>
+      <Value xsi:type="xsd:float">0</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>VerticalAlignment</Type>
+      <Name>ProgBar.YOrigin</Name>
+      <Value xsi:type="xsd:int">0</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>PositionUnitType</Type>
+      <Name>ProgBar.YUnits</Name>
+      <Value xsi:type="xsd:int">1</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
       <Type>float</Type>
       <Name>Selected.Height</Name>
-      <Value xsi:type="xsd:float">60</Value>
+      <Value xsi:type="xsd:float">100</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>DimensionUnitType</Type>
       <Name>Selected.HeightUnits</Name>
-      <Value xsi:type="xsd:int">0</Value>
+      <Value xsi:type="xsd:int">1</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>string</Type>
+      <Name>Selected.Parent</Name>
+      <Value xsi:type="xsd:string">Core</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <IsFile>true</IsFile>
       <Type>string</Type>
       <Name>Selected.SourceFile</Name>
-      <Value xsi:type="xsd:string">..\Textures\Shared\Actions\unit_action_charge_frame.png</Value>
+      <Value xsi:type="xsd:string">..\Textures\Shared\Actions\unit_action_selected_frame.png</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>bool</Type>
       <Name>Selected.Visible</Name>
-      <SetsValue>false</SetsValue>
+      <Value xsi:type="xsd:boolean">true</Value>
+      <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>float</Type>
       <Name>Selected.Width</Name>
-      <Value xsi:type="xsd:float">60</Value>
+      <Value xsi:type="xsd:float">100</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>DimensionUnitType</Type>
       <Name>Selected.WidthUnits</Name>
-      <Value xsi:type="xsd:int">0</Value>
+      <Value xsi:type="xsd:int">1</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -233,6 +354,12 @@
       <Type>float</Type>
       <Name>Selected.Y</Name>
       <Value xsi:type="xsd:float">0</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>PositionUnitType</Type>
+      <Name>Selected.YUnits</Name>
+      <Value xsi:type="xsd:int">3</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -250,14 +377,14 @@
     </Variable>
     <VariableList xsi:type="VariableListSaveOfString">
       <Type>string</Type>
-      <Name>Charge.AnimationFrames</Name>
+      <Name>Selected.AnimationFrames</Name>
       <IsFile>false</IsFile>
       <IsHiddenInPropertyGrid>false</IsHiddenInPropertyGrid>
       <Value />
     </VariableList>
     <VariableList xsi:type="VariableListSaveOfString">
       <Type>string</Type>
-      <Name>Selected.AnimationFrames</Name>
+      <Name>Charge.AnimationFrames</Name>
       <IsFile>false</IsFile>
       <IsHiddenInPropertyGrid>false</IsHiddenInPropertyGrid>
       <Value />
@@ -276,8 +403,8 @@
     <DefinedByBase>false</DefinedByBase>
   </Instance>
   <Instance>
-    <Name>Selected</Name>
-    <BaseType>Sprite</BaseType>
+    <Name>ProgBar</Name>
+    <BaseType>ColoredRectangle</BaseType>
     <DefinedByBase>false</DefinedByBase>
   </Instance>
   <Instance>
@@ -286,8 +413,18 @@
     <DefinedByBase>false</DefinedByBase>
   </Instance>
   <Instance>
+    <Name>Selected</Name>
+    <BaseType>Sprite</BaseType>
+    <DefinedByBase>false</DefinedByBase>
+  </Instance>
+  <Instance>
     <Name>HotkeyText</Name>
     <BaseType>Text</BaseType>
+    <DefinedByBase>false</DefinedByBase>
+  </Instance>
+  <Instance>
+    <Name>Core</Name>
+    <BaseType>Container</BaseType>
     <DefinedByBase>false</DefinedByBase>
   </Instance>
   <Behaviors />
