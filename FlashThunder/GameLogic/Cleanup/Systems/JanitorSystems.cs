@@ -24,7 +24,7 @@ internal sealed class JanitorSystems: AUpdateSystem<float>
 
     private void InputRefreshSystem()
     {
-        ref var input = ref _world.GetResource<InputResource>();
+        ref var input = ref _world.Get<InputResource>();
         input.ResetActions();
     }
 }

@@ -142,7 +142,7 @@ internal sealed class GameScreenPresenter : IDisposable
     public void NextTurnRequest()
     {
         Logger.Print("Reached nextturnrequest");
-        _model.GetResource<InputResource>().DebounceActions();
+        _model.Get<InputResource>().DebounceActions();
         _model.Publish(new NextTurnRequest());
     }
 

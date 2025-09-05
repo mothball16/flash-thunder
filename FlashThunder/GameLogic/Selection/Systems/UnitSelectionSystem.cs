@@ -49,7 +49,7 @@ namespace FlashThunder.GameLogic.Selection.Systems
         {
             // - - - [ edge handling ] - - -
 
-            var input = _world.GetResource<InputResource>();
+            var input = _world.Get<InputResource>();
             if (input.WasJustActivated(GameAction.Deselect))
             {
                 DeselectUnit();
@@ -65,7 +65,7 @@ namespace FlashThunder.GameLogic.Selection.Systems
                 return;
 
             // - - - [ figure out what unit we are trying to select ] - - -
-            var mouse = _world.GetResource<MouseResource>();
+            var mouse = _world.Get<MouseResource>();
 
             _isSelectable.For((in Entity e, ref GridPosition pos) =>
             {

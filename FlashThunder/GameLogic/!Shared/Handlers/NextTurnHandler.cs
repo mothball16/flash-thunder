@@ -13,20 +13,20 @@ namespace FlashThunder.GameLogic.Commands;
 internal sealed class NextTurnHandler : IDisposable
 {
     private readonly World _world;
-    private readonly IEventPublisher _uiNotifier;
+    private readonly IEventPublisher _notifier;
     private readonly List<IDisposable> _subscriptions;
 
-    public NextTurnHandler(World world, IEventPublisher uiNotifier)
+    public NextTurnHandler(World world)
     {
         _world = world;
-        _uiNotifier = uiNotifier;
+        _notifier = world.Get<IEventPublisher>();
         _subscriptions = [
             world.Subscribe<NextTurnRequest>(Execute)
         ];
     }
     public void Execute(NextTurnRequest _)
     {
-        ref var _turnOrder = ref _world.GetResource<TurnOrderResource>();
+        ref var _turnOrder = ref _world.Get<TurnOrderResource>();
         var order = _turnOrder.Order;
 
         // if we don't even have enough to cycle, don't cycle lol
@@ -47,7 +47,7 @@ internal sealed class NextTurnHandler : IDisposable
         if (!oldTeam.Has<IsCurrentTurn>())
         {
             oldTeam.Set(new IsCurrentTurn());
-            _uiNotifier.Publish(new TurnOrderChangedEvent(oldTeam));
+            _notifier.Publish(new TurnOrderChangedEvent(oldTeam));
             return;
         }
 
@@ -70,7 +70,7 @@ internal sealed class NextTurnHandler : IDisposable
         newTeam.Add<IsCurrentTurn>();
 
         // notify the UI about the change
-        _uiNotifier.Publish(new TurnOrderChangedEvent(newTeam));
+        _notifier.Publish(new TurnOrderChangedEvent(newTeam));
     }
 
     public void Dispose()

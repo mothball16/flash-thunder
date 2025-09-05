@@ -6,6 +6,12 @@
     <Name>Default</Name>
     <Variable>
       <Type>float</Type>
+      <Name>Height</Name>
+      <Value xsi:type="xsd:float">30</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>float</Type>
       <Name>LeftBar.Height</Name>
       <Value xsi:type="xsd:float">100</Value>
       <SetsValue>true</SetsValue>
@@ -78,7 +84,7 @@
     <Variable>
       <Type>string</Type>
       <Name>Message.Text</Name>
-      <Value xsi:type="xsd:string">1
+      <Value xsi:type="xsd:string">this is a message. line 2
 </Value>
       <SetsValue>true</SetsValue>
     </Variable>
@@ -124,6 +130,18 @@
       <Value xsi:type="xsd:string">Default</Value>
       <Category>States and Visibility</Category>
       <SetsValue>false</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>float</Type>
+      <Name>Width</Name>
+      <Value xsi:type="xsd:float">100</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>DimensionUnitType</Type>
+      <Name>WidthUnits</Name>
+      <Value xsi:type="xsd:int">1</Value>
+      <SetsValue>true</SetsValue>
     </Variable>
   </State>
   <Instance>

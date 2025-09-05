@@ -62,7 +62,7 @@ internal sealed class DecoratorSystems
 
     private void HoveringTileDecoratorSystem(SpriteBatch sb)
     {
-        var mouse = _world.GetResource<MouseResource>();
+        var mouse = _world.Get<MouseResource>();
         sb.Draw(
             texture: _texManager.Get(TileHoveringTexture),
             destinationRectangle: new Rectangle(mouse.TileX * t, mouse.TileY * t, t, t),

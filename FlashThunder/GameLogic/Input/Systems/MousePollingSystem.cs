@@ -18,7 +18,7 @@ namespace FlashThunder.GameLogic.Input.Systems
 
         public override void Update(float upd)
         {
-            var mapResource = _world.GetResource<MapResource>();
+            var mapResource = _world.Get<MapResource>();
             var mouseState = Mouse.GetState();
             var position = mouseState.Position;
 
@@ -33,7 +33,7 @@ namespace FlashThunder.GameLogic.Input.Systems
             var tilePosition = new Point(
                 Math.Clamp(worldPosition.X / TileSize, 0, mapResource.Width - 1),
                 Math.Clamp(worldPosition.Y / TileSize, 0, mapResource.Height - 1));
-            _world.SetResource<MouseResource>(new(
+            _world.Set<MouseResource>(new(
                 mouseDiff,
                 mouseDelta,
                 scrollDelta,

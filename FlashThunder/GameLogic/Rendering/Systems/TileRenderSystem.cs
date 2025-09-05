@@ -18,7 +18,7 @@ namespace FlashThunder.GameLogic.Rendering.Systems
         private readonly TileManager _tileManager = tileManager;
 
         // queries
-        private readonly MapResource _mapResource = world.GetResource<MapResource>();
+        private readonly MapResource _mapResource = world.Get<MapResource>();
 
         public override void Update(SpriteBatch sb)
         {

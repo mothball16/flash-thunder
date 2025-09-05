@@ -11,6 +11,12 @@
     </Variable>
     <Variable>
       <Type>float</Type>
+      <Name>MessageContainer.StackSpacing</Name>
+      <Value xsi:type="xsd:float">10</Value>
+      <SetsValue>true</SetsValue>
+    </Variable>
+    <Variable>
+      <Type>float</Type>
       <Name>MessageContainer.Width</Name>
       <Value xsi:type="xsd:float">800</Value>
       <SetsValue>true</SetsValue>
@@ -36,19 +42,19 @@
     <Variable>
       <Type>float</Type>
       <Name>MessageContainer.Y</Name>
-      <Value xsi:type="xsd:float">-80</Value>
+      <Value xsi:type="xsd:float">80</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>VerticalAlignment</Type>
       <Name>MessageContainer.YOrigin</Name>
-      <Value xsi:type="xsd:int">2</Value>
+      <Value xsi:type="xsd:int">0</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>PositionUnitType</Type>
       <Name>MessageContainer.YUnits</Name>
-      <Value xsi:type="xsd:int">5</Value>
+      <Value xsi:type="xsd:int">1</Value>
       <SetsValue>true</SetsValue>
     </Variable>
   </State>

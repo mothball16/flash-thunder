@@ -89,16 +89,19 @@ internal class GameRunningStateFactory : IGameStateFactory
                 ['.', '#', '#', '#', '#', '#']
             ],
         };
-        world.SetResource(mouseResource);
-        world.SetResource(turnOrderResource);
-        world.SetResource(inputResource);
-        world.SetResource(mapResource);
+        var uiNotifyResource = _eventBus as IEventPublisher;
+
+        world.Set(mouseResource);
+        world.Set(turnOrderResource);
+        world.Set(inputResource);
+        world.Set(mapResource);
+        world.Set(uiNotifyResource);
     }
 
     private void InitServices(World world, EntityFactory factory)
     {
         var teamService = new TeamService(world, factory);
-        var mapResource = world.GetResource<MapResource>();
+        var mapResource = world.Get<MapResource>();
         #region - - - [pathfinding service ] - - -
         var pathfindingService = new PathfindingService(
             map: mapResource,
@@ -125,8 +128,8 @@ internal class GameRunningStateFactory : IGameStateFactory
             });
         #endregion
 
-        world.SetResource(teamService);
-        world.SetResource(pathfindingService);
+        world.Set(teamService);
+        world.Set(pathfindingService);
     }
 
     /// <summary>
@@ -136,8 +139,8 @@ internal class GameRunningStateFactory : IGameStateFactory
     /// <param name="world"></param>
     public static void InitTeams(World world)
     {
-        var teamService = world.GetResource<TeamService>();
-        ref var turnOrder = ref world.GetResource<TurnOrderResource>();
+        var teamService = world.Get<TeamService>();
+        ref var turnOrder = ref world.Get<TurnOrderResource>();
         turnOrder.Order.Add(
             teamService.CreateTeam(
                 "Section 4",
@@ -193,55 +196,55 @@ internal class GameRunningStateFactory : IGameStateFactory
 
         // [!] update
         // core
-        var mousePolling = new MousePollingSystem(world, camera);
-        var entityMover = new EntityMoverSystems(world);
+        var pollForMouseData = new MousePollingSystem(world, camera);
+        var moveEntities = new EntityMoverSystems(world);
 
         // game logic
-        var actionCalc = new ActionTileCalcSystem(world);
-        var unitSelection = new UnitSelectionSystem(world);
-        var abilitySelection = new AbilitySelectSystems(world, _eventBus);
+        var calculateTilesOfActions = new ActionTileCalcSystem(world);
+        var selectUnitsOnClick = new UnitSelectionSystem(world);
+        var selectAbilitiesOnKey = new AbilitySelectSystems(world);
 
-        var unitMove = new PlayerActionTriggerSystem(world);
+        var queueActions = new QueueActionSystem(world);
 
-        var attackExecution = new ActionExecutionSystem(world, attackManager);
-        var takeDamageProcessing = new TakeDamageProcessingSystem(world);
+        var executeQueuedActions = new ActionExecutionSystem(world, attackManager);
+        var processTakeDamageInflict = new TakeDamageProcessingSystem(world);
 
         // pre-render (post-update)
-        var worldMoveToGridPos = new GridMoverSystem(world);
-        var cameraSystems = new CameraSystems(world, camera);
+        var interpWorldToGridMovers = new GridMoverSystem(world);
+        var updateCameras = new CameraSystems(world, camera);
 
         // [!] rendering
-        var sbInit = new RenderInitSystem(camera);
-        var tileRender = new TileRenderSystem(world, _tileManager);
-        var entityRender = new EntityRenderSystems(world);
-        var decorators = new DecoratorSystems(world, _texManager);
+        var initiateSpriteBatch = new RenderInitSystem(camera);
+        var renderTiles = new TileRenderSystem(world, _tileManager);
+        var renderEntities = new EntityRenderSystems(world);
+        var renderDecorators = new DecoratorSystems(world, _texManager);
 
         // [!] post-cycle
         var janitor = new JanitorSystems(world);
 
         updateSystems.AddRange([
-            mousePolling,
-            entityMover,
+            pollForMouseData,
+            moveEntities,
 
-            actionCalc,
-            unitSelection,
-            abilitySelection,
+            calculateTilesOfActions,
+            selectUnitsOnClick,
+            selectAbilitiesOnKey,
 
-            unitMove,
+            queueActions,
 
             // we've already finished selection and checks to make sure action is valid
-            attackExecution,
-            takeDamageProcessing,
+            executeQueuedActions,
+            processTakeDamageInflict,
 
-            worldMoveToGridPos,
-            cameraSystems,
+            interpWorldToGridMovers,
+            updateCameras,
         ]);
 
         drawSystems.AddRange([
-            sbInit,
-            tileRender,
-            decorators,
-            entityRender,
+            initiateSpriteBatch,
+            renderTiles,
+            renderDecorators,
+            renderEntities,
         ]);
 
         postCycleSystems.AddRange([
@@ -249,7 +252,7 @@ internal class GameRunningStateFactory : IGameStateFactory
         ]);
 
         // - - - [ event handler initialization ] - - -
-        var nextTurn = new NextTurnHandler(world, _eventBus);
+        var nextTurn = new NextTurnHandler(world);
         var spawnPrefab = new SpawnPrefabHandler(world, factory);
         var camChange = new CameraChangeHandler(world);
         disposables.AddRange([

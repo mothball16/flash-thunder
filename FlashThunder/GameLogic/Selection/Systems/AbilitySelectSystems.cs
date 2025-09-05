@@ -1,5 +1,6 @@
 ﻿using fennecs;
 using FlashThunder.Enums;
+using FlashThunder.Events.GameEvents;
 using FlashThunder.GameLogic._Shared;
 using FlashThunder.GameLogic.Actions.Components;
 using FlashThunder.GameLogic.Input.Resources;
@@ -17,7 +18,8 @@ namespace FlashThunder.GameLogic.Selection.Systems
         private readonly World _world;
         private readonly Stream<SkillSet> _selectedWithSkills;
         private readonly Stream<SkillSet, AbilitySelected> _selectedWithActiveSkill;
-        private readonly IEventPublisher _uiNotifier;
+        private readonly IEventPublisher _notifier;
+
         private readonly Dictionary<GameAction, int> _abilityMap = new()
         {
             {GameAction.Ability1, 0},
@@ -31,16 +33,16 @@ namespace FlashThunder.GameLogic.Selection.Systems
             {GameAction.Ability9, 8},
             {GameAction.Ability10, 9},
         };
-        public AbilitySelectSystems(World world, IEventPublisher uiNotifier)
+        public AbilitySelectSystems(World world)
         {
             _world = world;
+            _notifier = world.Get<IEventPublisher>();
             _selectedWithSkills = world.Query<SkillSet>()
                 .Has<SelectedTag>()
                 .Stream();
             _selectedWithActiveSkill = world.Query<SkillSet, AbilitySelected>()
                 .Has<SelectedTag>()
                 .Stream();
-            _uiNotifier = uiNotifier;
         }
 
         private static void DeselectAbility(Entity e, SkillSet skillSet, IEventPublisher notifier)
@@ -54,7 +56,7 @@ namespace FlashThunder.GameLogic.Selection.Systems
         {
             // for each selected unit with skills where the ability input was pressed...
             _selectedWithSkills.For(
-                uniform: (_uiNotifier, upd, ability),
+                uniform: (_notifier, upd, ability),
                 action: static ((IEventPublisher notifier, float upd, int ability) uniform,
                 in Entity e, ref SkillSet skillSet) =>
                 {
@@ -79,6 +81,10 @@ namespace FlashThunder.GameLogic.Selection.Systems
                         {
                             DeselectAbility(e, skillSet, uniform.notifier);
                         }
+                    } 
+                    else
+                    {
+                        uniform.notifier.Publish(new MakePopupEvent("Ability on cooldown/cannot be selected!"));
                     }
                 });
         }
@@ -89,7 +95,7 @@ namespace FlashThunder.GameLogic.Selection.Systems
         private void ValidateActionSystem()
         {
             _selectedWithActiveSkill.For(
-                uniform: _uiNotifier,
+                uniform: _notifier,
                 action: static (IEventPublisher uniform, in Entity e, ref SkillSet skillSet, ref AbilitySelected ability) => {
                     if (!skillSet[ability.AbilityIndex].IsValid)
                         DeselectAbility(e, skillSet, uniform);
@@ -99,7 +105,7 @@ namespace FlashThunder.GameLogic.Selection.Systems
         public override void Update(float upd)
         {
             // we need to know if any ability selection inputs have been activated
-            var input = _world.GetResource<InputResource>();
+            var input = _world.Get<InputResource>();
 
             int? abilityActivated = null;
             foreach (var a in _abilityMap)

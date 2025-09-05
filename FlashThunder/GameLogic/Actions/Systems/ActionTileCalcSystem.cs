@@ -21,7 +21,7 @@ namespace FlashThunder.GameLogic.Actions.Systems
         private readonly World _world;
         public ActionTileCalcSystem(World world)
         {
-            _pathfindingService = world.GetResource<PathfindingService>();
+            _pathfindingService = world.Get<PathfindingService>();
             _needsRangeRefresh = world.Query<GridPosition, SkillSet, AbilitySelected>()
                 .Not<ActionTiles>() // no need to refresh if never requested (by deleting action tiles)
                 .Not<MoveInProgressTag>() // no need to refresh if we are mid-move (unable to act anyways)
@@ -65,7 +65,7 @@ namespace FlashThunder.GameLogic.Actions.Systems
 
         private Dictionary<Point, List<Point>> CalcPassthroughTiles(GridPosition pos, UnitSkill skill)
         {
-            var map = _world.GetResource<MapResource>();
+            var map = _world.Get<MapResource>();
             var tiles = new Dictionary<Point, List<Point>>();
             for (int row = -skill.Range; row <= skill.Range; row++)
             {

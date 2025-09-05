@@ -55,7 +55,7 @@ namespace FlashThunder.GameLogic.CameraControl.Systems
             if(_selectedIsMovable.IsEmpty)
                 return;
 
-            var input = _world.GetResource<InputResource>();
+            var input = _world.Get<InputResource>();
             var camSpeed = input.IsActivated(GameAction.SpeedUpCamera)
                 ? 800
                 : 200;
@@ -75,7 +75,7 @@ namespace FlashThunder.GameLogic.CameraControl.Systems
 
         public void CameraZoomSystem(float dt)
         {
-            var mouse = _world.GetResource<MouseResource>();
+            var mouse = _world.Get<MouseResource>();
             _scalableSelectedCamera.For((in Entity e, ref WorldCamera cam, ref SmoothScalable scale) =>
             {
                 scale.ScaleTarget += mouse.ScrollDelta / GameConstants.ScrollStep;

@@ -357,6 +357,83 @@
         "ElementType": "Components",
         "EventType": 1,
         "TimestampUtc": "2025-09-04T14:00:33.2697593Z"
+      },
+      {
+        "NewName": "PopupComponent1",
+        "OldName": null,
+        "ElementType": "Components",
+        "EventType": 0,
+        "TimestampUtc": "2025-09-05T13:14:32.9321526Z"
+      },
+      {
+        "NewName": "PopupScreen.PopupComponent1Instance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-09-05T13:14:35.6251744Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "PopupComponent1",
+        "ElementType": "Components",
+        "EventType": 1,
+        "TimestampUtc": "2025-09-05T13:14:40.0318747Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "PopupScreen.PopupComponent1 PopupComponent1Instance in PopupScreen",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-09-05T13:14:42.6334897Z"
+      },
+      {
+        "NewName": "PopupScreen.PopupComponentInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-09-05T13:14:44.3432882Z"
+      },
+      {
+        "NewName": "PopupScreen.PopupComponentInstance1",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-09-05T13:15:23.5011631Z"
+      },
+      {
+        "NewName": "PopupScreen.PopupComponentInstance2",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-09-05T13:15:24.4209949Z"
+      },
+      {
+        "NewName": "PopupScreen.PopupComponentInstance1",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-09-05T13:15:52.9047193Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "PopupScreen.PopupComponent PopupComponentInstance1 in PopupScreen",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-09-05T13:15:56.4809987Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "PopupScreen.PopupComponent PopupComponentInstance in PopupScreen",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-09-05T13:15:58.5129918Z"
+      },
+      {
+        "NewName": "PopupScreen.PopupComponentInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-09-05T13:16:41.5424721Z"
       }
     ]
   }

@@ -12,11 +12,11 @@ using FlashThunder.GameLogic.Actions.Data;
 
 namespace FlashThunder.GameLogic.Actions.Systems;
 
-internal sealed class PlayerActionTriggerSystem : AUpdateSystem<float>
+internal sealed class QueueActionSystem : AUpdateSystem<float>
 {
     private readonly Stream<SkillSet, AbilitySelected, ActionTiles> _selectedActionReadyEntities;
     private readonly World _world;
-    public PlayerActionTriggerSystem(World world)
+    public QueueActionSystem(World world)
     {
         _selectedActionReadyEntities = world.Query<SkillSet, AbilitySelected, ActionTiles>()
             .Has<SelectedTag>()
@@ -28,18 +28,13 @@ internal sealed class PlayerActionTriggerSystem : AUpdateSystem<float>
 
     public override void Update(float upd)
     {
-        ManualUnitMoveSystem();
-    }
-
-    private void ManualUnitMoveSystem()
-    {
-        var input = _world.GetResource<InputResource>();
+        var input = _world.Get<InputResource>();
 
         // if select action didn't happen, don't do anything
         if (!input.WasJustActivated(GameAction.Action))
             return;
 
-        var mouse = _world.GetResource<MouseResource>();
+        var mouse = _world.Get<MouseResource>();
         var mousePos = new Point(mouse.TileX, mouse.TileY);
 
         // - - - [ figure out whether the tile is valid ] - - -
@@ -58,7 +53,7 @@ internal sealed class PlayerActionTriggerSystem : AUpdateSystem<float>
                     else
                     {
                         queuedActions = e.Ref<AttackQueued>();
-                    }                 
+                    }
                     skill.State.UsesLeftThisTurn--;
                     queuedActions.Queue.Enqueue(new ActionData(
                         e,

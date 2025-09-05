@@ -32,15 +32,15 @@ public static class WorldExtensions
 
         // init the event bus
         var eventBus = new EventBus();
-        world.SetResource(eventBus);
+        world.Set(eventBus);
         return world;
     }
 
     #region - - - [ resources ] - - -
-    public static ref T GetResource<T>(this World world)
+    public static ref T Get<T>(this World world)
         => ref world.GetResourceEntity().Ref<T>();
 
-    public static void SetResource<T>(this World world, T resource)
+    public static void Set<T>(this World world, T resource)
     {
         var resources = world.GetResourceEntity();
         if (resources.Has<T>())
@@ -52,13 +52,13 @@ public static class WorldExtensions
         world.GetResourceEntity().Add(resource);
     }
 
-    public static void SetResource<T>(this World world) where T : new()
-        => world.SetResource(new T());
+    public static void Set<T>(this World world) where T : new()
+        => world.Set(new T());
     #endregion
 
     #region - - - [ events ] - - -
     internal static EventBus GetEvents(this World world)
-        => world.GetResource<EventBus>();
+        => world.Get<EventBus>();
     internal static void Publish<T>(this World world, T data)
         => world.GetEvents().Publish(data);
     internal static IDisposable Subscribe<T>(this World world, Action<T> handler)

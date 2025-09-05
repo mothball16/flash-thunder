@@ -19,7 +19,7 @@ internal sealed class SpawnPrefabHandler : IDisposable
         _subscriptions = [
             world.Subscribe<SpawnPrefabRequest>(Execute)
             ];
-        _teamService = world.GetResource<TeamService>();
+        _teamService = world.Get<TeamService>();
     }
 
     public void Execute(SpawnPrefabRequest msg)
