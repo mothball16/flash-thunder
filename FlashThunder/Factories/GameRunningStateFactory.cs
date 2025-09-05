@@ -302,9 +302,9 @@ internal class GameRunningStateFactory : IGameStateFactory
                                     Traverse = ["land"],
                                     SelectionType = SelectionType.Passthrough,
                                     AttackBehavior = "BasicAttackBehavior",
-                                    AttackParams = new DefaultAttackParams(10, 2, 0) 
+                                    AttackParams = new DefaultAttackParams(10, 2, 0)
                                 },
-                                State = new() { TurnsSinceLastUse = 0, UsesLeftThisTurn = 2, CanUse=true}
+                                State = new() { TurnsSinceLastUse = 0, UsesLeftThisTurn = 2, CanUse = true}
                             },
                         ]
                     });

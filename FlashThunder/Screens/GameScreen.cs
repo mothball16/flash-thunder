@@ -11,6 +11,7 @@ using FlashThunder.GameLogic.Selection.Events;
 using FlashThunder.GameLogic.Team.Components;
 using FlashThunder.Managers;
 using FlashThunder.Utilities;
+using Gum.Mvvm;
 using Gum.Wireframe;
 using Microsoft.Xna.Framework;
 using MonoGameGum;
@@ -31,6 +32,7 @@ internal partial class GameScreen : IUpdateScreen
     public void OnTurnOrderChanged(TurnOrderChangedEvent msg)
     {
         TurnOrder.Text = $"Current turn: {msg.To.Ref<TeamTag>().Team}";
+
     }
     partial void CustomInitialize()
     {
@@ -56,16 +58,16 @@ internal sealed class GameScreenPresenter : IDisposable
     
     private bool _showingSelectedUnitScreen;
 
-    public GameScreenPresenter(TextureManager textureManager, World model, GameScreen view, IEventSubscriber subscriber)
+    public GameScreenPresenter(TextureManager textureManager, World model, GameScreen view, EventBus eventBus)
     {
         _textureManager = textureManager;
         _model = model;
         _view = view;
         _selected = model.Query<SelectedTag>().Compile();
         _disposables = [
-            subscriber.Subscribe<EntityCountChangedEvent>(view.OnEntityCountChanged),
-            subscriber.Subscribe<TurnOrderChangedEvent>(view.OnTurnOrderChanged),
-            subscriber.Subscribe<SelectedUnitAbilityChangedEvent>(msg => UpdateUnitAbilities(msg.SkillSet,msg.AbilityIndex))
+            eventBus.Subscribe<EntityCountChangedEvent>(view.OnEntityCountChanged),
+            eventBus.Subscribe<TurnOrderChangedEvent>(msg => OnTurnOrderChanged(eventBus, msg)),
+            eventBus.Subscribe<SelectedUnitAbilityChangedEvent>(msg => UpdateUnitAbilities(msg.SkillSet,msg.AbilityIndex))
         ];
     }
 
@@ -139,6 +141,15 @@ internal sealed class GameScreenPresenter : IDisposable
     #endregion
 
     #region - - - [ Turn Requests ] - - -
+    public static void OnTurnOrderChanged(IEventPublisher publisher, TurnOrderChangedEvent msg)
+    {
+        if(msg.To == msg.From)
+        {
+            publisher.Publish(new MakePopupEvent($"{msg.To.Ref<TeamTag>().Team} begins turn."));
+        }
+        publisher.Publish(new MakePopupEvent($"{msg.From.Ref<TeamTag>().Team} ends turn. {msg.To.Ref<TeamTag>().Team} begins turn."));
+    }
+
     public void NextTurnRequest()
     {
         Logger.Print("Reached nextturnrequest");

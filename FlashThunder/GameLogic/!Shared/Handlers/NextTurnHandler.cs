@@ -47,7 +47,7 @@ internal sealed class NextTurnHandler : IDisposable
         if (!oldTeam.Has<IsCurrentTurn>())
         {
             oldTeam.Set(new IsCurrentTurn());
-            _notifier.Publish(new TurnOrderChangedEvent(oldTeam));
+            _notifier.Publish(new TurnOrderChangedEvent(oldTeam, oldTeam));
             return;
         }
 
@@ -70,7 +70,7 @@ internal sealed class NextTurnHandler : IDisposable
         newTeam.Add<IsCurrentTurn>();
 
         // notify the UI about the change
-        _notifier.Publish(new TurnOrderChangedEvent(newTeam));
+        _notifier.Publish(new TurnOrderChangedEvent(oldTeam, newTeam));
     }
 
     public void Dispose()
