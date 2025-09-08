@@ -434,6 +434,34 @@
         "ElementType": "Screens",
         "EventType": 5,
         "TimestampUtc": "2025-09-05T13:16:41.5424721Z"
+      },
+      {
+        "NewName": "GameScreen.AbilityLabelComponentInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-09-06T01:21:39.5819509Z"
+      },
+      {
+        "NewName": "GameScreen.AbilityLabelComponentInstance1",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-09-06T01:21:41.3214941Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "GameScreen.AbilityLabelComponent AbilityLabelComponentInstance in GameScreen",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-09-06T01:21:48.5275868Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "GameScreen.AbilityLabelComponent AbilityLabelComponentInstance1 in GameScreen",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-09-06T01:21:50.4776629Z"
       }
     ]
   }

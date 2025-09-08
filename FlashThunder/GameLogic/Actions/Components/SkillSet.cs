@@ -1,4 +1,5 @@
 ﻿using FlashThunder.GameLogic.Actions.Data;
+using System;
 using System.Collections.Generic;
 
 namespace FlashThunder.GameLogic.Actions.Components;
@@ -22,6 +23,6 @@ public struct SkillSet
     public List<UnitSkillState> SkillRuntimes { get; set; }
     public readonly SkillEntry this[int index]
     {
-        get { return Skills[index]; }
+        get { return Skills[Math.Max(index, Skills.Count - 1)]; }
     }
 }

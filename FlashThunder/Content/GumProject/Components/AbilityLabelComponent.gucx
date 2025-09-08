@@ -68,19 +68,19 @@
     <Variable>
       <Type>float</Type>
       <Name>Core.Height</Name>
-      <Value xsi:type="xsd:float">60</Value>
+      <Value xsi:type="xsd:float">120</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>float</Type>
       <Name>Core.Width</Name>
-      <Value xsi:type="xsd:float">60</Value>
+      <Value xsi:type="xsd:float">120</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>float</Type>
       <Name>Height</Name>
-      <Value xsi:type="xsd:float">80</Value>
+      <Value xsi:type="xsd:float">150</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -93,13 +93,13 @@
     <Variable>
       <Type>int</Type>
       <Name>HotkeyText.FontSize</Name>
-      <Value xsi:type="xsd:int">16</Value>
+      <Value xsi:type="xsd:int">24</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
       <Type>float</Type>
       <Name>HotkeyText.Height</Name>
-      <Value xsi:type="xsd:float">20</Value>
+      <Value xsi:type="xsd:float">30</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -135,7 +135,7 @@
     <Variable>
       <Type>float</Type>
       <Name>HotkeyText.Width</Name>
-      <Value xsi:type="xsd:float">60</Value>
+      <Value xsi:type="xsd:float">120</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -147,7 +147,7 @@
     <Variable>
       <Type>float</Type>
       <Name>HotkeyText.Y</Name>
-      <Value xsi:type="xsd:float">60</Value>
+      <Value xsi:type="xsd:float">120</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <Variable>
@@ -372,7 +372,7 @@
     <Variable>
       <Type>float</Type>
       <Name>Width</Name>
-      <Value xsi:type="xsd:float">60</Value>
+      <Value xsi:type="xsd:float">120</Value>
       <SetsValue>true</SetsValue>
     </Variable>
     <VariableList xsi:type="VariableListSaveOfString">
