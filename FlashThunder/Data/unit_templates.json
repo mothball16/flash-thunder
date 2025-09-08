@@ -27,16 +27,16 @@
       },
       "skillSet": [
         {
-          "name": "Hit and Run",
-          "description": "Mildly inconvenience your enemies with this one simple trick!",
-          "attackBehavior": "BasicAttackBehavior",
-          "cooldown": 0,
-          "attackParams": {
-            "$type": "DefaultAttackParams",
-            "damage": 10,
-            "randomRange": 2,
-            "AP": 0
-          }
+          "name": "Movement",
+          "icon": "unit_action_move_unit_frame",
+          "description": "Move to an accessible tile within range.",
+          "cooldownBetweenTurns": 0,
+          "usesPerTurn": 1,
+          "range": 3,
+          "traverse":  ["land"],
+          "selectionType": "Pathfinding",
+          "attackBehavior": "MoveToBehavior",
+          "attackParams": { "$type": "Empty" }
         }
       ]
 

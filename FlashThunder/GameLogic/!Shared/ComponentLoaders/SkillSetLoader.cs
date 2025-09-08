@@ -2,48 +2,79 @@
 using FlashThunder.Enums;
 using FlashThunder.GameLogic.Actions;
 using FlashThunder.GameLogic.Actions.Components;
+using FlashThunder.GameLogic.Actions.Data;
+using FlashThunder.GameLogic.Actions.Interfaces;
 using FlashThunder.GameLogic.Movement.Components;
 using FlashThunder.Managers;
 using FlashThunder.Utilities;
+using System;
 using System.Text.Json;
 
 namespace FlashThunder.GameLogic._Shared.ComponentLoaders
 {
     internal class SkillSetLoader : IComponentLoader
     {
-        private readonly ActionManager _attackManager;
-        private readonly TextureManager _textureManager;
-        public SkillSetLoader(ActionManager attackManager, TextureManager textureManager)
-        {
-            _attackManager = attackManager;
-            _textureManager = textureManager;
-        }
         public void LoadComponent(Entity e, JsonElement rawData)
         {
             var skillSet = new SkillSet();
 
             foreach(JsonElement skill in rawData.EnumerateArray())
             {
+
                 /*
-                var name = skill.TryGetProperty("Name", out var nameProp) ? nameProp.GetString() : "Attack of Unknown Origin";
-                var desc = skill.TryGetProperty("Description", out var descProp) ? descProp.GetString() : "Description of Unknown Origin";
-                var icon = skill.TryGetProperty("Icon", out var iconProp) ? iconProp.GetString() : "default_icon";
-                var cooldown = skill.TryGetProperty("Cooldown", out var cooldownProp) ? cooldownProp.GetInt32() : 0;
-                var behavior = skill.GetProperty("AttackBehavior").GetString();
+                Name = "Movement",
+                Icon = "unit_action_move_unit_frame",
+                Description = "Move to an accessible tile within range.",
+                CooldownBetweenTurns = 0,
+                UsesPerTurn = 1,
+                Range = 3,
+                Traverse = ["land"],
+                SelectionType = SelectionType.Pathfinding,
+                AttackBehavior = "MoveToBehavior",
+                AttackParams = new EmptyParams()
+                 */
 
-                var param = skill.GetProperty("AttackParams");
+                var name = skill.TryGetProperty("name", out var nameProp)
+                    ? nameProp.GetString() : "Attack of Unknown Origin";
+                var icon = skill.TryGetProperty("icon", out var iconProp)
+                    ? iconProp.GetString() : "default_icon";
+                var desc = skill.TryGetProperty("description", out var descProp)
+                    ? descProp.GetString() : "Description of Unknown Origin";
+                var cooldown = skill.TryGetProperty("cooldownBetweenTurns", out var cooldownProp)
+                    ? cooldownProp.GetInt32() : 0;
+                var usesPerTurn = skill.TryGetProperty("usesPerTurn", out var usesProp)
+                    ? usesProp.GetInt32() : 1;
+                var range = skill.TryGetProperty("range", out var rangeProp)
+                    ? rangeProp.GetInt32() : 2;
+                var traverse = skill.TryGetProperty("traverse", out var traverseProp)
+                    ? JsonSerializer.Deserialize<string[]>(traverseProp.GetRawText(), options: DataLoader.Options) : ["land"];
+                var selection = skill.TryGetProperty("selectionType", out var selectionProp)
+                    ? Enum.Parse<SelectionType>(selectionProp.GetString(), ignoreCase: true) : SelectionType.Passthrough;
+                var behavior = skill.TryGetProperty("attackBehavior", out var behaviorProp)
+                    ? behaviorProp.GetString() : "BasicAttackBehavior";
+
+                // nah this should fail
+                var config = JsonSerializer.Deserialize<IAttackParams>(skill.GetProperty("attackParams").GetRawText(), options: DataLoader.Options);
 
 
-                Logger.Error("This has not been implemented yet! Look into polymorphic deserialization solutions first");
-
-                skillSet.Skills.Add(new UnitSkill
+                var unitSkill = new UnitSkill
                 {
                     Name = name,
+                    Icon = icon,
                     Description = desc,
-                    Cooldown = cooldown,
+                    CooldownBetweenTurns = cooldown,
+                    UsesPerTurn = usesPerTurn,
+                    Range = range,
+                    Traverse = traverse,
+                    SelectionType = selection,
                     AttackBehavior = behavior,
-                    AttackParams = default
-                });*/
+                    AttackParams = config
+                };
+
+                var skillState = new UnitSkillState { CanUse = true, TurnsSinceLastUse = 0, UsesLeftThisTurn = usesPerTurn};
+                skillSet.Skills = [];
+                skillSet.Skills.Add(new SkillEntry { Data = unitSkill, State = skillState });
+                e.Add(skillSet);
             }
         }
     }

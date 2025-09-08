@@ -35,6 +35,7 @@ using FlashThunder.GameLogic.Actions.Behaviors;
 using FlashThunder.GameLogic.Actions.Systems;
 using FlashThunder.GameLogic.Actions.Data;
 using FlashThunder.GameLogic.Actions.Components;
+using FlashThunder.GameLogic._Shared.ComponentLoaders;
 
 namespace FlashThunder.Factories;
 
@@ -175,6 +176,7 @@ internal class GameRunningStateFactory : IGameStateFactory
             .Map<Health>(new HealthComponentLoader())
             .Map<SpriteData>(new SpriteDataComponentLoader(_texManager))
             .Map<GridMover>(new GridMoverLoader())
+            .Map<SkillSet>(new SkillSetLoader())
             .Map<Vision>()
             .Map<GridPosition>().Map<WorldPosition>()
             .Map<Armor>()
@@ -269,7 +271,8 @@ internal class GameRunningStateFactory : IGameStateFactory
             {
                 Name = "infantry_scout",
                 Position = new(1 + i, 1),
-                Team = "Section 4",
+                Team = "Section 4"
+                /*
                 Callback = (Entity e) =>
                 {
                     e.Add(new SkillSet()
@@ -308,7 +311,7 @@ internal class GameRunningStateFactory : IGameStateFactory
                             },
                         ]
                     });
-                }
+                }*/
             });
         }
         
