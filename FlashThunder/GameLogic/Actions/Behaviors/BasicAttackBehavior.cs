@@ -1,4 +1,5 @@
 ﻿using fennecs;
+using FlashThunder.GameLogic._Shared;
 using FlashThunder.GameLogic._Shared.Services;
 using FlashThunder.GameLogic.Actions.Components;
 using FlashThunder.GameLogic.Actions.Data;
@@ -11,15 +12,15 @@ internal class BasicAttackBehavior : AAttackBehavior
     private static void DealDamage(World world, ActionData data)
     {
         if (data.Params is not DefaultAttackParams attackParams) return;
-       /* var victims = world.Get<LookupService>().EntitiesOnTile(data.Target);
+       var victims = world.Get<LookupService>().EntitiesOnTile(data.Target);
 
         
         foreach (Entity opp in victims)
         {
             var dmgVary = Random.Shared.Next(-attackParams.RandomRange, attackParams.RandomRange);
             var dmgFinal = attackParams.Damage + dmgVary;
-            opp.Ref<TakeDamage>().Inflicts.Add(new(data.Attacker, dmgFinal));
-        }*/
+            opp.RefOrAdd<TakeDamage>().Inflicts.Add(new(data.Attacker, dmgFinal));
+        }
         ReleaseAttackTag(data);
     }
     public override ActionInstance Execute(World world, ActionData data)

@@ -23,6 +23,6 @@ public struct SkillSet
     public List<UnitSkillState> SkillRuntimes { get; set; }
     public readonly SkillEntry this[int index]
     {
-        get { return Skills[Math.Min(index, Skills.Count - 1)]; }
+        get { return Skills[Math.Clamp(index, 0, Skills.Count - 1)]; }
     }
 }

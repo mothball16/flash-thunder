@@ -50,9 +50,10 @@ namespace FlashThunder.GameLogic.Actions.Systems
 
         private static Dictionary<Point, List<Point>> CalcSelfTiles(GridPosition pos)
         {
+            var tile = new Point(pos.X, pos.Y);
             var tiles = new Dictionary<Point, List<Point>>()
                 {
-                    {new Point(pos.X, pos.Y), default }
+                    {tile, [tile]}
                 };
             return tiles;
         }
@@ -78,7 +79,7 @@ namespace FlashThunder.GameLogic.Actions.Systems
                         && tilePos.Y >= 0 && tilePos.Y < map.Height
                         && _pathfindingService.IsPassable(tilePos, skill.Traverse, 1))
                     {
-                        tiles.Add(tilePos, default);
+                        tiles.Add(tilePos, [tilePos]);
                     }
                 }
             }

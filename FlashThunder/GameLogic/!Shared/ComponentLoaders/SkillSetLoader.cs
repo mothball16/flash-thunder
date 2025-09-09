@@ -42,7 +42,7 @@ namespace FlashThunder.GameLogic._Shared.ComponentLoaders
                 var behavior = skill.TryGetProperty("attackBehavior", out var behaviorProp)
                     ? behaviorProp.GetString() : "BasicAttackBehavior";
 
-                // nah this should fail
+                // nah this should fail if there isnt one
                 var config = JsonSerializer.Deserialize<IAttackParams>(skill.GetProperty("attackParams").GetRawText(), options: DataLoader.Options);
 
 

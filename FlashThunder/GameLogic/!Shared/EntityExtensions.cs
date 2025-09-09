@@ -18,5 +18,13 @@ namespace FlashThunder.GameLogic._Shared
             }
             return false;
         }
+
+        public static ref C RefOrAdd<C>(this Entity e) where C : new()
+        {
+            if (e.Has<C>())
+                return ref e.Ref<C>();
+            else
+                return ref e.Add(new C()).Ref<C>();
+        }
     }
 }
