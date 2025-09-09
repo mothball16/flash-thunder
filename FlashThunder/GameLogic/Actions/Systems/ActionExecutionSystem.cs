@@ -6,10 +6,10 @@ namespace FlashThunder.GameLogic.Actions.Systems
 {
     internal sealed class ActionExecutionSystem : AUpdateSystem<float>
     {
-        private readonly ActionManager _manager;
+        private readonly ActionLifetimeManager _manager;
         private readonly World _world;
         private readonly Stream<AttackQueued> _requestingAttack;
-        public ActionExecutionSystem(World world, ActionManager manager) : base()
+        public ActionExecutionSystem(World world, ActionLifetimeManager manager) : base()
         {
             _manager = manager;
             _world = world;

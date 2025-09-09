@@ -18,7 +18,7 @@ internal class MoveToBehavior : AAttackBehavior
     public override ActionInstance Execute(World world, ActionData data)
     {
 
-        data.Attacker.Ref<MoveIntent>().Waypoints = data.Waypoints;
+        data.Attacker.Ref<MoveIntent>().Waypoints = data.Points;
 
         return new ActionInstance()
         {

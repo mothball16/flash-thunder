@@ -17,10 +17,10 @@ public readonly record struct ActionData(
     Entity Attacker,
     string Behavior,
     IAttackParams Params,
-    List<Point> Waypoints
+    List<Point> Points
 )
 {
-    public readonly Point Target => Waypoints[^1];
+    public readonly Point Target => Points[^1];
 }
 
 /// <summary>

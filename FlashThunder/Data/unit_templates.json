@@ -33,10 +33,28 @@
           "cooldownBetweenTurns": 0,
           "usesPerTurn": 1,
           "range": 3,
-          "traverse":  ["land"],
+          "traverse": [ "land" ],
           "selectionType": "Pathfinding",
           "attackBehavior": "MoveToBehavior",
           "attackParams": { "$type": "Empty" }
+        },
+
+        {
+          "name": "Hit & Run",
+          "icon": "unit_action_attack_placeholder_frame",
+          "description": "Mildly inconvenience your enemies with this one simple trick!",
+          "cooldownBetweenTurns": 0,
+          "usesPerTurn": 1,
+          "range": 2,
+          "traverse": [ "land" ],
+          "selectionType": "Passthrough",
+          "attackBehavior": "BasicAttackBehavior",
+          "attackParams": {
+            "$type": "Default",
+            "damage": 10,
+            "randomRange": 2,
+            "AP": 0
+          }
         }
       ]
 

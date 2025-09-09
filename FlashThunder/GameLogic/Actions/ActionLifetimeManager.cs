@@ -9,24 +9,24 @@ namespace FlashThunder.GameLogic.Actions
     /// <summary>
     /// Holds action behavior and handles attack lifetime.
     /// </summary>
-    internal class ActionManager
+    internal class ActionLifetimeManager
     {
         private readonly Dictionary<string, AAttackBehavior> _attacks;
         private readonly List<ActionInstance> _instances;
-        public ActionManager()
+        public ActionLifetimeManager()
         {
             _attacks = [];
             _instances = [];
         }
 
-        public ActionManager RegisterActionBehavior(string name, AAttackBehavior behavior)
+        public ActionLifetimeManager RegisterActionBehavior(string name, AAttackBehavior behavior)
         {
             _attacks[name] = behavior;
             Logger.Print($"Registered {name} to the attack manager.");
             return this;
         }
 
-        public ActionManager RegisterActionBehavior(AAttackBehavior behavior)
+        public ActionLifetimeManager RegisterActionBehavior(AAttackBehavior behavior)
             => RegisterActionBehavior(behavior.GetType().Name, behavior);
 
         public void ExecuteAttack(World world, ActionData data)
@@ -35,7 +35,9 @@ namespace FlashThunder.GameLogic.Actions
             {
                 throw new KeyNotFoundException($"Attack behavior '{data.Behavior}' not found.");
             }
-            _instances.Add(behavior.Execute(world, data));
+            var attackInstance = behavior.Execute(world, data);
+            _instances.Add(attackInstance);
+            attackInstance.OnStart?.Invoke(attackInstance);
         }
 
         public void Update(float dt)
@@ -43,14 +45,17 @@ namespace FlashThunder.GameLogic.Actions
             List<ActionInstance> toRemove = [];
             foreach (var attack in _instances)
             {
-                attack.Update(attack, dt);
+                attack.Update?.Invoke(attack, dt);
                 if (attack.IsOver)
                 {
                     toRemove.Add(attack);
                 }
             }
             foreach (var attack in toRemove)
+            {
+                attack.OnEnd?.Invoke(attack);
                 _instances.Remove(attack);
+            }
         }
 
 

@@ -55,11 +55,14 @@ https://bevy-cheatbook.github.io
   than putting characters in an array x_x
 	- Leaning towards alternative of a map editor from scratch for learning purposes.
 
-- (TODO) Attacks should be integrated into the ECS architecture
+- (CANCELLED) Attacks should be integrated into the ECS architecture
 	- SkillSet should be a component of the entity holding UnitSkills
 	- WantsToAttack should prompt the AttackSystem to create an entity holding the attack data
 		- The attack entity should also have information about the attack they cast attached
 
+- (TODO) Reduce dependency on ECS. Shoehorning it into a turn-based RPG where processing isn't the issue
+  is kinda dumb. I think we could keep ECS for execution, but for state changes and stuff acting on one obj,
+  it makes way more sense to go OOP.
 ## Architecture
 - Using MonoGame framework to get more experience building stuff
 - Using fennecs for game ECS

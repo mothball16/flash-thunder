@@ -16,24 +16,13 @@ namespace FlashThunder.GameLogic._Shared.ComponentLoaders
     {
         public void LoadComponent(Entity e, JsonElement rawData)
         {
-            var skillSet = new SkillSet();
-
-            foreach(JsonElement skill in rawData.EnumerateArray())
+            var skillSet = new SkillSet
             {
+                Skills = []
+            };
 
-                /*
-                Name = "Movement",
-                Icon = "unit_action_move_unit_frame",
-                Description = "Move to an accessible tile within range.",
-                CooldownBetweenTurns = 0,
-                UsesPerTurn = 1,
-                Range = 3,
-                Traverse = ["land"],
-                SelectionType = SelectionType.Pathfinding,
-                AttackBehavior = "MoveToBehavior",
-                AttackParams = new EmptyParams()
-                 */
-
+            foreach (JsonElement skill in rawData.EnumerateArray())
+            {
                 var name = skill.TryGetProperty("name", out var nameProp)
                     ? nameProp.GetString() : "Attack of Unknown Origin";
                 var icon = skill.TryGetProperty("icon", out var iconProp)
@@ -72,10 +61,9 @@ namespace FlashThunder.GameLogic._Shared.ComponentLoaders
                 };
 
                 var skillState = new UnitSkillState { CanUse = true, TurnsSinceLastUse = 0, UsesLeftThisTurn = usesPerTurn};
-                skillSet.Skills = [];
                 skillSet.Skills.Add(new SkillEntry { Data = unitSkill, State = skillState });
-                e.Add(skillSet);
             }
+            e.Add(skillSet);
         }
     }
 }

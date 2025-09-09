@@ -36,6 +36,7 @@ using FlashThunder.GameLogic.Actions.Systems;
 using FlashThunder.GameLogic.Actions.Data;
 using FlashThunder.GameLogic.Actions.Components;
 using FlashThunder.GameLogic._Shared.ComponentLoaders;
+using FlashThunder.GameLogic._Shared.Services;
 
 namespace FlashThunder.Factories;
 
@@ -101,6 +102,7 @@ internal class GameRunningStateFactory : IGameStateFactory
 
     private void InitServices(World world, EntityFactory factory)
     {
+        var lookupService = new LookupService(world);
         var teamService = new TeamService(world, factory);
         var mapResource = world.Get<MapResource>();
         #region - - - [pathfinding service ] - - -
@@ -129,6 +131,7 @@ internal class GameRunningStateFactory : IGameStateFactory
             });
         #endregion
 
+        world.Set(lookupService);
         world.Set(teamService);
         world.Set(pathfindingService);
     }
@@ -185,7 +188,7 @@ internal class GameRunningStateFactory : IGameStateFactory
             .Map<SmoothScalable>()
             .Map<IsPlayerControllable>();
 
-        var attackManager = new ActionManager()
+        var attackManager = new ActionLifetimeManager()
             .RegisterActionBehavior(new MoveToBehavior())
             .RegisterActionBehavior(new BasicAttackBehavior());
 
