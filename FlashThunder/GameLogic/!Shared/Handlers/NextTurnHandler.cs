@@ -1,5 +1,6 @@
 ﻿using fennecs;
 using FlashThunder.Events.GameEvents;
+using FlashThunder.GameLogic.Actions.Components;
 using FlashThunder.GameLogic.Components;
 using FlashThunder.GameLogic.Events;
 using FlashThunder.GameLogic.Team.Components;
@@ -7,6 +8,7 @@ using FlashThunder.Managers;
 using FlashThunder.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FlashThunder.GameLogic.Commands;
 
@@ -15,6 +17,7 @@ internal sealed class NextTurnHandler : IDisposable
     private readonly World _world;
     private readonly IEventPublisher _notifier;
     private readonly List<IDisposable> _subscriptions;
+    private readonly Stream<SkillSet, TeamTag> _skillsToDisableOrRefresh;
 
     public NextTurnHandler(World world)
     {
@@ -23,6 +26,7 @@ internal sealed class NextTurnHandler : IDisposable
         _subscriptions = [
             world.Subscribe<NextTurnRequest>(Execute)
         ];
+        _skillsToDisableOrRefresh = world.Query<SkillSet, TeamTag>().Stream();
     }
     public void Execute(NextTurnRequest _)
     {
@@ -51,9 +55,6 @@ internal sealed class NextTurnHandler : IDisposable
             return;
         }
 
-        // turn-specific action components should now be removed from entities of that team
-        Logger.Warn("TODO: Refresh turn-specific actions.");
-
         // old teams turn is OVER. begin to cycle
         Logger.Print($"{_turnOrder.CurrentTeamIndex}, {oldTeam.Ref<TeamTag>().Team}");
         oldTeam.Remove<IsCurrentTurn>();
@@ -65,9 +66,32 @@ internal sealed class NextTurnHandler : IDisposable
         }
 
         var newTeam = _turnOrder.CurTeam;
-
-        Logger.Print($"{_turnOrder.CurrentTeamIndex}, {newTeam.Ref<TeamTag>().Team}");
+        var newTeamName = newTeam.Ref<TeamTag>().Team;
+        Logger.Print($"{_turnOrder.CurrentTeamIndex}, {newTeamName}");
         newTeam.Add<IsCurrentTurn>();
+
+
+        // turn-specific action components should now be ticked
+        _skillsToDisableOrRefresh.For((ref SkillSet skillSet, ref TeamTag teamTag) =>
+        {
+
+            if (teamTag.Team == newTeamName)
+            {
+                foreach (var skill in skillSet.Skills)
+                {
+                    skill.State.CanUse = true;
+                    skill.State.UsesLeftThisTurn = skill.Data.UsesPerTurn;
+                    skill.State.TurnsSinceLastUse++;
+                }
+            } else
+            {
+                foreach (var skill in skillSet.Skills.Select(s => s.State))
+                {
+                    skill.CanUse = false;
+                    skill.UsesLeftThisTurn = 0;
+                }
+            }
+        });
 
         // notify the UI about the change
         _notifier.Publish(new TurnOrderChangedEvent(oldTeam, newTeam));

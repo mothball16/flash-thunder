@@ -25,7 +25,6 @@ namespace FlashThunder.Components
 
         public void Update(float dt)
         {
-            Logger.Warn($"{_fadeTime}");
             Lifetime -= dt;
             Message.Alpha = (int) float.Lerp(255, 0, Math.Clamp((_fadeTime - Lifetime) / _fadeTime, 0, 1));
         }

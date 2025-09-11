@@ -10,20 +10,22 @@ internal sealed class TeamService
 {
     private readonly World _world;
     private readonly EntityFactory _factory;
-    private readonly Dictionary<string, Entity> teamsByName;
-    private readonly Dictionary<string, List<Entity>> teamsByFaction;
+    private readonly Dictionary<string, Entity> _teamsByName;
+    private readonly Dictionary<string, List<Entity>> _teamsByFaction;
+    private readonly Stream<TeamTag> _entitiesOnATeam;
 
     public TeamService(World world, EntityFactory factory)
     {
         _world = world;
         _factory = factory;
-        teamsByName = [];
-        teamsByFaction = [];
+        _entitiesOnATeam = world.Query<TeamTag>().Stream();
+        _teamsByName = [];
+        _teamsByFaction = [];
     }
 
     public Entity CreateTeam(string teamName, string factionName, bool canControl)
     {
-        if (teamsByName.ContainsKey(teamName))
+        if (_teamsByName.ContainsKey(teamName))
         {
             Logger.Error($"Team with name {teamName} already exists! Aborting action.");
             return default;
@@ -35,11 +37,11 @@ internal sealed class TeamService
             team.Add<IsPlayerControllable>();
 
         // assign to lookups
-        teamsByName[teamName] = team;
-        if (!teamsByFaction.TryGetValue(factionName, out var factionTeams))
+        _teamsByName[teamName] = team;
+        if (!_teamsByFaction.TryGetValue(factionName, out var factionTeams))
         {
             factionTeams = [];
-            teamsByFaction[factionName] = factionTeams;
+            _teamsByFaction[factionName] = factionTeams;
         }
         factionTeams.Add(team);
 
@@ -48,7 +50,7 @@ internal sealed class TeamService
 
     public void RemoveTeam(string teamName)
     {
-        if(!teamsByName.TryGetValue(teamName, out var teamEntity))
+        if(!_teamsByName.TryGetValue(teamName, out var teamEntity))
         {
             Logger.Error($"Team with name {teamName} does not exist! Aborting action.");
         }
@@ -56,21 +58,21 @@ internal sealed class TeamService
         var teamFaction = teamEntity.Ref<Faction>().Name;
 
         // remove from lookups
-        teamsByName.Remove(teamName);
+        _teamsByName.Remove(teamName);
 
-        var teamsOfFaction = teamsByFaction[teamFaction];
+        var teamsOfFaction = _teamsByFaction[teamFaction];
         teamsOfFaction.Remove(teamEntity);
         if(teamsOfFaction.Count == 0)
-            teamsByFaction.Remove(teamFaction);
+            _teamsByFaction.Remove(teamFaction);
 
         // fix entities to unassign
-        var query = _world.Query<FromTeam>()
-            .Has<FromTeam>(teamEntity).Stream();
 
-        query.For((ref FromTeam fromTeam) =>
+        _entitiesOnATeam.For((ref TeamTag teamTag) =>
         {
-            Logger.Error("HEY!!! There should be some behavior for this. I haven't done this yet");
-            fromTeam = default; // unassign the team
+            if(teamTag.Team == teamName)
+            {
+                teamTag.Team = "TBA";
+            }
         });
 
         // physically remove the entity
@@ -78,7 +80,7 @@ internal sealed class TeamService
     }
 
     public bool TryGetTeam(string name, out Entity team)
-        => teamsByName.TryGetValue(name, out team);
+        => _teamsByName.TryGetValue(name, out team);
 
     /// <summary>
     /// Create a relation between the entity and the respective team entity by name.
@@ -92,6 +94,7 @@ internal sealed class TeamService
             Logger.Error($"Cannot assign team {name}. Team does not exist.");
             return;
         }
-        e.Add<FromTeam>(team);
+        e.Add<TeamTag>(team);
+        e.Add(new TeamTag(name));
     }
 }
